@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import superagent from 'superagent'
 
 class ReportForm extends Component {
   constructor(){
@@ -7,7 +8,16 @@ class ReportForm extends Component {
   }
 
   submitReport(){
-    this.props.submitReport()
+    this.props.submitReport(this.refs.long.value,this.refs.lat.value);
+    if(this.refs.long.value !== '' && this.refs.lat.value !== ''){
+      superagent
+      .get(`/sendText/${this.refs.lat.value}/${this.refs.long.value}`)
+      .query(null)
+      .set('Accept','text/json')
+      .end((err,response)=>{
+        console.log(response.body)
+      })
+    }
   }
 
   render(){
@@ -16,48 +26,6 @@ class ReportForm extends Component {
     return (
       <div>
         <h1>Test ReportForm</h1>
-
-        <nav className="white" role="navigation">
-          <div className="nav-wrapper container">
-            <a id="logo-container" href="#" className="brand-logo">Water Report</a>
-            <ul className="right hide-on-med-and-down">
-              <li><a href="#">Information</a></li>
-              <li><a href="#">Awards</a></li>
-              <li><a href="#">Settings</a></li>
-
-            </ul>
-
-            <ul id="nav-mobile" className="side-nav">
-              <li className="logo">
-              <img src=""/>
-
-              </li>
-
-              <li className="search">
-                <div className="search-wrapper card">
-                  <input id="search" type="search" required/>
-                  <label className="label-icon" htmlFor="search"><i className="material-icons">search</i></label>
-                  <div className="search-results"></div>
-                </div>
-              </li>
-
-              <li className="bold">
-                <a href="" className="waves-effect waves-teal">Information</a>
-              </li>
-
-              <li className="bold">
-                <a href="" className="waves-effect waves-teal">Awards</a>
-              </li>
-
-              <li className="bold">
-                <a href="" className="waves-effect waves-teal">Settings</a>
-              </li>
-
-            </ul>
-            <a href="#" data-activates="nav-mobile" className="button-collapse"><i className="material-icons">menu</i></a>
-          </div>
-        </nav>
-
 
         <div className="container">
           <div className="section">
@@ -82,9 +50,13 @@ class ReportForm extends Component {
                 </div>
 
                 <div className="row">
-                  <div className="input-field col s12">
-                    <input id="password" type="password" className="validate"/>
-                    <label htmlFor="password">Cross Street or Nearest Landmark</label>
+                  <div className="input-field col s6">
+                    <input id="lat" ref="lat" type="text" className="validate"/>
+                    <label htmlFor="lat">Latitude</label>
+                  </div>
+                  <div className="input-field col s6">
+                    <input id="long" ref="long" type="text" className="validate"/>
+                    <label htmlFor="long">Longitude</label>
                   </div>
                 </div>
 

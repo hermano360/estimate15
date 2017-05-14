@@ -1,6 +1,5 @@
 import React, {Component} from 'react'
 import Map from './Map'
-import Places from './Places'
 import ReportForm from './ReportForm'
 import superagent from 'superagent'
 import {Button, Icon,Row, Input} from 'react-materialize'
@@ -15,6 +14,7 @@ class Main extends Component {
     this.handleClick=this.handleClick.bind(this);
     this.handleButton=this.handleButton.bind(this);
     this.submitReport=this.submitReport.bind(this);
+    this.handleMarkers=this.handleMarkers.bind(this);
   }
 
   handleClick(){
@@ -24,9 +24,18 @@ class Main extends Component {
     })
   }
 
-  submitReport(){
+  submitReport(long,lat){
+    console.log(this.state)
     this.setState({
-      page:'welcome'
+      page:'welcome',
+      venues: [
+        ...this.state.venues,
+        {
+          type:"leak",
+          lng:parseFloat(long),
+          lat:parseFloat(lat)
+        }
+      ]
     })
   }
 
@@ -35,29 +44,38 @@ class Main extends Component {
       page:'ReportForm'
     })
   }
+  handleMarkers(venues){
+    this.setState({
+      venues: [
+        ...this.state.venues,
+        ...venues
+      ]
+    })
+
+  }
 
   componentDidMount(){
     console.log('componentDidMount')
 
-    const url = 'https://api.foursquare.com/v2/venues/search?ll=40.7575285,-73.988&oauth_token=3Y5LCD3XPPULYMFGULXPXZRL4B4DIK33VQM5KWV3SQ4CMLMJ&v=20170514'
+    const url = '/getIncidents'
     superagent
     .get(url)
     .query(null)
     .set('Accept','text/json')
     .end((err,response)=>{
-      const venues = response.body.response.venues
+      console.log(response);
+      const venues = response.body
       console.log(JSON.stringify(venues))
       this.setState({
         venues:venues
       })
-
     })
   }
 
 
   render(){
     const location ={
-      lat:40.7575285,
+      lat:40.7575286,
       lng:-73.988
     }
     if(this.state.page === 'welcome'){
@@ -83,7 +101,7 @@ class Main extends Component {
 
 
           <div style={{width:300,height:400}}>
-            <Map center={location} markers={this.state.venues}/>
+            <Map center={location} markers={this.state.venues} setMarkers={this.handleMarkers}/>
           </div>
 
           <Row>
@@ -91,7 +109,7 @@ class Main extends Component {
     </Row>
     <Button waves='light' onClick={this.handleButton}>Report<i className="material-icons">location_on</i></Button>
 
-          <Places venues = {this.state.venues}/>
+
         </div>
       )
     } else if(this.state.page==="IconPage"){

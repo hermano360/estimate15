@@ -3,6 +3,7 @@ import Map from './Map'
 import ReportForm from './ReportForm'
 import superagent from 'superagent'
 import {Button, Icon,Row, Input} from 'react-materialize'
+import Icons from './Icons'
 
 class Main extends Component {
   constructor(){
@@ -14,6 +15,7 @@ class Main extends Component {
     this.handleClick=this.handleClick.bind(this);
     this.handleButton=this.handleButton.bind(this);
     this.submitReport=this.submitReport.bind(this);
+    this.closeIcons=this.closeIcons.bind(this);
     this.handleMarkers=this.handleMarkers.bind(this);
   }
 
@@ -36,6 +38,11 @@ class Main extends Component {
           lat:parseFloat(lat)
         }
       ]
+    })
+  }
+  closeIcons(){
+    this.setState({
+      page:'welcome'
     })
   }
 
@@ -80,7 +87,7 @@ class Main extends Component {
     }
     if(this.state.page === 'welcome'){
       return (
-        <div>
+        <div className='text-align center'>
           <ul id="slide-out" className="side-nav">
             <li><div className="userView">
               <div className="background">
@@ -90,7 +97,7 @@ class Main extends Component {
               <a href="#!name"><span className="white-text name">John Doe</span></a>
               <a href="#!email"><span className="white-text email">jdandturk@gmail.com</span></a>
             </div></li>
-            <li><a href="#!"><i className="material-icons" onClick={this.handleClick}>cloud</i>First Link With Icon</a></li>
+            <li><a href="#!"><i className="material-icons" onClick={this.handleClick}>language</i>See Your Awards</a></li>
             <li><a href="#!">Second Link</a></li>
             <li><div className="divider"></div></li>
             <li><a className="subheader">Subheader</a></li>
@@ -105,7 +112,7 @@ class Main extends Component {
           </div>
 
           <Row>
-      <Input placeholder="Search Location" s={1} label="Search" />
+      <Input placeholder="Search Location" s={12} label="Search" />
     </Row>
     <Button waves='light' onClick={this.handleButton}>Report<i className="material-icons">location_on</i></Button>
 
@@ -114,7 +121,7 @@ class Main extends Component {
       )
     } else if(this.state.page==="IconPage"){
       return (
-        <h1>Icon Page</h1>
+        <Icons closeIcons={this.closeIcons}/>
       )
     } else if(this.state.page==='ReportForm'){
       return (

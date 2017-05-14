@@ -21513,6 +21513,10 @@
 	
 	var _reactMaterialize = __webpack_require__(230);
 	
+	var _Icons = __webpack_require__(434);
+	
+	var _Icons2 = _interopRequireDefault(_Icons);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
@@ -21538,6 +21542,7 @@
 	    _this.handleClick = _this.handleClick.bind(_this);
 	    _this.handleButton = _this.handleButton.bind(_this);
 	    _this.submitReport = _this.submitReport.bind(_this);
+	    _this.closeIcons = _this.closeIcons.bind(_this);
 	    _this.handleMarkers = _this.handleMarkers.bind(_this);
 	    return _this;
 	  }
@@ -21561,6 +21566,13 @@
 	          lng: parseFloat(long),
 	          lat: parseFloat(lat)
 	        }])
+	      });
+	    }
+	  }, {
+	    key: 'closeIcons',
+	    value: function closeIcons() {
+	      this.setState({
+	        page: 'welcome'
 	      });
 	    }
 	  }, {
@@ -21604,7 +21616,7 @@
 	      if (this.state.page === 'welcome') {
 	        return _react2.default.createElement(
 	          'div',
-	          null,
+	          { className: 'text-align center' },
 	          _react2.default.createElement(
 	            'ul',
 	            { id: 'slide-out', className: 'side-nav' },
@@ -21653,9 +21665,9 @@
 	                _react2.default.createElement(
 	                  'i',
 	                  { className: 'material-icons', onClick: this.handleClick },
-	                  'cloud'
+	                  'language'
 	                ),
-	                'First Link With Icon'
+	                'See Your Awards'
 	              )
 	            ),
 	            _react2.default.createElement(
@@ -21713,7 +21725,7 @@
 	          _react2.default.createElement(
 	            _reactMaterialize.Row,
 	            null,
-	            _react2.default.createElement(_reactMaterialize.Input, { placeholder: 'Search Location', s: 1, label: 'Search' })
+	            _react2.default.createElement(_reactMaterialize.Input, { placeholder: 'Search Location', s: 12, label: 'Search' })
 	          ),
 	          _react2.default.createElement(
 	            _reactMaterialize.Button,
@@ -21727,11 +21739,7 @@
 	          )
 	        );
 	      } else if (this.state.page === "IconPage") {
-	        return _react2.default.createElement(
-	          'h1',
-	          null,
-	          'Icon Page'
-	        );
+	        return _react2.default.createElement(_Icons2.default, { closeIcons: this.closeIcons });
 	      } else if (this.state.page === 'ReportForm') {
 	        return _react2.default.createElement(_ReportForm2.default, { submitReport: this.submitReport });
 	      }
@@ -26192,6 +26200,8 @@
 	
 	var _superagent2 = _interopRequireDefault(_superagent);
 	
+	var _reactMaterialize = __webpack_require__(230);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -26228,11 +26238,11 @@
 	
 	      return _react2.default.createElement(
 	        'div',
-	        null,
+	        { className: 'text-align center' },
 	        _react2.default.createElement(
-	          'h1',
+	          _reactMaterialize.Button,
 	          null,
-	          'Test ReportForm'
+	          'Test Report Form'
 	        ),
 	        _react2.default.createElement(
 	          'div',
@@ -26257,11 +26267,11 @@
 	                  _react2.default.createElement(
 	                    'div',
 	                    { className: 'input-field col s6' },
-	                    _react2.default.createElement('input', { placeholder: '1234 Strawberry Lane, Los Angeles CA', id: 'first_name', type: 'text', className: 'validate' }),
+	                    _react2.default.createElement('input', { id: 'first_name', type: 'text', className: 'validate' }),
 	                    _react2.default.createElement(
 	                      'label',
 	                      { htmlFor: 'first_name' },
-	                      'Street Address or Intersection *'
+	                      'Street Address *'
 	                    )
 	                  ),
 	                  _react2.default.createElement(
@@ -53747,6 +53757,76 @@
 	};
 	
 	exports.default = Toast;
+
+/***/ },
+/* 434 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactMaterialize = __webpack_require__(230);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var Icons = function (_Component) {
+	  _inherits(Icons, _Component);
+	
+	  function Icons() {
+	    _classCallCheck(this, Icons);
+	
+	    var _this = _possibleConstructorReturn(this, (Icons.__proto__ || Object.getPrototypeOf(Icons)).call(this));
+	
+	    _this.closeIcons = _this.closeIcons.bind(_this);
+	    return _this;
+	  }
+	
+	  _createClass(Icons, [{
+	    key: 'closeIcons',
+	    value: function closeIcons() {
+	      this.props.closeIcons();
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'text-align center' },
+	        _react2.default.createElement(
+	          _reactMaterialize.Button,
+	          null,
+	          'Awards '
+	        ),
+	        _react2.default.createElement('img', { src: './aquadata_awards.jpg', alt: 'Test', height: '500', width: '303' }),
+	        _react2.default.createElement(
+	          _reactMaterialize.Button,
+	          { onClick: this.closeIcons },
+	          'Return '
+	        )
+	      );
+	    }
+	  }]);
+	
+	  return Icons;
+	}(_react.Component);
+	
+	exports.default = Icons;
 
 /***/ }
 /******/ ]);

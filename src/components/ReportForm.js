@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import superagent from 'superagent'
+import {Button} from 'react-materialize'
 
 class ReportForm extends Component {
   constructor(){
@@ -24,8 +25,8 @@ class ReportForm extends Component {
 
 
     return (
-      <div>
-        <h1>Test ReportForm</h1>
+      <div className='text-align center'>
+        <Button>Test Report Form</Button>
 
         <div className="container">
           <div className="section">
@@ -39,8 +40,8 @@ class ReportForm extends Component {
                 <div className="row">
 
                   <div className="input-field col s6">
-                    <input placeholder="1234 Strawberry Lane, Los Angeles CA" id="first_name" type="text" className="validate"/>
-                    <label htmlFor="first_name">Street Address or Intersection *</label>
+                    <input  id="first_name" type="text" className="validate"/>
+                    <label htmlFor="first_name">Street Address *</label>
                   </div>
 
                   <div className="input-field col s6">

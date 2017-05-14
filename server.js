@@ -27,7 +27,7 @@ app.get('/getIncidents', function(req,res,next){
 });
 app.get('/sendText/:lat/:long', function(req,res,next){
   console.log(req.params.lat,req.params.long);
-  const message = `Hello Sir, There is a Leak located at ${req.params.long} long and ${req.params.lat} lat that needs your immediate attention.`
+  const message = `Hello Herminio, There is a Leak located at ${req.params.long} long and ${req.params.lat} lat that requires your immediate attention.`
   twilioText.sendText('AC722a93dc407dc8dc0747750f8765780a','3072390f3d09657456b3cd9f59d3ec1e','17655884976','7655436533',message);
   addIncident.connectDB(req.params.long,req.params.lat);
   res.json({"message":"sent","database":"updated"});

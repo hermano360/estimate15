@@ -4,6 +4,7 @@ import ReportForm from './ReportForm'
 import superagent from 'superagent'
 import {Button, Icon,Row, Input} from 'react-materialize'
 import Icons from './Icons'
+import MiddlePage from './MiddlePage.js'
 
 class Main extends Component {
   constructor(){
@@ -17,12 +18,19 @@ class Main extends Component {
     this.submitReport=this.submitReport.bind(this);
     this.closeIcons=this.closeIcons.bind(this);
     this.handleMarkers=this.handleMarkers.bind(this);
+    this.handleLeak=this.handleLeak.bind(this);
   }
 
   handleClick(){
     // $('.button-collapse').sideNav('hide')
     this.setState({
       page:'IconPage'
+    })
+  }
+  handleLeak(){
+    // $('.button-collapse').sideNav('hide')
+    this.setState({
+      page:'LeakReport'
     })
   }
 
@@ -104,7 +112,7 @@ class Main extends Component {
           <Button node='a' waves='light'>Welcome</Button>
 
 
-          <div style={{width:300,height:400}}>
+          <div style={{width:600,height:400}}>
             <Map center={location} markers={this.state.venues} setMarkers={this.handleMarkers}/>
           </div>
 
@@ -122,7 +130,15 @@ class Main extends Component {
       )
     } else if(this.state.page==='ReportForm'){
       return (
+        <div>
+        <MiddlePage chooseLeak={this.handleLeak}/>
+      </div>
+      )
+    } else if(this.state.page==='LeakReport'){
+      return (
+        <div>
         <ReportForm submitReport={this.submitReport}/>
+      </div>
       )
     }
 

@@ -21517,6 +21517,10 @@
 	
 	var _Icons2 = _interopRequireDefault(_Icons);
 	
+	var _MiddlePage = __webpack_require__(435);
+	
+	var _MiddlePage2 = _interopRequireDefault(_MiddlePage);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
@@ -21544,6 +21548,7 @@
 	    _this.submitReport = _this.submitReport.bind(_this);
 	    _this.closeIcons = _this.closeIcons.bind(_this);
 	    _this.handleMarkers = _this.handleMarkers.bind(_this);
+	    _this.handleLeak = _this.handleLeak.bind(_this);
 	    return _this;
 	  }
 	
@@ -21553,6 +21558,14 @@
 	      // $('.button-collapse').sideNav('hide')
 	      this.setState({
 	        page: 'IconPage'
+	      });
+	    }
+	  }, {
+	    key: 'handleLeak',
+	    value: function handleLeak() {
+	      // $('.button-collapse').sideNav('hide')
+	      this.setState({
+	        page: 'LeakReport'
 	      });
 	    }
 	  }, {
@@ -21711,7 +21724,7 @@
 	          ),
 	          _react2.default.createElement(
 	            'div',
-	            { style: { width: 300, height: 400 } },
+	            { style: { width: 600, height: 400 } },
 	            _react2.default.createElement(_Map2.default, { center: location, markers: this.state.venues, setMarkers: this.handleMarkers })
 	          ),
 	          _react2.default.createElement(
@@ -21733,7 +21746,17 @@
 	      } else if (this.state.page === "IconPage") {
 	        return _react2.default.createElement(_Icons2.default, { closeIcons: this.closeIcons });
 	      } else if (this.state.page === 'ReportForm') {
-	        return _react2.default.createElement(_ReportForm2.default, { submitReport: this.submitReport });
+	        return _react2.default.createElement(
+	          'div',
+	          null,
+	          _react2.default.createElement(_MiddlePage2.default, { chooseLeak: this.handleLeak })
+	        );
+	      } else if (this.state.page === 'LeakReport') {
+	        return _react2.default.createElement(
+	          'div',
+	          null,
+	          _react2.default.createElement(_ReportForm2.default, { submitReport: this.submitReport })
+	        );
 	      }
 	    }
 	  }]);
@@ -53805,7 +53828,9 @@
 	          null,
 	          'Awards '
 	        ),
+	        _react2.default.createElement('br', null),
 	        _react2.default.createElement('img', { src: './aquadata_awards.jpg', alt: 'Test', height: '500', width: '303' }),
+	        _react2.default.createElement('br', null),
 	        _react2.default.createElement(
 	          _reactMaterialize.Button,
 	          { onClick: this.closeIcons },
@@ -53819,6 +53844,190 @@
 	}(_react.Component);
 	
 	exports.default = Icons;
+
+/***/ },
+/* 435 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactMaterialize = __webpack_require__(230);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var MiddlePage = function (_Component) {
+	  _inherits(MiddlePage, _Component);
+	
+	  function MiddlePage() {
+	    _classCallCheck(this, MiddlePage);
+	
+	    var _this = _possibleConstructorReturn(this, (MiddlePage.__proto__ || Object.getPrototypeOf(MiddlePage)).call(this));
+	
+	    _this.chooseLeak = _this.chooseLeak.bind(_this);
+	    return _this;
+	  }
+	
+	  _createClass(MiddlePage, [{
+	    key: 'chooseLeak',
+	    value: function chooseLeak() {
+	      this.props.chooseLeak();
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'text-align center' },
+	        _react2.default.createElement(
+	          'h5',
+	          null,
+	          'What would you like to report?'
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'col s12 m7', onClick: this.chooseLeak },
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'card horizontal hoverable' },
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'card-image' },
+	              _react2.default.createElement('img', { src: './icon1.png' })
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'card-stacked' },
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'card-content' },
+	                _react2.default.createElement(
+	                  'span',
+	                  { className: 'card-title' },
+	                  'Environmental'
+	                ),
+	                _react2.default.createElement(
+	                  'p',
+	                  null,
+	                  'drought, contamination, storm water run-off, spills'
+	                )
+	              ),
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'card-action' },
+	                _react2.default.createElement(
+	                  'a',
+	                  { className: 'right-align teal-text text-lighten-4', href: '#' },
+	                  'Report'
+	                )
+	              )
+	            )
+	          )
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'col s12 m7' },
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'card horizontal hoverable' },
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'card-image' },
+	              _react2.default.createElement('img', { src: './icon2.png' })
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'card-stacked' },
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'card-content' },
+	                _react2.default.createElement(
+	                  'span',
+	                  { className: 'card-title' },
+	                  'Infrastructure'
+	                ),
+	                _react2.default.createElement(
+	                  'p',
+	                  null,
+	                  'aging pipes, leaks, damages'
+	                )
+	              ),
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'card-action' },
+	                _react2.default.createElement(
+	                  'a',
+	                  { className: 'right-align teal-text text-lighten-4', href: '#' },
+	                  'Report'
+	                )
+	              )
+	            )
+	          )
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'col s12 m7' },
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'card horizontal hoverable' },
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'card-image' },
+	              _react2.default.createElement('img', { src: './icon3.png' })
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'card-stacked' },
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'card-content' },
+	                _react2.default.createElement(
+	                  'span',
+	                  { className: 'card-title' },
+	                  'Health'
+	                ),
+	                _react2.default.createElement(
+	                  'p',
+	                  null,
+	                  'unusual symptoms, warnings, outbreaks'
+	                )
+	              ),
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'card-action' },
+	                _react2.default.createElement(
+	                  'a',
+	                  { className: 'right-align teal-text text-lighten-4', href: '#' },
+	                  'Report'
+	                )
+	              )
+	            )
+	          )
+	        )
+	      );
+	    }
+	  }]);
+	
+	  return MiddlePage;
+	}(_react.Component);
+	
+	exports.default = MiddlePage;
 
 /***/ }
 /******/ ]);

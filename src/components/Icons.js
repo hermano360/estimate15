@@ -15,7 +15,9 @@ class Icons extends Component {
     return (
       <div className='text-align center'>
         <Button>Awards </Button>
+        <br/>
         <img src="./aquadata_awards.jpg" alt="Test" height="500" width="303"></img>
+        <br/>
         <Button onClick={this.closeIcons}>Return </Button>
       </div>
     )

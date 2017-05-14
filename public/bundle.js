@@ -56,19 +56,9 @@
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
-	var _Map = __webpack_require__(172);
+	var _Main = __webpack_require__(433);
 	
-	var _Map2 = _interopRequireDefault(_Map);
-	
-	var _Places = __webpack_require__(220);
-	
-	var _Places2 = _interopRequireDefault(_Places);
-	
-	var _superagent = __webpack_require__(221);
-	
-	var _superagent2 = _interopRequireDefault(_superagent);
-	
-	var _reactMaterialize = __webpack_require__(229);
+	var _Main2 = _interopRequireDefault(_Main);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -84,78 +74,21 @@
 	  function App() {
 	    _classCallCheck(this, App);
 	
-	    var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this));
-	
-	    _this.state = {
-	      venues: []
-	    };
-	    return _this;
+	    return _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).apply(this, arguments));
 	  }
 	
 	  _createClass(App, [{
-	    key: 'componentDidMount',
-	    value: function componentDidMount() {
-	      var _this2 = this;
-	
-	      console.log('componentDidMount');
-	
-	      var url = 'https://api.foursquare.com/v2/venues/search?ll=40.7575285,-73.988&oauth_token=3Y5LCD3XPPULYMFGULXPXZRL4B4DIK33VQM5KWV3SQ4CMLMJ&v=20170514';
-	      _superagent2.default.get(url).query(null).set('Accept', 'text/json').end(function (err, response) {
-	        var venues = response.body.response.venues;
-	        console.log(JSON.stringify(venues));
-	        _this2.setState({
-	          venues: venues
-	        });
-	      });
-	    }
-	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var location = {
-	        lat: 40.7575285,
-	        lng: -73.988
-	      };
-	
-	      // const markers = [
-	      //   {
-	      //     location:{
-	      //       lat:40.7575285,
-	      //       lng:-73.988
-	      //     }
-	      //   }
-	      // ]
 	      return _react2.default.createElement(
 	        'div',
 	        null,
 	        _react2.default.createElement(
-	          'div',
-	          { style: { width: 300, height: 400 } },
-	          _react2.default.createElement(_Map2.default, { center: location, markers: this.state.venues })
+	          'h1',
+	          null,
+	          'JustMain'
 	        ),
-	        _react2.default.createElement(
-	          _reactMaterialize.Button,
-	          { node: 'a', waves: 'light' },
-	          _react2.default.createElement(
-	            _reactMaterialize.Icon,
-	            { right: true },
-	            'file_cloud'
-	          ),
-	          'button'
-	        ),
-	        _react2.default.createElement(
-	          _reactMaterialize.Col,
-	          { m: 6, s: 12 },
-	          _react2.default.createElement(
-	            _reactMaterialize.Card,
-	            { className: 'blue-grey darken-1', textClassName: 'white-text', title: 'Card title', actions: [_react2.default.createElement(
-	                'a',
-	                { href: '#' },
-	                'This is a link'
-	              )] },
-	            'I am a very simple card.'
-	          )
-	        ),
-	        _react2.default.createElement(_Places2.default, { venues: this.state.venues })
+	        _react2.default.createElement(_Main2.default, null)
 	      );
 	    }
 	  }]);
@@ -53301,6 +53234,223 @@
 	};
 	
 	exports.default = Toast;
+
+/***/ },
+/* 433 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _Map = __webpack_require__(172);
+	
+	var _Map2 = _interopRequireDefault(_Map);
+	
+	var _Places = __webpack_require__(220);
+	
+	var _Places2 = _interopRequireDefault(_Places);
+	
+	var _superagent = __webpack_require__(221);
+	
+	var _superagent2 = _interopRequireDefault(_superagent);
+	
+	var _reactMaterialize = __webpack_require__(229);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var Main = function (_Component) {
+	  _inherits(Main, _Component);
+	
+	  function Main() {
+	    _classCallCheck(this, Main);
+	
+	    var _this = _possibleConstructorReturn(this, (Main.__proto__ || Object.getPrototypeOf(Main)).call(this));
+	
+	    _this.state = {
+	      venues: []
+	    };
+	    return _this;
+	  }
+	
+	  _createClass(Main, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      var _this2 = this;
+	
+	      console.log('componentDidMount');
+	
+	      var url = 'https://api.foursquare.com/v2/venues/search?ll=40.7575285,-73.988&oauth_token=3Y5LCD3XPPULYMFGULXPXZRL4B4DIK33VQM5KWV3SQ4CMLMJ&v=20170514';
+	      _superagent2.default.get(url).query(null).set('Accept', 'text/json').end(function (err, response) {
+	        var venues = response.body.response.venues;
+	        console.log(JSON.stringify(venues));
+	        _this2.setState({
+	          venues: venues
+	        });
+	      });
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var location = {
+	        lat: 40.7575285,
+	        lng: -73.988
+	      };
+	
+	      // const markers = [
+	      //   {
+	      //     location:{
+	      //       lat:40.7575285,
+	      //       lng:-73.988
+	      //     }
+	      //   }
+	      // ]
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        _react2.default.createElement(
+	          'ul',
+	          { id: 'slide-out', className: 'side-nav' },
+	          _react2.default.createElement(
+	            'li',
+	            null,
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'userView' },
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'background' },
+	                _react2.default.createElement('img', { src: 'images/office.jpg' })
+	              ),
+	              _react2.default.createElement(
+	                'a',
+	                { href: '#!user' },
+	                _react2.default.createElement('img', { className: 'circle', src: 'images/yuna.jpg' })
+	              ),
+	              _react2.default.createElement(
+	                'a',
+	                { href: '#!name' },
+	                _react2.default.createElement(
+	                  'span',
+	                  { className: 'white-text name' },
+	                  'John Doe'
+	                )
+	              ),
+	              _react2.default.createElement(
+	                'a',
+	                { href: '#!email' },
+	                _react2.default.createElement(
+	                  'span',
+	                  { className: 'white-text email' },
+	                  'jdandturk@gmail.com'
+	                )
+	              )
+	            )
+	          ),
+	          _react2.default.createElement(
+	            'li',
+	            null,
+	            _react2.default.createElement(
+	              'a',
+	              { href: '#!' },
+	              _react2.default.createElement(
+	                'i',
+	                { className: 'material-icons' },
+	                'cloud'
+	              ),
+	              'First Link With Icon'
+	            )
+	          ),
+	          _react2.default.createElement(
+	            'li',
+	            null,
+	            _react2.default.createElement(
+	              'a',
+	              { href: '#!' },
+	              'Second Link'
+	            )
+	          ),
+	          _react2.default.createElement(
+	            'li',
+	            null,
+	            _react2.default.createElement('div', { className: 'divider' })
+	          ),
+	          _react2.default.createElement(
+	            'li',
+	            null,
+	            _react2.default.createElement(
+	              'a',
+	              { className: 'subheader' },
+	              'Subheader'
+	            )
+	          ),
+	          _react2.default.createElement(
+	            'li',
+	            null,
+	            _react2.default.createElement(
+	              'a',
+	              { className: 'waves-effect', href: '#!' },
+	              'Third Link With Waves'
+	            )
+	          )
+	        ),
+	        _react2.default.createElement(
+	          'a',
+	          { href: '#', 'data-activates': 'slide-out', className: 'button-collapse' },
+	          _react2.default.createElement(
+	            'i',
+	            { className: 'material-icons' },
+	            'menu'
+	          )
+	        ),
+	        _react2.default.createElement(
+	          _reactMaterialize.Button,
+	          { node: 'a', waves: 'light' },
+	          'Welcome'
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { style: { width: 300, height: 400 } },
+	          _react2.default.createElement(_Map2.default, { center: location, markers: this.state.venues })
+	        ),
+	        _react2.default.createElement(
+	          _reactMaterialize.Row,
+	          null,
+	          _react2.default.createElement(_reactMaterialize.Input, { placeholder: 'Search Location', s: 1, label: 'Search' })
+	        ),
+	        _react2.default.createElement(
+	          _reactMaterialize.Button,
+	          { waves: 'light' },
+	          'Report',
+	          _react2.default.createElement(
+	            'i',
+	            { className: 'material-icons' },
+	            'location_on'
+	          )
+	        ),
+	        _react2.default.createElement(_Places2.default, { venues: this.state.venues })
+	      );
+	    }
+	  }]);
+	
+	  return Main;
+	}(_react.Component);
+	
+	exports.default = Main;
 
 /***/ }
 /******/ ]);

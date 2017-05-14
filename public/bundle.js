@@ -21626,23 +21626,14 @@
 	              _react2.default.createElement(
 	                'div',
 	                { className: 'userView' },
-	                _react2.default.createElement(
-	                  'div',
-	                  { className: 'background' },
-	                  _react2.default.createElement('img', { src: 'images/office.jpg' })
-	                ),
-	                _react2.default.createElement(
-	                  'a',
-	                  null,
-	                  _react2.default.createElement('img', { className: 'circle', src: 'images/yuna.jpg' })
-	                ),
+	                _react2.default.createElement('img', { src: './logo.png', alt: 'Google User', height: '120', width: '200' }),
 	                _react2.default.createElement(
 	                  'a',
 	                  { href: '#!name' },
 	                  _react2.default.createElement(
 	                    'span',
-	                    { className: 'white-text name' },
-	                    'John Doe'
+	                    { className: 'name' },
+	                    'Jon Doe'
 	                  )
 	                ),
 	                _react2.default.createElement(
@@ -21650,7 +21641,7 @@
 	                  { href: '#!email' },
 	                  _react2.default.createElement(
 	                    'span',
-	                    { className: 'white-text email' },
+	                    { className: 'email' },
 	                    'jdandturk@gmail.com'
 	                  )
 	                )
@@ -21665,7 +21656,7 @@
 	                _react2.default.createElement(
 	                  'i',
 	                  { className: 'material-icons', onClick: this.handleClick },
-	                  'language'
+	                  'card_giftcard'
 	                ),
 	                'See Your Awards'
 	              )
@@ -21676,7 +21667,12 @@
 	              _react2.default.createElement(
 	                'a',
 	                { href: '#!' },
-	                'Second Link'
+	                _react2.default.createElement(
+	                  'i',
+	                  { className: 'material-icons', onClick: this.handleClick },
+	                  'info'
+	                ),
+	                'Information'
 	              )
 	            ),
 	            _react2.default.createElement(
@@ -21689,17 +21685,13 @@
 	              null,
 	              _react2.default.createElement(
 	                'a',
-	                { className: 'subheader' },
-	                'Subheader'
-	              )
-	            ),
-	            _react2.default.createElement(
-	              'li',
-	              null,
-	              _react2.default.createElement(
-	                'a',
-	                { className: 'waves-effect', href: '#!' },
-	                'Third Link With Waves'
+	                { href: '#!' },
+	                _react2.default.createElement(
+	                  'i',
+	                  { className: 'material-icons', onClick: this.handleClick },
+	                  'settings'
+	                ),
+	                'Settings'
 	              )
 	            )
 	          ),

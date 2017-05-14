@@ -90,18 +90,15 @@ class Main extends Component {
         <div className='text-align center'>
           <ul id="slide-out" className="side-nav">
             <li><div className="userView">
-              <div className="background">
-                <img src="images/office.jpg"/>
-              </div>
-              <a ><img className="circle" src="images/yuna.jpg"/></a>
-              <a href="#!name"><span className="white-text name">John Doe</span></a>
-              <a href="#!email"><span className="white-text email">jdandturk@gmail.com</span></a>
+              <img src="./logo.png" alt="Google User" height="120" width="200"></img>
+
+              <a href="#!name"><span className="name">Jon Doe</span></a>
+              <a href="#!email"><span className="email">jdandturk@gmail.com</span></a>
             </div></li>
-            <li><a href="#!"><i className="material-icons" onClick={this.handleClick}>language</i>See Your Awards</a></li>
-            <li><a href="#!">Second Link</a></li>
+            <li><a href="#!"><i className="material-icons" onClick={this.handleClick}>card_giftcard</i>See Your Awards</a></li>
+            <li><a href="#!"><i className="material-icons" onClick={this.handleClick}>info</i>Information</a></li>
             <li><div className="divider"></div></li>
-            <li><a className="subheader">Subheader</a></li>
-            <li><a className="waves-effect" href="#!">Third Link With Waves</a></li>
+            <li><a href="#!"><i className="material-icons" onClick={this.handleClick}>settings</i>Settings</a></li>
           </ul>
           <a href="#" data-activates="slide-out" className="button-collapse"><i className="material-icons">menu</i></a>
           <Button node='a' waves='light'>Welcome</Button>

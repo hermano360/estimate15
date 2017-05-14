@@ -21626,7 +21626,7 @@
 	              _react2.default.createElement(
 	                'div',
 	                { className: 'userView' },
-	                _react2.default.createElement('img', { src: './logo.png', alt: 'Google User', height: '120', width: '200' }),
+	                _react2.default.createElement('img', { src: './logo.jpg', alt: 'Google User' }),
 	                _react2.default.createElement(
 	                  'a',
 	                  { href: '#!name' },

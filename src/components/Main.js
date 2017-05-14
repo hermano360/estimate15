@@ -90,7 +90,7 @@ class Main extends Component {
         <div className='text-align center'>
           <ul id="slide-out" className="side-nav">
             <li><div className="userView">
-              <img src="./logo.png" alt="Google User" height="120" width="200"></img>
+              <img src="./logo.jpg" alt="Google User" ></img>
 
               <a href="#!name"><span className="name">Jon Doe</span></a>
               <a href="#!email"><span className="email">jdandturk@gmail.com</span></a>

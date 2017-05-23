@@ -11,13 +11,13 @@ class ReportForm extends Component {
   submitReport(){
     this.props.submitReport(this.refs.long.value,this.refs.lat.value);
     if(this.refs.long.value !== '' && this.refs.lat.value !== ''){
-      superagent
-      .get(`/sendText/${this.refs.lat.value}/${this.refs.long.value}`)
-      .query(null)
-      .set('Accept','text/json')
-      .end((err,response)=>{
-        console.log(response.body)
-      })
+      // superagent
+      // .get(`/sendText/${this.refs.lat.value}/${this.refs.long.value}`)
+      // .query(null)
+      // .set('Accept','text/json')
+      // .end((err,response)=>{
+      //   console.log(response.body)
+      // })
     }
   }
 

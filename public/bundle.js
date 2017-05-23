@@ -21503,11 +21503,11 @@
 	
 	var _Map2 = _interopRequireDefault(_Map);
 	
-	var _ReportForm = __webpack_require__(221);
+	var _ReportForm = __webpack_require__(229);
 	
 	var _ReportForm2 = _interopRequireDefault(_ReportForm);
 	
-	var _superagent = __webpack_require__(222);
+	var _superagent = __webpack_require__(221);
 	
 	var _superagent2 = _interopRequireDefault(_superagent);
 	
@@ -21786,7 +21786,7 @@
 	
 	var _reactGoogleMaps = __webpack_require__(174);
 	
-	var _superagent = __webpack_require__(222);
+	var _superagent = __webpack_require__(221);
 	
 	var _superagent2 = _interopRequireDefault(_superagent);
 	
@@ -26199,309 +26199,6 @@
 /* 221 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-	var _react = __webpack_require__(1);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _superagent = __webpack_require__(222);
-	
-	var _superagent2 = _interopRequireDefault(_superagent);
-	
-	var _reactMaterialize = __webpack_require__(230);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
-	var ReportForm = function (_Component) {
-	  _inherits(ReportForm, _Component);
-	
-	  function ReportForm() {
-	    _classCallCheck(this, ReportForm);
-	
-	    var _this = _possibleConstructorReturn(this, (ReportForm.__proto__ || Object.getPrototypeOf(ReportForm)).call(this));
-	
-	    _this.submitReport = _this.submitReport.bind(_this);
-	    return _this;
-	  }
-	
-	  _createClass(ReportForm, [{
-	    key: 'submitReport',
-	    value: function submitReport() {
-	      this.props.submitReport(this.refs.long.value, this.refs.lat.value);
-	      if (this.refs.long.value !== '' && this.refs.lat.value !== '') {
-	        _superagent2.default.get('/sendText/' + this.refs.lat.value + '/' + this.refs.long.value).query(null).set('Accept', 'text/json').end(function (err, response) {
-	          console.log(response.body);
-	        });
-	      }
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	
-	      return _react2.default.createElement(
-	        'div',
-	        { className: 'text-align center' },
-	        _react2.default.createElement(
-	          _reactMaterialize.Button,
-	          null,
-	          'Test Report Form'
-	        ),
-	        _react2.default.createElement(
-	          'div',
-	          { className: 'container' },
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'section' },
-	            _react2.default.createElement(
-	              'h5',
-	              null,
-	              'Where is the leak?'
-	            ),
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'row' },
-	              _react2.default.createElement(
-	                'form',
-	                { className: 'col s12' },
-	                _react2.default.createElement(
-	                  'div',
-	                  { className: 'row' },
-	                  _react2.default.createElement(
-	                    'div',
-	                    { className: 'input-field col s6' },
-	                    _react2.default.createElement('input', { id: 'first_name', type: 'text', className: 'validate' }),
-	                    _react2.default.createElement(
-	                      'label',
-	                      { htmlFor: 'first_name' },
-	                      'Street Address *'
-	                    )
-	                  ),
-	                  _react2.default.createElement(
-	                    'div',
-	                    { className: 'input-field col s6' },
-	                    _react2.default.createElement('input', { id: 'last_name', type: 'text', className: 'validate' }),
-	                    _react2.default.createElement(
-	                      'label',
-	                      { htmlFor: 'last_name' },
-	                      'City *'
-	                    )
-	                  )
-	                ),
-	                _react2.default.createElement(
-	                  'div',
-	                  { className: 'row' },
-	                  _react2.default.createElement(
-	                    'div',
-	                    { className: 'input-field col s6' },
-	                    _react2.default.createElement('input', { id: 'lat', ref: 'lat', type: 'text', className: 'validate' }),
-	                    _react2.default.createElement(
-	                      'label',
-	                      { htmlFor: 'lat' },
-	                      'Latitude'
-	                    )
-	                  ),
-	                  _react2.default.createElement(
-	                    'div',
-	                    { className: 'input-field col s6' },
-	                    _react2.default.createElement('input', { id: 'long', ref: 'long', type: 'text', className: 'validate' }),
-	                    _react2.default.createElement(
-	                      'label',
-	                      { htmlFor: 'long' },
-	                      'Longitude'
-	                    )
-	                  )
-	                ),
-	                _react2.default.createElement(
-	                  'h5',
-	                  null,
-	                  'How bad is the leak?'
-	                ),
-	                _react2.default.createElement(
-	                  'h6',
-	                  null,
-	                  'Please select from the options below *'
-	                ),
-	                _react2.default.createElement(
-	                  'p',
-	                  null,
-	                  _react2.default.createElement('input', { type: 'checkbox', id: 'test5' }),
-	                  _react2.default.createElement(
-	                    'label',
-	                    { htmlFor: 'test5' },
-	                    'Drip'
-	                  )
-	                ),
-	                _react2.default.createElement(
-	                  'p',
-	                  null,
-	                  _react2.default.createElement('input', { type: 'checkbox', id: 'test5' }),
-	                  _react2.default.createElement(
-	                    'label',
-	                    { htmlFor: 'test5' },
-	                    'Flowing'
-	                  )
-	                ),
-	                _react2.default.createElement(
-	                  'p',
-	                  null,
-	                  _react2.default.createElement('input', { type: 'checkbox', id: 'test5' }),
-	                  _react2.default.createElement(
-	                    'label',
-	                    { htmlFor: 'test5' },
-	                    'Flowing Down Street'
-	                  )
-	                ),
-	                _react2.default.createElement(
-	                  'p',
-	                  null,
-	                  _react2.default.createElement('input', { type: 'checkbox', id: 'test5' }),
-	                  _react2.default.createElement(
-	                    'label',
-	                    { htmlFor: 'test5' },
-	                    'Burst'
-	                  )
-	                ),
-	                _react2.default.createElement(
-	                  'div',
-	                  { className: 'input-field col s12' },
-	                  _react2.default.createElement(
-	                    'select',
-	                    null,
-	                    _react2.default.createElement(
-	                      'option',
-	                      { value: '', disabled: true, selected: true },
-	                      'Type of leak *'
-	                    ),
-	                    _react2.default.createElement(
-	                      'option',
-	                      { value: '1' },
-	                      'Meter Leak'
-	                    ),
-	                    _react2.default.createElement(
-	                      'option',
-	                      { value: '2' },
-	                      'Street Leak'
-	                    ),
-	                    _react2.default.createElement(
-	                      'option',
-	                      { value: '3' },
-	                      'Hydrant Leak'
-	                    ),
-	                    _react2.default.createElement(
-	                      'option',
-	                      { value: '4' },
-	                      'Other Leak'
-	                    )
-	                  ),
-	                  _react2.default.createElement(
-	                    'label',
-	                    null,
-	                    'Materialize Select'
-	                  )
-	                ),
-	                _react2.default.createElement(
-	                  'div',
-	                  { className: 'file-field input-field' },
-	                  _react2.default.createElement(
-	                    'div',
-	                    { className: 'btn' },
-	                    _react2.default.createElement(
-	                      'span',
-	                      null,
-	                      'File'
-	                    ),
-	                    _react2.default.createElement('input', { type: 'file' })
-	                  ),
-	                  _react2.default.createElement(
-	                    'div',
-	                    { className: 'file-path-wrapper' },
-	                    _react2.default.createElement('input', { className: 'file-path validate', type: 'text' })
-	                  )
-	                ),
-	                'Your Contact Details',
-	                _react2.default.createElement(
-	                  'div',
-	                  { className: 'row' },
-	                  _react2.default.createElement(
-	                    'div',
-	                    { className: 'input-field col s12' },
-	                    _react2.default.createElement('input', { id: 'password', type: 'password', className: 'validate' }),
-	                    _react2.default.createElement(
-	                      'label',
-	                      { htmlFor: 'password' },
-	                      'Name'
-	                    )
-	                  )
-	                ),
-	                _react2.default.createElement(
-	                  'div',
-	                  { className: 'row' },
-	                  _react2.default.createElement(
-	                    'div',
-	                    { className: 'input-field col s12' },
-	                    _react2.default.createElement('input', { id: 'email', type: 'email', className: 'validate' }),
-	                    _react2.default.createElement(
-	                      'label',
-	                      { htmlFor: 'email' },
-	                      'Phone Number'
-	                    )
-	                  )
-	                ),
-	                _react2.default.createElement(
-	                  'div',
-	                  { className: 'row' },
-	                  _react2.default.createElement(
-	                    'div',
-	                    { className: 'col s12' },
-	                    'Email:',
-	                    _react2.default.createElement(
-	                      'div',
-	                      { className: 'input-field inline' },
-	                      _react2.default.createElement('input', { id: 'email', type: 'email', className: 'validate' }),
-	                      _react2.default.createElement(
-	                        'label',
-	                        { htmlFor: 'email', 'data-error': 'wrong', 'data-success': 'right' },
-	                        'janedoe@gmail.com'
-	                      )
-	                    )
-	                  )
-	                )
-	              )
-	            ),
-	            _react2.default.createElement(
-	              'a',
-	              { onClick: this.submitReport, className: 'waves-effect waves-light btn' },
-	              'submit'
-	            )
-	          )
-	        ),
-	        _react2.default.createElement('footer', { className: 'page-footer teal' })
-	      );
-	    }
-	  }]);
-	
-	  return ReportForm;
-	}(_react.Component);
-	
-	exports.default = ReportForm;
-
-/***/ },
-/* 222 */
-/***/ function(module, exports, __webpack_require__) {
-
 	/**
 	 * Root reference for iframes.
 	 */
@@ -26516,12 +26213,12 @@
 	  root = this;
 	}
 	
-	var Emitter = __webpack_require__(223);
-	var RequestBase = __webpack_require__(224);
-	var isObject = __webpack_require__(225);
-	var isFunction = __webpack_require__(226);
-	var ResponseBase = __webpack_require__(227);
-	var shouldRetry = __webpack_require__(229);
+	var Emitter = __webpack_require__(222);
+	var RequestBase = __webpack_require__(223);
+	var isObject = __webpack_require__(224);
+	var isFunction = __webpack_require__(225);
+	var ResponseBase = __webpack_require__(226);
+	var shouldRetry = __webpack_require__(228);
 	
 	/**
 	 * Noop.
@@ -27438,7 +27135,7 @@
 
 
 /***/ },
-/* 223 */
+/* 222 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
@@ -27607,13 +27304,13 @@
 
 
 /***/ },
-/* 224 */
+/* 223 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * Module of mixed-in functions shared between node and client code
 	 */
-	var isObject = __webpack_require__(225);
+	var isObject = __webpack_require__(224);
 	
 	/**
 	 * Expose `RequestBase`.
@@ -28204,7 +27901,7 @@
 
 
 /***/ },
-/* 225 */
+/* 224 */
 /***/ function(module, exports) {
 
 	/**
@@ -28223,7 +27920,7 @@
 
 
 /***/ },
-/* 226 */
+/* 225 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -28233,7 +27930,7 @@
 	 * @return {Boolean}
 	 * @api private
 	 */
-	var isObject = __webpack_require__(225);
+	var isObject = __webpack_require__(224);
 	
 	function isFunction(fn) {
 	  var tag = isObject(fn) ? Object.prototype.toString.call(fn) : '';
@@ -28244,7 +27941,7 @@
 
 
 /***/ },
-/* 227 */
+/* 226 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
@@ -28252,7 +27949,7 @@
 	 * Module dependencies.
 	 */
 	
-	var utils = __webpack_require__(228);
+	var utils = __webpack_require__(227);
 	
 	/**
 	 * Expose `ResponseBase`.
@@ -28383,7 +28080,7 @@
 
 
 /***/ },
-/* 228 */
+/* 227 */
 /***/ function(module, exports) {
 
 	
@@ -28456,7 +28153,7 @@
 	};
 
 /***/ },
-/* 229 */
+/* 228 */
 /***/ function(module, exports) {
 
 	var ERROR_CODES = [
@@ -28483,6 +28180,313 @@
 	  return false;
 	};
 
+
+/***/ },
+/* 229 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _superagent = __webpack_require__(221);
+	
+	var _superagent2 = _interopRequireDefault(_superagent);
+	
+	var _reactMaterialize = __webpack_require__(230);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var ReportForm = function (_Component) {
+	  _inherits(ReportForm, _Component);
+	
+	  function ReportForm() {
+	    _classCallCheck(this, ReportForm);
+	
+	    var _this = _possibleConstructorReturn(this, (ReportForm.__proto__ || Object.getPrototypeOf(ReportForm)).call(this));
+	
+	    _this.submitReport = _this.submitReport.bind(_this);
+	    return _this;
+	  }
+	
+	  _createClass(ReportForm, [{
+	    key: 'submitReport',
+	    value: function submitReport() {
+	      this.props.submitReport(this.refs.long.value, this.refs.lat.value);
+	      if (this.refs.long.value !== '' && this.refs.lat.value !== '') {
+	        // superagent
+	        // .get(`/sendText/${this.refs.lat.value}/${this.refs.long.value}`)
+	        // .query(null)
+	        // .set('Accept','text/json')
+	        // .end((err,response)=>{
+	        //   console.log(response.body)
+	        // })
+	      }
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'text-align center' },
+	        _react2.default.createElement(
+	          _reactMaterialize.Button,
+	          null,
+	          'Test Report Form'
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'container' },
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'section' },
+	            _react2.default.createElement(
+	              'h5',
+	              null,
+	              'Where is the leak?'
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'row' },
+	              _react2.default.createElement(
+	                'form',
+	                { className: 'col s12' },
+	                _react2.default.createElement(
+	                  'div',
+	                  { className: 'row' },
+	                  _react2.default.createElement(
+	                    'div',
+	                    { className: 'input-field col s6' },
+	                    _react2.default.createElement('input', { id: 'first_name', type: 'text', className: 'validate' }),
+	                    _react2.default.createElement(
+	                      'label',
+	                      { htmlFor: 'first_name' },
+	                      'Street Address *'
+	                    )
+	                  ),
+	                  _react2.default.createElement(
+	                    'div',
+	                    { className: 'input-field col s6' },
+	                    _react2.default.createElement('input', { id: 'last_name', type: 'text', className: 'validate' }),
+	                    _react2.default.createElement(
+	                      'label',
+	                      { htmlFor: 'last_name' },
+	                      'City *'
+	                    )
+	                  )
+	                ),
+	                _react2.default.createElement(
+	                  'div',
+	                  { className: 'row' },
+	                  _react2.default.createElement(
+	                    'div',
+	                    { className: 'input-field col s6' },
+	                    _react2.default.createElement('input', { id: 'lat', ref: 'lat', type: 'text', className: 'validate' }),
+	                    _react2.default.createElement(
+	                      'label',
+	                      { htmlFor: 'lat' },
+	                      'Latitude'
+	                    )
+	                  ),
+	                  _react2.default.createElement(
+	                    'div',
+	                    { className: 'input-field col s6' },
+	                    _react2.default.createElement('input', { id: 'long', ref: 'long', type: 'text', className: 'validate' }),
+	                    _react2.default.createElement(
+	                      'label',
+	                      { htmlFor: 'long' },
+	                      'Longitude'
+	                    )
+	                  )
+	                ),
+	                _react2.default.createElement(
+	                  'h5',
+	                  null,
+	                  'How bad is the leak?'
+	                ),
+	                _react2.default.createElement(
+	                  'h6',
+	                  null,
+	                  'Please select from the options below *'
+	                ),
+	                _react2.default.createElement(
+	                  'p',
+	                  null,
+	                  _react2.default.createElement('input', { type: 'checkbox', id: 'test5' }),
+	                  _react2.default.createElement(
+	                    'label',
+	                    { htmlFor: 'test5' },
+	                    'Drip'
+	                  )
+	                ),
+	                _react2.default.createElement(
+	                  'p',
+	                  null,
+	                  _react2.default.createElement('input', { type: 'checkbox', id: 'test5' }),
+	                  _react2.default.createElement(
+	                    'label',
+	                    { htmlFor: 'test5' },
+	                    'Flowing'
+	                  )
+	                ),
+	                _react2.default.createElement(
+	                  'p',
+	                  null,
+	                  _react2.default.createElement('input', { type: 'checkbox', id: 'test5' }),
+	                  _react2.default.createElement(
+	                    'label',
+	                    { htmlFor: 'test5' },
+	                    'Flowing Down Street'
+	                  )
+	                ),
+	                _react2.default.createElement(
+	                  'p',
+	                  null,
+	                  _react2.default.createElement('input', { type: 'checkbox', id: 'test5' }),
+	                  _react2.default.createElement(
+	                    'label',
+	                    { htmlFor: 'test5' },
+	                    'Burst'
+	                  )
+	                ),
+	                _react2.default.createElement(
+	                  'div',
+	                  { className: 'input-field col s12' },
+	                  _react2.default.createElement(
+	                    'select',
+	                    null,
+	                    _react2.default.createElement(
+	                      'option',
+	                      { value: '', disabled: true, selected: true },
+	                      'Type of leak *'
+	                    ),
+	                    _react2.default.createElement(
+	                      'option',
+	                      { value: '1' },
+	                      'Meter Leak'
+	                    ),
+	                    _react2.default.createElement(
+	                      'option',
+	                      { value: '2' },
+	                      'Street Leak'
+	                    ),
+	                    _react2.default.createElement(
+	                      'option',
+	                      { value: '3' },
+	                      'Hydrant Leak'
+	                    ),
+	                    _react2.default.createElement(
+	                      'option',
+	                      { value: '4' },
+	                      'Other Leak'
+	                    )
+	                  ),
+	                  _react2.default.createElement(
+	                    'label',
+	                    null,
+	                    'Materialize Select'
+	                  )
+	                ),
+	                _react2.default.createElement(
+	                  'div',
+	                  { className: 'file-field input-field' },
+	                  _react2.default.createElement(
+	                    'div',
+	                    { className: 'btn' },
+	                    _react2.default.createElement(
+	                      'span',
+	                      null,
+	                      'File'
+	                    ),
+	                    _react2.default.createElement('input', { type: 'file' })
+	                  ),
+	                  _react2.default.createElement(
+	                    'div',
+	                    { className: 'file-path-wrapper' },
+	                    _react2.default.createElement('input', { className: 'file-path validate', type: 'text' })
+	                  )
+	                ),
+	                'Your Contact Details',
+	                _react2.default.createElement(
+	                  'div',
+	                  { className: 'row' },
+	                  _react2.default.createElement(
+	                    'div',
+	                    { className: 'input-field col s12' },
+	                    _react2.default.createElement('input', { id: 'password', type: 'password', className: 'validate' }),
+	                    _react2.default.createElement(
+	                      'label',
+	                      { htmlFor: 'password' },
+	                      'Name'
+	                    )
+	                  )
+	                ),
+	                _react2.default.createElement(
+	                  'div',
+	                  { className: 'row' },
+	                  _react2.default.createElement(
+	                    'div',
+	                    { className: 'input-field col s12' },
+	                    _react2.default.createElement('input', { id: 'email', type: 'email', className: 'validate' }),
+	                    _react2.default.createElement(
+	                      'label',
+	                      { htmlFor: 'email' },
+	                      'Phone Number'
+	                    )
+	                  )
+	                ),
+	                _react2.default.createElement(
+	                  'div',
+	                  { className: 'row' },
+	                  _react2.default.createElement(
+	                    'div',
+	                    { className: 'col s12' },
+	                    'Email:',
+	                    _react2.default.createElement(
+	                      'div',
+	                      { className: 'input-field inline' },
+	                      _react2.default.createElement('input', { id: 'email', type: 'email', className: 'validate' }),
+	                      _react2.default.createElement(
+	                        'label',
+	                        { htmlFor: 'email', 'data-error': 'wrong', 'data-success': 'right' },
+	                        'janedoe@gmail.com'
+	                      )
+	                    )
+	                  )
+	                )
+	              )
+	            ),
+	            _react2.default.createElement(
+	              'a',
+	              { onClick: this.submitReport, className: 'waves-effect waves-light btn' },
+	              'submit'
+	            )
+	          )
+	        ),
+	        _react2.default.createElement('footer', { className: 'page-footer teal' })
+	      );
+	    }
+	  }]);
+	
+	  return ReportForm;
+	}(_react.Component);
+	
+	exports.default = ReportForm;
 
 /***/ },
 /* 230 */

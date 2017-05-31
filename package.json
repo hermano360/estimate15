@@ -11,13 +11,20 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.16.1",
+    "body-parser": "^1.17.2",
     "express": "^4.15.2",
+    "i": "^0.3.5",
+    "material-ui": "^0.18.1",
     "mongodb": "^2.2.26",
     "querystring": "^0.2.0",
-    "react": "^15.3.2",
-    "react-dom": "^15.3.2",
+    "react": "^15.4.0",
+    "react-dom": "^15.4.0",
     "react-google-maps": "^4.11.0",
     "react-materialize": "^0.18.4",
+    "react-router-dom": "^4.1.1",
+    "react-tap-event-plugin": "^2.0.1",
+    "react-toolbox": "^2.0.0-beta.10",
     "superagent": "^3.5.2"
   },
   "devDependencies": {

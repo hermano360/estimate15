@@ -1,6 +1,6 @@
 var express = require('express');
-var getIncidents = require('./api/getIncidents.js');
-var addIncident = require('./api/addIncident.js');
+var bodyParser = require('body-parser');
+var products = require('./api/products.js');
 var twilioText = require('./api/twilioText.js')
 
 //Create out app
@@ -19,21 +19,27 @@ app.use(function(req,res,next){
 })
 app.use(express.static('public'));
 
-app.get('/getIncidents', function(req,res,next){
-  console.log("getting incidents");
-  getIncidents.connectDB(function(docs){
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended:true}));
+
+app.get('/modelNo/:modelNo', function(req,res,next){
+  products.getModelNo(req.params.modelNo,function(docs){
     res.json(docs)
   });
 });
-app.get('/sendText/:lat/:long', function(req,res,next){
-  console.log(req.params.lat,req.params.long);
-  const message = `Hello Herminio, There is a Leak located at ${req.params.long} long and ${req.params.lat} lat that requires your immediate attention.`
-  twilioText.sendText('AC722a93dc407dc8dc0747750f8765780a','3072390f3d09657456b3cd9f59d3ec1e','17655884976','7655436533',message);
-  addIncident.connectDB(req.params.long,req.params.lat);
-  res.json({"message":"sent","database":"updated"});
 
+app.get('/allProducts', function(req,res,next){
+  products.allProducts(function(docs){
+    res.json(docs)
+  });
 });
 
+app.post('/modelNos', function(req,res,next){
+  products.getModelNos(req.body.modelNos,function(docs){
+    res.json(docs);
+  })
+})
+
 app.listen(PORT,function(){
-  console.log('Express server is up on port ' + PORT);
+  console.log('Express server is listening on ' + PORT);
 });

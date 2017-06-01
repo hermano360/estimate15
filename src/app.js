@@ -8,7 +8,6 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 
 injectTapEventPlugin();
 
-$(document).foundation();
 
 class App extends Component {
   render(){

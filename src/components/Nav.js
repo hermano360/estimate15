@@ -4,10 +4,6 @@ import {Link} from 'react-router-dom'
 import {Navbar,Icon,NavItem} from 'react-materialize'
 
 
-
-
-
-
 class Nav extends Component {
 
 

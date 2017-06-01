@@ -22,13 +22,13 @@ class NewEstimateRev1 extends Component {
     			data: {
       				"Apple": null,
       				"Microsoft": null,
-      				"Google": 'http://placehold.it/250x250'
+      				"Google": null
     			},
     			limit: 20, // The max amount of results that can be shown at once. Default: Infinity.
     			onAutocomplete: function(val){
     				that.handleOnAutocomplete(val)
     			},
-    			minLength: 1, // The minimum length of the input for the autocomplete to start. Default: 1.
+    			minLength: 0, // The minimum length of the input for the autocomplete to start. Default: 1.
   			});
  		});
 
@@ -46,8 +46,16 @@ class NewEstimateRev1 extends Component {
 					<option value='1'>Option 1</option>
 					<option value='2'>Option 2</option>
 					<option value='3'>Option 3</option>
-				</Input>
+					<option value='4'>Option 4</option>
+					<option value='5'>Option 5</option>
+					<option value='6'>Option 6</option>
+					<option value='7'>Option 7</option>
+					<option value='8'>Option 8</option>
+					<option value='9'>Option 9</option>
 
+				</Input>
+</Row>
+<Row>
 				<Table>
 					<thead>
 						<tr>
@@ -57,7 +65,7 @@ class NewEstimateRev1 extends Component {
 							<th data-field="Description">Description</th>
 							<th data-field="Labor">Material</th>
 							<th data-field="Template">Template</th>
-
+							<th data-field="Edit">Edit</th>
 						</tr>
 					</thead>
 
@@ -69,6 +77,7 @@ class NewEstimateRev1 extends Component {
 							<td>$0.87$0.87$0.87$0.87$0.87$0.87$0.87$0.87</td>
 							<td>Alan</td>
 							<td>Jellybean</td>
+							<td><Icon>mode_edit</Icon></td>
 			
 						</tr>
 						<tr>
@@ -80,6 +89,7 @@ class NewEstimateRev1 extends Component {
 							</td>
 							<td>Alan</td>
 							<td>Jellybean</td>
+							<td><Icon>mode_edit</Icon></td>
 			
 						</tr>
 						<tr>
@@ -88,27 +98,73 @@ class NewEstimateRev1 extends Component {
 							<td>$7.00</td>
 							<td>$0.87$0.87$0.87$0.87$0.87$0.87$0.87$0.87</td>
 							<td>Alan</td>
-							<td>Jellybean</td>			
+							<td>Jellybean</td>
+							<td><Icon>mode_edit</Icon></td>		
 						</tr>
+						<tr>
+							<td colSpan="3">
+								<div className="input-field col s12">
+			          				<input type="text" id="autocomplete-input" className="autocomplete"/>
+			         				<label htmlFor="autocomplete-input">Add Items</label>
+			        			</div>	
+							</td>
+						</tr>					
 					</tbody>
 				</Table>
+			</Row>
 
-				<div className="input-field col s12">
-          			<i className="material-icons prefix">textsms</i>
-          			<input type="text" id="autocomplete-input" className="autocomplete"/>
-         			<label htmlFor="autocomplete-input">Autocomplete</label>
-        		</div>
+			<Row>
+				<Col s={4} offset="s7">
+				<Table >
+					<thead>
+						<tr>
+							<th data-field=" "></th>
+							<th data-field="Material">Materials</th>
+							<th data-field="Labor">Labor</th>
+							<th data-field="Days">Days</th>
+						</tr>
+					</thead>
 
-
-				<Autocomplete 
-					data={{
-						"Apple": null,
-						"Googl3": 'http://placekitten.com/g/250/250',
-						"Google": 'http://placehold.it/250x250'
-					}} minLength={0} onClick={this.handleOnAutocomplete} ref="autocomplete"
-				/>
-			
-
+					<tbody>
+						<tr>
+							<td>Subtotal</td>
+							<td>$372.79</td>
+							<td>$766.70</td>
+							<td>3.1365</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td>$18.64</td>
+							<td>$513.36</td>
+							<td>3.1365</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td>$319.43</td>
+							<td>$1,380.06</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>Tax</td>
+							<td>$32.29</td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>Total</td>
+							<td>$423.72</td>
+							<td>$1,380.06</td>
+							<td></td>
+						</tr>	
+						<tr>
+							<td>Grand Total</td>
+							<td>$1803.78</td>
+							<td></td>
+							<td></td>
+						</tr>				
+					</tbody>
+				</Table>
+				</Col>
 			</Row>
 
     	</div>

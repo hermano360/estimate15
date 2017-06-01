@@ -31458,13 +31458,13 @@
 						data: {
 							"Apple": null,
 							"Microsoft": null,
-							"Google": 'http://placehold.it/250x250'
+							"Google": null
 						},
 						limit: 20, // The max amount of results that can be shown at once. Default: Infinity.
 						onAutocomplete: function onAutocomplete(val) {
 							that.handleOnAutocomplete(val);
 						},
-						minLength: 1 });
+						minLength: 0 });
 				});
 			}
 		}, {
@@ -31505,8 +31505,42 @@
 								'option',
 								{ value: '3' },
 								'Option 3'
+							),
+							_react2.default.createElement(
+								'option',
+								{ value: '4' },
+								'Option 4'
+							),
+							_react2.default.createElement(
+								'option',
+								{ value: '5' },
+								'Option 5'
+							),
+							_react2.default.createElement(
+								'option',
+								{ value: '6' },
+								'Option 6'
+							),
+							_react2.default.createElement(
+								'option',
+								{ value: '7' },
+								'Option 7'
+							),
+							_react2.default.createElement(
+								'option',
+								{ value: '8' },
+								'Option 8'
+							),
+							_react2.default.createElement(
+								'option',
+								{ value: '9' },
+								'Option 9'
 							)
-						),
+						)
+					),
+					_react2.default.createElement(
+						_reactMaterialize.Row,
+						null,
 						_react2.default.createElement(
 							_reactMaterialize.Table,
 							null,
@@ -31545,6 +31579,11 @@
 										'th',
 										{ 'data-field': 'Template' },
 										'Template'
+									),
+									_react2.default.createElement(
+										'th',
+										{ 'data-field': 'Edit' },
+										'Edit'
 									)
 								)
 							),
@@ -31583,6 +31622,15 @@
 										'td',
 										null,
 										'Jellybean'
+									),
+									_react2.default.createElement(
+										'td',
+										null,
+										_react2.default.createElement(
+											_reactMaterialize.Icon,
+											null,
+											'mode_edit'
+										)
 									)
 								),
 								_react2.default.createElement(
@@ -31617,6 +31665,15 @@
 										'td',
 										null,
 										'Jellybean'
+									),
+									_react2.default.createElement(
+										'td',
+										null,
+										_react2.default.createElement(
+											_reactMaterialize.Icon,
+											null,
+											'mode_edit'
+										)
 									)
 								),
 								_react2.default.createElement(
@@ -31651,32 +31708,189 @@
 										'td',
 										null,
 										'Jellybean'
+									),
+									_react2.default.createElement(
+										'td',
+										null,
+										_react2.default.createElement(
+											_reactMaterialize.Icon,
+											null,
+											'mode_edit'
+										)
+									)
+								),
+								_react2.default.createElement(
+									'tr',
+									null,
+									_react2.default.createElement(
+										'td',
+										{ colSpan: '3' },
+										_react2.default.createElement(
+											'div',
+											{ className: 'input-field col s12' },
+											_react2.default.createElement('input', { type: 'text', id: 'autocomplete-input', className: 'autocomplete' }),
+											_react2.default.createElement(
+												'label',
+												{ htmlFor: 'autocomplete-input' },
+												'Add Items'
+											)
+										)
 									)
 								)
 							)
-						),
+						)
+					),
+					_react2.default.createElement(
+						_reactMaterialize.Row,
+						null,
 						_react2.default.createElement(
-							'div',
-							{ className: 'input-field col s12' },
+							_reactMaterialize.Col,
+							{ s: 4, offset: 's7' },
 							_react2.default.createElement(
-								'i',
-								{ className: 'material-icons prefix' },
-								'textsms'
-							),
-							_react2.default.createElement('input', { type: 'text', id: 'autocomplete-input', className: 'autocomplete' }),
-							_react2.default.createElement(
-								'label',
-								{ htmlFor: 'autocomplete-input' },
-								'Autocomplete'
+								_reactMaterialize.Table,
+								null,
+								_react2.default.createElement(
+									'thead',
+									null,
+									_react2.default.createElement(
+										'tr',
+										null,
+										_react2.default.createElement('th', { 'data-field': ' ' }),
+										_react2.default.createElement(
+											'th',
+											{ 'data-field': 'Material' },
+											'Materials'
+										),
+										_react2.default.createElement(
+											'th',
+											{ 'data-field': 'Labor' },
+											'Labor'
+										),
+										_react2.default.createElement(
+											'th',
+											{ 'data-field': 'Days' },
+											'Days'
+										)
+									)
+								),
+								_react2.default.createElement(
+									'tbody',
+									null,
+									_react2.default.createElement(
+										'tr',
+										null,
+										_react2.default.createElement(
+											'td',
+											null,
+											'Subtotal'
+										),
+										_react2.default.createElement(
+											'td',
+											null,
+											'$372.79'
+										),
+										_react2.default.createElement(
+											'td',
+											null,
+											'$766.70'
+										),
+										_react2.default.createElement(
+											'td',
+											null,
+											'3.1365'
+										)
+									),
+									_react2.default.createElement(
+										'tr',
+										null,
+										_react2.default.createElement('td', null),
+										_react2.default.createElement(
+											'td',
+											null,
+											'$18.64'
+										),
+										_react2.default.createElement(
+											'td',
+											null,
+											'$513.36'
+										),
+										_react2.default.createElement(
+											'td',
+											null,
+											'3.1365'
+										)
+									),
+									_react2.default.createElement(
+										'tr',
+										null,
+										_react2.default.createElement('td', null),
+										_react2.default.createElement(
+											'td',
+											null,
+											'$319.43'
+										),
+										_react2.default.createElement(
+											'td',
+											null,
+											'$1,380.06'
+										),
+										_react2.default.createElement('td', null)
+									),
+									_react2.default.createElement(
+										'tr',
+										null,
+										_react2.default.createElement(
+											'td',
+											null,
+											'Tax'
+										),
+										_react2.default.createElement(
+											'td',
+											null,
+											'$32.29'
+										),
+										_react2.default.createElement('td', null),
+										_react2.default.createElement('td', null)
+									),
+									_react2.default.createElement(
+										'tr',
+										null,
+										_react2.default.createElement(
+											'td',
+											null,
+											'Total'
+										),
+										_react2.default.createElement(
+											'td',
+											null,
+											'$423.72'
+										),
+										_react2.default.createElement(
+											'td',
+											null,
+											'$1,380.06'
+										),
+										_react2.default.createElement('td', null)
+									),
+									_react2.default.createElement(
+										'tr',
+										null,
+										_react2.default.createElement(
+											'td',
+											null,
+											'Grand Total'
+										),
+										_react2.default.createElement(
+											'td',
+											null,
+											'$1803.78'
+										),
+										_react2.default.createElement('td', null),
+										_react2.default.createElement('td', null)
+									)
+								)
 							)
-						),
-						_react2.default.createElement(_reactMaterialize.Autocomplete, {
-							data: {
-								"Apple": null,
-								"Googl3": 'http://placekitten.com/g/250/250',
-								"Google": 'http://placehold.it/250x250'
-							}, minLength: 0, onClick: this.handleOnAutocomplete, ref: 'autocomplete'
-						})
+						)
 					)
 				);
 			}

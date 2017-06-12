@@ -31399,8 +31399,10 @@
 	'use strict';
 	
 	module.exports = {
-		bedroom: ['6410BN', '84603', 'HD320874LFR', 'HDDB33294', 'YG439-BN'],
-		bathroom: ['WS84912', '7413201.295', '67513W-6401', 'HD320874LFR', 'QK053'],
+		Bath1: ['6410BN', '84603', 'HD320874LFR', 'HDDB33294', 'YG439-BN'],
+		Kitchen1: ['WS84912', '7413201.295', '67513W-6401', 'HD320874LFR', 'QK053'],
+		Livingroom1: ['WS84912', '7413201.295', '67513W-6401', 'HD320874LFR', 'QK053'],
+	
 		all: ["6410BN", "HD320874LFR", "88251+88278", "25706LF-ECO", "HDDB332274", "YG493OD-EB", "LF-048-COKK", "KDF-3322-GT529", "52110", "6610BN", "48400", "52125", "2538-CZMPU-DST", "SK101-33-GT529W", "52016", "K-R99900-4D-BN", "K-RH5846-4-0", "51750", "84603", "HDSB252274", "YG439-BN", "WS84912SRN", "HDDB332294", "34914", "7764EBF", "HDDB332284QI", "YG446-BN", "67604W-6001", "K-RH5863-4-0", "CF544H-PEH", "WS84912", "HDSB252294", "YG188-NI", "67091W-6104", "VT3322G2", "AL383-BN", "7413201.295", "QK053", "AL383LED-BN", "LF-042-BRKK", "HDDB332284", "53331", "B510LF-PPU-ECO", "VT3322H0", "SW1422WH", "25984LF-OB-ECO", "VT3322B1", "58020", "B2511LF-PPU-ECO", "K-RH20060-4-NA", "14425", "WS84913SRN", "HDDB332274LFR", "52379", "67513W-6401", "HDDBD332210QB", "41350", "67513W-6027H2", "QK024", "YG216-WH", "LF-M42-YPYY", "HDSB252284", "YG533-SST-GLWH", "HKB5612AL", "K-3361-4-NA", "59183", "WS84503", "KS03322SB.010", "YG423-BN", "K-R76215-4D-BN", "K-RH5267-4-NA", "52012"]
 	};
 
@@ -31422,6 +31424,18 @@
 	
 	var _reactMaterialize = __webpack_require__(185);
 	
+	var _TableElement = __webpack_require__(315);
+	
+	var _TableElement2 = _interopRequireDefault(_TableElement);
+	
+	var _ProductAccess = __webpack_require__(237);
+	
+	var _ProductAccess2 = _interopRequireDefault(_ProductAccess);
+	
+	var _templateConfig = __webpack_require__(268);
+	
+	var _templateConfig2 = _interopRequireDefault(_templateConfig);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -31438,8 +31452,23 @@
 	
 			var _this = _possibleConstructorReturn(this, (NewEstimateRev1.__proto__ || Object.getPrototypeOf(NewEstimateRev1)).call(this));
 	
-			_this.state = {};
+			_this.state = {
+				templateValue: '0',
+				salesmanValue: 'empty',
+				shoppingCart: [{
+					"photo": "http://www.homedepot.com/catalog/productImages/400_compressed/33/333121b1-f38c-4579-a096-90fc55d7eb43_400_compressed.jpg",
+					"price": "$108.86",
+					"modelNo": "6410BN",
+					"refURL": "http://www.homedepot.com/s/6410BN",
+					"description": "MOEN - Eva 4 in. Centerset 2-Handle High-Arc Bathroom Faucet in Brushed Nickel",
+					"category": "faucet",
+					"template": "Bath1"
+				}]
+			};
 			_this.handleOnAutocomplete = _this.handleOnAutocomplete.bind(_this);
+			_this.handleTemplateChange = _this.handleTemplateChange.bind(_this);
+			_this.handleSalesmanChange = _this.handleSalesmanChange.bind(_this);
+			_this.handleItemDelete = _this.handleItemDelete.bind(_this);
 			return _this;
 		}
 	
@@ -31447,6 +31476,33 @@
 			key: 'handleOnAutocomplete',
 			value: function handleOnAutocomplete(val) {
 				console.log(val);
+			}
+		}, {
+			key: 'handleTemplateChange',
+			value: function handleTemplateChange() {
+				console.log(_templateConfig2.default[event.target.innerHTML]);
+				this.setState({
+					templateValue: event.target.innerHTML
+				});
+			}
+		}, {
+			key: 'handleSalesmanChange',
+			value: function handleSalesmanChange() {
+				console.log(event.target.innerHTML);
+				this.setState({
+					salesmanValue: event.target.innerHTML
+				});
+			}
+		}, {
+			key: 'handleItemDelete',
+			value: function handleItemDelete(productIdentifier) {
+				var currentCart = this.state.shoppingCart;
+				var updatedCart = currentCart.filter(function (product) {
+					return product.name === productIdentifier ? false : true;
+				});
+				this.setState({
+					shoppingCart: updatedCart
+				});
 			}
 		}, {
 			key: 'componentDidMount',
@@ -31478,267 +31534,51 @@
 						null,
 						_react2.default.createElement(
 							_reactMaterialize.Input,
-							{ s: 6, label: 'Salesman', validate: true },
+							{ s: 6, label: 'Salesman', type: 'select', defaultValue: this.state.salesmanValue, validate: true, onChange: this.handleSalesmanChange },
+							_react2.default.createElement('option', { value: 'empty' }),
 							_react2.default.createElement(
-								_reactMaterialize.Icon,
-								null,
-								'account_circle'
+								'option',
+								{ value: '1' },
+								'Robert Leon'
+							),
+							_react2.default.createElement(
+								'option',
+								{ value: '2' },
+								'Steve Smith'
+							),
+							_react2.default.createElement(
+								'option',
+								{ value: '3' },
+								'Antonio Vargas'
 							)
 						),
 						_react2.default.createElement(_reactMaterialize.Input, { s: 12, label: 'Project Description' }),
 						_react2.default.createElement(_reactMaterialize.Input, { label: 'Scope', s: 12 }),
 						_react2.default.createElement(
 							_reactMaterialize.Input,
-							{ s: 12, type: 'select', label: 'Template', defaultValue: '0' },
+							{ s: 12, type: 'select', label: 'Template', defaultValue: this.state.templateValue, onChange: this.handleTemplateChange },
 							_react2.default.createElement('option', { value: '0' }),
 							_react2.default.createElement(
 								'option',
-								{ value: '1' },
-								'Option 1'
+								{ value: 'Bath1' },
+								'Bath1'
 							),
 							_react2.default.createElement(
 								'option',
-								{ value: '2' },
-								'Option 2'
+								{ value: 'Kitchen1' },
+								'Kitchen1'
 							),
 							_react2.default.createElement(
 								'option',
-								{ value: '3' },
-								'Option 3'
-							),
-							_react2.default.createElement(
-								'option',
-								{ value: '4' },
-								'Option 4'
-							),
-							_react2.default.createElement(
-								'option',
-								{ value: '5' },
-								'Option 5'
-							),
-							_react2.default.createElement(
-								'option',
-								{ value: '6' },
-								'Option 6'
-							),
-							_react2.default.createElement(
-								'option',
-								{ value: '7' },
-								'Option 7'
-							),
-							_react2.default.createElement(
-								'option',
-								{ value: '8' },
-								'Option 8'
-							),
-							_react2.default.createElement(
-								'option',
-								{ value: '9' },
-								'Option 9'
+								{ value: 'Livingroom1' },
+								'Livingroom1'
 							)
 						)
 					),
 					_react2.default.createElement(
 						_reactMaterialize.Row,
 						null,
-						_react2.default.createElement(
-							_reactMaterialize.Table,
-							null,
-							_react2.default.createElement(
-								'thead',
-								null,
-								_react2.default.createElement(
-									'tr',
-									null,
-									_react2.default.createElement(
-										'th',
-										{ 'data-field': 'Product' },
-										'Product'
-									),
-									_react2.default.createElement(
-										'th',
-										{ 'data-field': 'Amt' },
-										'Amt'
-									),
-									_react2.default.createElement(
-										'th',
-										{ 'data-field': 'Unit' },
-										'UOM'
-									),
-									_react2.default.createElement(
-										'th',
-										{ 'data-field': 'Description' },
-										'Description'
-									),
-									_react2.default.createElement(
-										'th',
-										{ 'data-field': 'Labor' },
-										'Material'
-									),
-									_react2.default.createElement(
-										'th',
-										{ 'data-field': 'Template' },
-										'Template'
-									),
-									_react2.default.createElement(
-										'th',
-										{ 'data-field': 'Edit' },
-										'Edit'
-									)
-								)
-							),
-							_react2.default.createElement(
-								'tbody',
-								null,
-								_react2.default.createElement(
-									'tr',
-									null,
-									_react2.default.createElement(
-										'td',
-										null,
-										'Alvin'
-									),
-									_react2.default.createElement(
-										'td',
-										null,
-										'Eclair'
-									),
-									_react2.default.createElement(
-										'td',
-										null,
-										'$0.87'
-									),
-									_react2.default.createElement(
-										'td',
-										null,
-										'$0.87$0.87$0.87$0.87$0.87$0.87$0.87$0.87'
-									),
-									_react2.default.createElement(
-										'td',
-										null,
-										'Alan'
-									),
-									_react2.default.createElement(
-										'td',
-										null,
-										'Jellybean'
-									),
-									_react2.default.createElement(
-										'td',
-										null,
-										_react2.default.createElement(
-											_reactMaterialize.Icon,
-											null,
-											'mode_edit'
-										)
-									)
-								),
-								_react2.default.createElement(
-									'tr',
-									null,
-									_react2.default.createElement(
-										'td',
-										null,
-										'Alan'
-									),
-									_react2.default.createElement(
-										'td',
-										null,
-										'Jellybean'
-									),
-									_react2.default.createElement(
-										'td',
-										null,
-										'$3.76'
-									),
-									_react2.default.createElement(
-										'td',
-										null,
-										'$0.87$0.87$0.87$0.87$0.87$0.87$0.87$0.87 $0.87$0.87$0.87$0.87$0.87$0.87$0.87$0.87'
-									),
-									_react2.default.createElement(
-										'td',
-										null,
-										'Alan'
-									),
-									_react2.default.createElement(
-										'td',
-										null,
-										'Jellybean'
-									),
-									_react2.default.createElement(
-										'td',
-										null,
-										_react2.default.createElement(
-											_reactMaterialize.Icon,
-											null,
-											'mode_edit'
-										)
-									)
-								),
-								_react2.default.createElement(
-									'tr',
-									null,
-									_react2.default.createElement(
-										'td',
-										null,
-										'Jonathan'
-									),
-									_react2.default.createElement(
-										'td',
-										null,
-										'Lollipop'
-									),
-									_react2.default.createElement(
-										'td',
-										null,
-										'$7.00'
-									),
-									_react2.default.createElement(
-										'td',
-										null,
-										'$0.87$0.87$0.87$0.87$0.87$0.87$0.87$0.87'
-									),
-									_react2.default.createElement(
-										'td',
-										null,
-										'Alan'
-									),
-									_react2.default.createElement(
-										'td',
-										null,
-										'Jellybean'
-									),
-									_react2.default.createElement(
-										'td',
-										null,
-										_react2.default.createElement(
-											_reactMaterialize.Icon,
-											null,
-											'mode_edit'
-										)
-									)
-								),
-								_react2.default.createElement(
-									'tr',
-									null,
-									_react2.default.createElement(
-										'td',
-										{ colSpan: '3' },
-										_react2.default.createElement(
-											'div',
-											{ className: 'input-field col s12' },
-											_react2.default.createElement('input', { type: 'text', id: 'autocomplete-input', className: 'autocomplete' }),
-											_react2.default.createElement(
-												'label',
-												{ htmlFor: 'autocomplete-input' },
-												'Add Items'
-											)
-										)
-									)
-								)
-							)
-						)
+						_react2.default.createElement(_TableElement2.default, { shoppingCart: this.state.shoppingCart, onItemDelete: this.handleItemDelete })
 					),
 					_react2.default.createElement(
 						_reactMaterialize.Row,
@@ -35737,6 +35577,301 @@
 	};
 	
 	module.exports = keyOf;
+
+/***/ }),
+/* 315 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactMaterialize = __webpack_require__(185);
+	
+	var _TableEntry = __webpack_require__(316);
+	
+	var _TableEntry2 = _interopRequireDefault(_TableEntry);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var TableElement = function (_Component) {
+	  _inherits(TableElement, _Component);
+	
+	  function TableElement() {
+	    _classCallCheck(this, TableElement);
+	
+	    var _this = _possibleConstructorReturn(this, (TableElement.__proto__ || Object.getPrototypeOf(TableElement)).call(this));
+	
+	    _this.state = {};
+	    _this.handleNewEstimate = _this.handleNewEstimate.bind(_this);
+	    _this.handleDelete = _this.handleDelete.bind(_this);
+	    return _this;
+	  }
+	
+	  _createClass(TableElement, [{
+	    key: 'handleNewEstimate',
+	    value: function handleNewEstimate() {
+	      this.props.newEstimate();
+	    }
+	  }, {
+	    key: 'handleDelete',
+	    value: function handleDelete(productIdentifier) {
+	      this.props.onItemDelete(productIdentifier);
+	    }
+	  }, {
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      console.log(this.props.shoppingCart);
+	      var that = this;
+	
+	      $(document).ready(function () {
+	        $('input.autocomplete').autocomplete({
+	          data: {
+	            "Apple": null,
+	            "Microsoft": null,
+	            "Google": null
+	          },
+	          limit: 20, // The max amount of results that can be shown at once. Default: Infinity.
+	          onAutocomplete: function onAutocomplete(val) {
+	            that.handleOnAutocomplete(val);
+	          },
+	          minLength: 0 });
+	      });
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _this2 = this;
+	
+	      var shoppingCart = this.props.shoppingCart;
+	
+	      console.log(shoppingCart);
+	      var renderTableEntry = function renderTableEntry() {
+	        return shoppingCart.map(function (product) {
+	          console.log(product);
+	          return _react2.default.createElement(_TableEntry2.default, { key: product.modelNo, product: product, onClickDelete: _this2.handleDelete });
+	        });
+	      };
+	
+	      return _react2.default.createElement(
+	        _reactMaterialize.Table,
+	        null,
+	        _react2.default.createElement(
+	          'thead',
+	          null,
+	          _react2.default.createElement(
+	            'tr',
+	            null,
+	            _react2.default.createElement(
+	              'th',
+	              { 'data-field': 'Category' },
+	              'Category'
+	            ),
+	            _react2.default.createElement(
+	              'th',
+	              { 'data-field': 'ModelNo' },
+	              'ModelNo'
+	            ),
+	            _react2.default.createElement(
+	              'th',
+	              { 'data-field': 'Price' },
+	              'Price'
+	            ),
+	            _react2.default.createElement(
+	              'th',
+	              { 'data-field': 'Unit' },
+	              'UOM'
+	            ),
+	            _react2.default.createElement(
+	              'th',
+	              { 'data-field': 'Description' },
+	              'Description'
+	            ),
+	            _react2.default.createElement(
+	              'th',
+	              { 'data-field': 'Labor' },
+	              'Material'
+	            ),
+	            _react2.default.createElement(
+	              'th',
+	              { 'data-field': 'Template' },
+	              'Template'
+	            ),
+	            _react2.default.createElement(
+	              'th',
+	              { 'data-field': 'Edit' },
+	              'Edit'
+	            ),
+	            _react2.default.createElement(
+	              'th',
+	              { 'data-field': 'Delete' },
+	              'Delete'
+	            )
+	          )
+	        ),
+	        _react2.default.createElement(
+	          'tbody',
+	          null,
+	          renderTableEntry(),
+	          _react2.default.createElement(
+	            'tr',
+	            null,
+	            _react2.default.createElement(
+	              'td',
+	              { colSpan: '3' },
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'input-field col s12' },
+	                _react2.default.createElement('input', { type: 'text', id: 'autocomplete-input', className: 'autocomplete' }),
+	                _react2.default.createElement(
+	                  'label',
+	                  { htmlFor: 'autocomplete-input' },
+	                  'Add Items'
+	                )
+	              )
+	            )
+	          )
+	        )
+	      );
+	    }
+	  }]);
+	
+	  return TableElement;
+	}(_react.Component);
+	
+	exports.default = TableElement;
+
+/***/ }),
+/* 316 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactMaterialize = __webpack_require__(185);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var TableEntry = function (_Component) {
+	  _inherits(TableEntry, _Component);
+	
+	  function TableEntry() {
+	    _classCallCheck(this, TableEntry);
+	
+	    var _this = _possibleConstructorReturn(this, (TableEntry.__proto__ || Object.getPrototypeOf(TableEntry)).call(this));
+	
+	    _this.state = {};
+	
+	    _this.handleDelete = _this.handleDelete.bind(_this);
+	    return _this;
+	  }
+	
+	  _createClass(TableEntry, [{
+	    key: 'handleDelete',
+	    value: function handleDelete() {
+	      this.props.onClickDelete(this.props.product.name);
+	    }
+	  }, {
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {}
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var product = this.props.product;
+	
+	      return _react2.default.createElement(
+	        'tr',
+	        null,
+	        _react2.default.createElement(
+	          'td',
+	          null,
+	          product.category
+	        ),
+	        _react2.default.createElement(
+	          'td',
+	          null,
+	          product.modelNo
+	        ),
+	        _react2.default.createElement(
+	          'td',
+	          null,
+	          product.price
+	        ),
+	        _react2.default.createElement(
+	          'td',
+	          null,
+	          'Each'
+	        ),
+	        _react2.default.createElement(
+	          'td',
+	          null,
+	          product.description
+	        ),
+	        _react2.default.createElement(
+	          'td',
+	          null,
+	          '$10.00'
+	        ),
+	        _react2.default.createElement(
+	          'td',
+	          null,
+	          product.template
+	        ),
+	        _react2.default.createElement(
+	          'td',
+	          null,
+	          _react2.default.createElement(
+	            _reactMaterialize.Icon,
+	            null,
+	            'mode_edit'
+	          )
+	        ),
+	        _react2.default.createElement(
+	          'td',
+	          { onClick: this.handleDelete },
+	          _react2.default.createElement(
+	            _reactMaterialize.Icon,
+	            null,
+	            'delete'
+	          )
+	        )
+	      );
+	    }
+	  }]);
+	
+	  return TableEntry;
+	}(_react.Component);
+	
+	exports.default = TableEntry;
 
 /***/ })
 /******/ ]);

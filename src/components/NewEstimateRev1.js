@@ -1,17 +1,56 @@
 import React, {Component} from 'react'
-
 import {Row,Input,Icon,Col,Table,Autocomplete} from 'react-materialize'
 
+import TableElement from './TableElement'
+import ProductAccess from '../../api/ProductAccess'
+import templateConfig from '../../api/templateConfig'
 
 class NewEstimateRev1 extends Component {
 	constructor(){
 	    super()
 	    this.state = {
+	    	templateValue:'0',
+	    	salesmanValue:'empty',
+			shoppingCart:[
+				{
+			    "photo": "http://www.homedepot.com/catalog/productImages/400_compressed/33/333121b1-f38c-4579-a096-90fc55d7eb43_400_compressed.jpg",
+			    "price": "$108.86",
+			    "modelNo": "6410BN",
+			    "refURL": "http://www.homedepot.com/s/6410BN",
+			    "description": "MOEN - Eva 4 in. Centerset 2-Handle High-Arc Bathroom Faucet in Brushed Nickel",
+			    "category": "faucet",
+			    "template": "Bath1"
+				}
+	    	]
 	    }
 	    this.handleOnAutocomplete=this.handleOnAutocomplete.bind(this);
+	    this.handleTemplateChange=this.handleTemplateChange.bind(this);
+	    this.handleSalesmanChange=this.handleSalesmanChange.bind(this);
+	    this.handleItemDelete=this.handleItemDelete.bind(this); 
   	}
   	handleOnAutocomplete(val){
   		console.log(val)
+  	}
+  	handleTemplateChange(){
+  		console.log(templateConfig[event.target.innerHTML]);
+  		this.setState({
+  			templateValue:event.target.innerHTML
+  		})
+  	}
+  	handleSalesmanChange(){
+  		console.log(event.target.innerHTML);
+  		this.setState({
+  			salesmanValue:event.target.innerHTML
+  		})
+  	}
+  	handleItemDelete(productIdentifier){
+  		const currentCart = this.state.shoppingCart;
+  		const updatedCart = currentCart.filter((product)=>{
+  			return product.name === productIdentifier ? false : true
+  		})
+  		this.setState({
+  			shoppingCart:updatedCart
+  		})
   	}
   	componentDidMount(){
   		let that = this;
@@ -38,79 +77,23 @@ class NewEstimateRev1 extends Component {
     return (
     	<div>
     		<Row>
-				<Input s={6} label="Salesman" validate><Icon>account_circle</Icon></Input>
+				<Input s={6} label="Salesman" type='select' defaultValue={this.state.salesmanValue} validate onChange={this.handleSalesmanChange}>
+					<option value='empty'></option>
+					<option value='1'>Robert Leon</option>
+					<option value='2'>Steve Smith</option>
+					<option value='3'>Antonio Vargas</option>
+				</Input>
 				<Input s={12} label="Project Description"/>
 				<Input label="Scope" s={12} />
-				<Input s={12} type='select' label="Template" defaultValue='0'>
+				<Input s={12} type='select' label="Template" defaultValue={this.state.templateValue} onChange={this.handleTemplateChange}>
 					<option value='0'></option>
-					<option value='1'>Option 1</option>
-					<option value='2'>Option 2</option>
-					<option value='3'>Option 3</option>
-					<option value='4'>Option 4</option>
-					<option value='5'>Option 5</option>
-					<option value='6'>Option 6</option>
-					<option value='7'>Option 7</option>
-					<option value='8'>Option 8</option>
-					<option value='9'>Option 9</option>
-
+					<option value='Bath1'>Bath1</option>
+					<option value='Kitchen1'>Kitchen1</option>
+					<option value='Livingroom1'>Livingroom1</option>
 				</Input>
-</Row>
-<Row>
-				<Table>
-					<thead>
-						<tr>
-							<th data-field="Product">Product</th>
-							<th data-field="Amt">Amt</th>
-							<th data-field="Unit">UOM</th>
-							<th data-field="Description">Description</th>
-							<th data-field="Labor">Material</th>
-							<th data-field="Template">Template</th>
-							<th data-field="Edit">Edit</th>
-						</tr>
-					</thead>
-
-					<tbody>
-						<tr>
-							<td>Alvin</td>
-							<td>Eclair</td>
-							<td>$0.87</td>
-							<td>$0.87$0.87$0.87$0.87$0.87$0.87$0.87$0.87</td>
-							<td>Alan</td>
-							<td>Jellybean</td>
-							<td><Icon>mode_edit</Icon></td>
-			
-						</tr>
-						<tr>
-							<td>Alan</td>
-							<td>Jellybean</td>
-							<td>$3.76</td>
-							<td>$0.87$0.87$0.87$0.87$0.87$0.87$0.87$0.87
-								$0.87$0.87$0.87$0.87$0.87$0.87$0.87$0.87
-							</td>
-							<td>Alan</td>
-							<td>Jellybean</td>
-							<td><Icon>mode_edit</Icon></td>
-			
-						</tr>
-						<tr>
-							<td>Jonathan</td>
-							<td>Lollipop</td>
-							<td>$7.00</td>
-							<td>$0.87$0.87$0.87$0.87$0.87$0.87$0.87$0.87</td>
-							<td>Alan</td>
-							<td>Jellybean</td>
-							<td><Icon>mode_edit</Icon></td>		
-						</tr>
-						<tr>
-							<td colSpan="3">
-								<div className="input-field col s12">
-			          				<input type="text" id="autocomplete-input" className="autocomplete"/>
-			         				<label htmlFor="autocomplete-input">Add Items</label>
-			        			</div>	
-							</td>
-						</tr>					
-					</tbody>
-				</Table>
+			</Row>
+			<Row>
+					<TableElement shoppingCart={this.state.shoppingCart} onItemDelete={this.handleItemDelete}/>
 			</Row>
 
 			<Row>

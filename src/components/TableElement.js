@@ -58,6 +58,7 @@ class TableElement extends Component {
       <Table>
 		<thead>
 			<tr>
+				<th data-field="Name">Name</th>
 				<th data-field="Category">Category</th>
 				<th data-field="ModelNo">ModelNo</th>
 				<th data-field="Price">Price</th>

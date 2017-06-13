@@ -25,6 +25,7 @@ class TableEntry extends Component {
   	const {product} = this.props;
     return (
 			<tr>
+				<td>{product.name}</td>
 				<td>{product.category}</td>
 				<td>{product.modelNo}</td>
 				<td>{product.price}</td>

@@ -11,17 +11,7 @@ class NewEstimateRev1 extends Component {
 	    this.state = {
 	    	templateValue:'0',
 	    	salesmanValue:'empty',
-			shoppingCart:[
-				{
-			    "photo": "http://www.homedepot.com/catalog/productImages/400_compressed/33/333121b1-f38c-4579-a096-90fc55d7eb43_400_compressed.jpg",
-			    "price": "$108.86",
-			    "modelNo": "6410BN",
-			    "refURL": "http://www.homedepot.com/s/6410BN",
-			    "description": "MOEN - Eva 4 in. Centerset 2-Handle High-Arc Bathroom Faucet in Brushed Nickel",
-			    "category": "faucet",
-			    "template": "Bath1"
-				}
-	    	]
+			shoppingCart:[]
 	    }
 	    this.handleOnAutocomplete=this.handleOnAutocomplete.bind(this);
 	    this.handleTemplateChange=this.handleTemplateChange.bind(this);

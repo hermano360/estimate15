@@ -8,7 +8,6 @@ module.exports = {
     "description": "MOEN - Eva 4 in. Centerset 2-Handle High-Arc Bathroom Faucet in Brushed Nickel",
     "category": "faucet",
     "name": "faucet1",
-    "template": "Bath1",
     "labor":"10"
   },
   {
@@ -19,7 +18,6 @@ module.exports = {
     "description": "Elkay - Neptune All-in-One Drop-In Stainless Steel 15 in. 2-Hole Bar Sink",
     "category": "kitchen-sink",
     "name": "kitchensink1",
-    "template": "Bath1",
     "labor":"10"
   },
   {
@@ -30,7 +28,6 @@ module.exports = {
     "description": "TroposAir - Titan 72 in. Indoor\/Outdoor Brushed Nickel Ceiling Fan and Light",
     "category": "ceiling-fans-lights",
     "name": "ceilinglights1",
-    "template": "Bath1",
     "labor":"11"
   },
   {
@@ -41,7 +38,6 @@ module.exports = {
     "description": "Delta - Zella 4 in. Centerset 2-Handle Bathroom Faucet in Chrome",
     "category": "faucet",
     "name": "faucet2",
-    "template": "Bath1",
     "labor":"12"
   },
   {
@@ -52,7 +48,6 @@ module.exports = {
     "description": "Glacier Bay - Drop-In Stainless Steel 33 in. 4-Hole Double Basin Kitchen Sink",
     "category": "kitchen-sink",
     "name": "kitchensink2",
-    "template": "Bath1",
     "labor":"14"
   },
   {
@@ -63,7 +58,6 @@ module.exports = {
     "description": "Home Decorators Collection - Kensgrove 72 in. LED Indoor\/Outdoor Espresso Bronze Ceiling Fan",
     "category": "ceiling-fans-lights",
     "name": "ceilinglights1",
-    "template": "Kitchen1",
     "labor":"15"
   },
   {
@@ -74,7 +68,6 @@ module.exports = {
     "description": "Pfister - Courant 4 in. Centerset 2-Handle Bathroom Faucet in Brushed Nickel",
     "category": "faucet",
     "name": "faucet3",
-    "template": "Kitchen1",
     "labor":"16"
   },
   {
@@ -85,7 +78,6 @@ module.exports = {
     "description": "SINKOLOGY - Pfister All-In-One Copper Kitchen Sink 33 in. 4-Hole Design Kit with Ashfield Pull Down Faucet in Rustic Bronze",
     "category": "kitchen-sink",
     "name": "kitchensink3",
-    "template": "Kitchen1",
     "labor":"17"
   },
   {
@@ -96,7 +88,6 @@ module.exports = {
     "description": "Hunter - Heathrow 52 in. Indoor Brushed Nickel Ceiling Fan with Light Kit",
     "category": "ceiling-fans-lights",
     "name": "ceilinglights2",
-    "template": "Kitchen1",
     "labor":"18"
   },
   {
@@ -107,7 +98,6 @@ module.exports = {
     "description": "MOEN - Brantford 4 in. Centerset 2-Handle Low-Arc Bathroom Faucet in Brushed Nickel with Metal Drain Assembly",
     "category": "faucet",
     "name": "faucet4",
-    "template": "Kitchen1",
     "labor":"19"
   },
   {
@@ -118,7 +108,6 @@ module.exports = {
     "description": "Thermocast - Manhattan Drop-In Acrylic 33 in. 4-Hole Single Basin Kitchen Sink in White",
     "category": "kitchen-sink",
     "name": "kitchensink4",
-    "template": "Livingroom1",
     "labor":"20"
   },
   {
@@ -129,7 +118,6 @@ module.exports = {
     "description": "Hunter - Oakhurst 52 in. LED Indoor Low Profile Brushed Nickel Ceiling Fan with Light Kit",
     "category": "ceiling-fans-lights",
     "name": "ceilinglights3",
-    "template": "Livingroom1",
     "labor":"21"
   },
   {
@@ -140,7 +128,6 @@ module.exports = {
     "description": "Delta - Lahara 4 in. Centerset 2-Handle Bathroom Faucet with Metal Drain Assembly in Champagne Bronze",
     "category": "faucet",
     "name": "faucet5",
-    "template": "Livingroom1",
     "labor":"22"
   },
   {
@@ -151,7 +138,6 @@ module.exports = {
     "description": "SINKOLOGY - Pfister All-In-One Angelico Copper Sink 33 in. Drop-In 3-Hole Kitchen Sink with Ashfield Pull Down Faucet Rustic Bronze",
     "category": "kitchen-sink",
     "name": "kitchensink5",
-    "template": "Livingroom1",
     "labor":"23"
   },
   {
@@ -162,7 +148,6 @@ module.exports = {
     "description": "Hunter - Oakhurst 52 in. LED Indoor Low Profile New Bronze Ceiling Fan with Light Kit",
     "category": "ceiling-fans-lights",
     "name": "ceilinglights4",
-    "template": "Livingroom1",
     "labor":"67"
   }
 ]}

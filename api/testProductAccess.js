@@ -22,5 +22,22 @@ module.exports = {
       }
     })
     return selectedProducts
+  },
+  getAllNames: function(){
+    let names = {}
+    //{ "Apple": null}
+    testDatabase.products.forEach((product)=>{
+      names[product.name]= null;
+    })
+    return names
+  },
+  getProductWithName: function(name){
+    let productMatch;
+    testDatabase.products.forEach((product)=>{
+      if(product.name === name){
+        productMatch = product
+      }
+    })
+    return productMatch
   }
 }

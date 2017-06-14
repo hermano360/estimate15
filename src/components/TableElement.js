@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {Icon,Table} from 'react-materialize'
 import TableEntry from './TableEntry'
+import AutocompleteName from './AutocompleteName'
 
 
 class TableElement extends Component {
@@ -16,9 +17,13 @@ class TableElement extends Component {
     this.handleDelete=this.handleDelete.bind(this);
     this.handleQuantityChange= this.handleQuantityChange.bind(this);
     this.updateQuantities = this.updateQuantities.bind(this);
+    this.handleAddNewItem = this.handleAddNewItem.bind(this);
   }
   handleNewEstimate(){
   	this.props.newEstimate()
+  }
+  handleAddNewItem(productName){
+  	this.props.addIndividualItem(productName);
   }
   handleDelete(productIdentifier){
   	let {itemTotals} = this.state;
@@ -89,21 +94,6 @@ class TableElement extends Component {
 	this.props.onChangeTotal(runningMaterialTotal,laborCosts)
   }
     componentDidMount(){
-  		let that = this;
-  		$(document).ready(function(){
-   			$('input.autocomplete').autocomplete({
-    			data: {
-      				"Apple": null,
-      				"Microsoft": null,
-      				"Google": null
-    			},
-    			limit: 20, // The max amount of results that can be shown at once. Default: Infinity.
-    			onAutocomplete: function(val){
-    				that.handleOnAutocomplete(val)
-    			},
-    			minLength: 0, // The minimum length of the input for the autocomplete to start. Default: 1.
-  			});
- 		});
 
   	}
 
@@ -111,8 +101,9 @@ class TableElement extends Component {
   	const {shoppingCart} = this.props;
   	const renderTableEntry = ()=>{
   		return shoppingCart.map((product)=>{
+  			let keyValue = `${product.modelNo}-${product.template}`
   			return (
-  				<TableEntry key={product.modelNo} product={product} onClickDelete={this.handleDelete} quantityChange={this.handleQuantityChange}/>
+  				<TableEntry key={keyValue} product={product} onClickDelete={this.handleDelete} quantityChange={this.handleQuantityChange}/>
   			)
   		})
   	}
@@ -139,10 +130,7 @@ class TableElement extends Component {
 			{renderTableEntry()}
 			<tr>
 				<td colSpan="3">
-					<div className="input-field col s12">
-          				<input type="text" id="autocomplete-input" className="autocomplete"/>
-         				<label htmlFor="autocomplete-input">Add Items</label>
-        			</div>	
+				<AutocompleteName onAddItem={this.handleAddNewItem}/>
 				</td>
 			</tr>					
 		</tbody>

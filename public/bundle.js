@@ -31475,6 +31475,8 @@
 			_this.handleSalesmanChange = _this.handleSalesmanChange.bind(_this);
 			_this.handleItemDelete = _this.handleItemDelete.bind(_this);
 			_this.handleChangeTotal = _this.handleChangeTotal.bind(_this);
+			_this.handleAddIndividualItem = _this.handleAddIndividualItem.bind(_this);
+			_this.addItemToShoppingCart = _this.addItemToShoppingCart.bind(_this);
 			return _this;
 		}
 	
@@ -31482,6 +31484,47 @@
 			key: 'handleOnAutocomplete',
 			value: function handleOnAutocomplete(val) {
 				console.log(val, "hello");
+			}
+		}, {
+			key: 'whichItemsToAddToShoppingCart',
+			value: function whichItemsToAddToShoppingCart(shoppingCart, modelNos, template) {
+				var filteredModelNos = modelNos.filter(function (modelNo) {
+					var acceptableModelNo = true;
+					shoppingCart.forEach(function (cartItem) {
+						if (cartItem.modelNo === modelNo && cartItem.template === template) {
+							acceptableModelNo = false;
+						}
+					});
+					return acceptableModelNo;
+				});
+				return filteredModelNos;
+			}
+		}, {
+			key: 'handleAddIndividualItem',
+			value: function handleAddIndividualItem(productName) {
+				this.addItemToShoppingCart(_testProductAccess2.default.getProductWithName(productName), "");
+			}
+		}, {
+			key: 'addItemToShoppingCart',
+			value: function addItemToShoppingCart(item, template) {
+				// item to shoppingcart only if the modelNo and template for that specific item isn't already listed
+				var shoppingCart = this.state.shoppingCart;
+	
+				var shoppingCartCopy = shoppingCart.filter(function () {
+					return true;
+				});
+				var addItem = true;
+				shoppingCartCopy.forEach(function (cartItem) {
+					if (cartItem.modelNo === item.modelNo && cartItem.template === template) {
+						addItem = false;
+					}
+				});
+				if (addItem) {
+					shoppingCartCopy.push(item);
+				}
+				this.setState({
+					shoppingCart: shoppingCartCopy
+				});
 			}
 		}, {
 			key: 'handleChangeTotal',
@@ -31501,8 +31544,15 @@
 				});
 			}
 		}, {
+			key: 'resetTemplateValue',
+			value: function resetTemplateValue() {
+				// this.refs.templateSelection.state.value = 'Choose a Template';
+			}
+		}, {
 			key: 'handleTemplateChange',
 			value: function handleTemplateChange() {
+				var _this2 = this;
+	
 				var templateValue = event.target.innerHTML;
 	
 				if (templateValue !== "Choose a Template") {
@@ -31515,17 +31565,12 @@
 	
 					if (shoppingCartTemplates.indexOf(templateValue) === -1) {
 						shoppingCartTemplates.push(templateValue);
-						var newShoppingCartItems = _testProductAccess2.default.getModelNos(templateModelNos).filter(function (product) {
-							var addProduct = true;
-							shoppingCart.forEach(function (shoppingCartItem) {
-								if (shoppingCartItem.modelNo === product.modelNo) {
-									addProduct = false;
-								}
-							});
-							return addProduct;
+						var filteredModelNos = this.whichItemsToAddToShoppingCart(shoppingCart, templateModelNos, templateValue);
+						var itemsToAddToShoppingCart = _testProductAccess2.default.getModelNos(filteredModelNos);
+						var itemsWithTemplate = this.addTemplateToProducts(itemsToAddToShoppingCart, templateValue);
+						itemsWithTemplate.forEach(function (item) {
+							_this2.addItemToShoppingCart(item, templateValue);
 						});
-						//preparing for when database doesn't include templates
-						shoppingCart = [].concat(_toConsumableArray(shoppingCart), _toConsumableArray(newShoppingCartItems));
 					} else {
 						var templateIndex = shoppingCartTemplates.indexOf(templateValue);
 						var missingTemplateModelNos = templateModelNos.filter(function (templateModelNo) {
@@ -31540,7 +31585,7 @@
 						if (missingTemplateModelNos.length > 0) {
 							shoppingCartTemplates.splice(templateIndex, 1);
 							shoppingCartTemplates.push(templateValue);
-							var _newShoppingCartItems = _testProductAccess2.default.getModelNos(templateModelNos).filter(function (product) {
+							var newShoppingCartItems = _testProductAccess2.default.getModelNos(templateModelNos).filter(function (product) {
 								var addProduct = true;
 								shoppingCart.forEach(function (shoppingCartItem) {
 									if (shoppingCartItem.modelNo === product.modelNo) {
@@ -31549,7 +31594,9 @@
 								});
 								return addProduct;
 							});
-							shoppingCart = [].concat(_toConsumableArray(shoppingCart), _toConsumableArray(_newShoppingCartItems));
+							newShoppingCartItems = this.addTemplateToProducts(newShoppingCartItems, templateValue);
+	
+							shoppingCart = [].concat(_toConsumableArray(shoppingCart), _toConsumableArray(newShoppingCartItems));
 						}
 					}
 					var updatedShoppingCart = this.reorderShoppingCart(shoppingCart, templateValue);
@@ -31559,6 +31606,80 @@
 						shoppingCartTemplates: shoppingCartTemplates
 					});
 				}
+			}
+	
+			// handleTemplateChange(){
+			// 	const templateValue = event.target.innerHTML;
+	
+			// 	if(templateValue !== "Choose a Template"){
+			// 		const templateModelNos = templateConfig[templateValue];
+			// 		let {shoppingCartTemplates,shoppingCart} = this.state;
+	
+			// 		//Change this to database connection after demo. Testing is synchronous, database is async, use callbacks
+			// 		if(shoppingCartTemplates.indexOf(templateValue)=== -1){
+			// 			shoppingCartTemplates.push(templateValue);
+			// 			let newShoppingCartItems = testProductAccess.getModelNos(templateModelNos).filter((product)=>{
+			// 				let addProduct = true;
+			// 				shoppingCart.forEach((shoppingCartItem)=>{
+			// 					if(shoppingCartItem.modelNo === product.modelNo && shoppingCartItem.template === product.template){
+			// 						addProduct = false
+			// 					}
+			// 				})
+			// 				return addProduct
+			// 			})
+			// 			//preparing for when database doesn't include templates
+			// 			newShoppingCartItems = this.addTemplateToProducts(newShoppingCartItems,templateValue);
+	
+			// 			shoppingCart=[
+			// 			...shoppingCart,
+			// 			...newShoppingCartItems
+			// 			];
+			// 		} else {
+			// 			let templateIndex = shoppingCartTemplates.indexOf(templateValue);
+			// 			let missingTemplateModelNos = templateModelNos.filter((templateModelNo)=>{
+			// 				let templateNeededInShoppingcart = true;
+			// 				shoppingCart.forEach((shoppingCartItem)=>{
+			// 					if(templateModelNo === shoppingCartItem.modelNo){
+			// 						templateNeededInShoppingcart = false;
+			// 					}
+			// 				})
+			// 				return templateNeededInShoppingcart
+			// 			})
+			// 			if(missingTemplateModelNos.length > 0 ){
+			// 				shoppingCartTemplates.splice(templateIndex,1);
+			// 				shoppingCartTemplates.push(templateValue);
+			// 				let newShoppingCartItems = testProductAccess.getModelNos(templateModelNos).filter((product)=>{
+			// 					let addProduct = true;
+			// 					shoppingCart.forEach((shoppingCartItem)=>{
+			// 						if(shoppingCartItem.modelNo === product.modelNo){
+			// 							addProduct = false
+			// 						}
+			// 					})
+			// 					return addProduct
+			// 				})
+			// 				newShoppingCartItems = this.addTemplateToProducts(newShoppingCartItems,templateValue);
+	
+			// 				shoppingCart=[...shoppingCart,
+			// 				...newShoppingCartItems
+			// 				];
+			// 			}
+			// 		}
+			// 		let updatedShoppingCart = this.reorderShoppingCart(shoppingCart, templateValue);
+			// 		this.setState({
+			// 			templateValue,
+			// 			shoppingCart: updatedShoppingCart,
+			// 			shoppingCartTemplates
+			// 		})
+			// 	}
+			// }
+	
+		}, {
+			key: 'addTemplateToProducts',
+			value: function addTemplateToProducts(products, template) {
+				return products.map(function (product) {
+					product.template = template;
+					return product;
+				});
 			}
 	
 			// reordering shopping cart so that the latest template's items are all at the end
@@ -31619,6 +31740,7 @@
 			key: 'handleSalesmanChange',
 			value: function handleSalesmanChange() {
 				console.log(event.target.innerHTML);
+				this.refs.templateSelection.state.value = 'Choose a Template';
 				this.setState({
 					salesmanValue: event.target.innerHTML
 				});
@@ -31647,23 +31769,7 @@
 			}
 		}, {
 			key: 'componentDidMount',
-			value: function componentDidMount() {
-				var that = this;
-	
-				$(document).ready(function () {
-					$('input.autocomplete').autocomplete({
-						data: {
-							"Apple": null,
-							"Microsoft": null,
-							"Google": null
-						},
-						limit: 20, // The max amount of results that can be shown at once. Default: Infinity.
-						onAutocomplete: function onAutocomplete(val) {
-							that.handleOnAutocomplete(val);
-						},
-						minLength: 0 });
-				});
-			}
+			value: function componentDidMount() {}
 		}, {
 			key: 'render',
 			value: function render() {
@@ -31705,7 +31811,7 @@
 						_react2.default.createElement(_reactMaterialize.Input, { label: 'Scope', s: 12 }),
 						_react2.default.createElement(
 							_reactMaterialize.Input,
-							{ s: 12, type: 'select', label: 'Template', defaultValue: this.state.templateValue, onChange: this.handleTemplateChange },
+							{ s: 12, ref: 'templateSelection', type: 'select', label: 'Template', defaultValue: this.state.templateValue, onChange: this.handleTemplateChange },
 							_react2.default.createElement(
 								'option',
 								{ value: 'Choose a Template' },
@@ -31731,7 +31837,7 @@
 					_react2.default.createElement(
 						_reactMaterialize.Row,
 						null,
-						_react2.default.createElement(_TableElement2.default, { shoppingCart: this.state.shoppingCart, onItemDelete: this.handleItemDelete, onChangeTotal: this.handleChangeTotal })
+						_react2.default.createElement(_TableElement2.default, { shoppingCart: this.state.shoppingCart, onItemDelete: this.handleItemDelete, onChangeTotal: this.handleChangeTotal, addIndividualItem: this.handleAddIndividualItem })
 					),
 					_react2.default.createElement(
 						_reactMaterialize.Row,
@@ -31886,6 +31992,10 @@
 	
 	var _TableEntry2 = _interopRequireDefault(_TableEntry);
 	
+	var _AutocompleteName = __webpack_require__(319);
+	
+	var _AutocompleteName2 = _interopRequireDefault(_AutocompleteName);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -31911,6 +32021,7 @@
 	    _this.handleDelete = _this.handleDelete.bind(_this);
 	    _this.handleQuantityChange = _this.handleQuantityChange.bind(_this);
 	    _this.updateQuantities = _this.updateQuantities.bind(_this);
+	    _this.handleAddNewItem = _this.handleAddNewItem.bind(_this);
 	    return _this;
 	  }
 	
@@ -31918,6 +32029,11 @@
 	    key: 'handleNewEstimate',
 	    value: function handleNewEstimate() {
 	      this.props.newEstimate();
+	    }
+	  }, {
+	    key: 'handleAddNewItem',
+	    value: function handleAddNewItem(productName) {
+	      this.props.addIndividualItem(productName);
 	    }
 	  }, {
 	    key: 'handleDelete',
@@ -31996,22 +32112,7 @@
 	    }
 	  }, {
 	    key: 'componentDidMount',
-	    value: function componentDidMount() {
-	      var that = this;
-	      $(document).ready(function () {
-	        $('input.autocomplete').autocomplete({
-	          data: {
-	            "Apple": null,
-	            "Microsoft": null,
-	            "Google": null
-	          },
-	          limit: 20, // The max amount of results that can be shown at once. Default: Infinity.
-	          onAutocomplete: function onAutocomplete(val) {
-	            that.handleOnAutocomplete(val);
-	          },
-	          minLength: 0 });
-	      });
-	    }
+	    value: function componentDidMount() {}
 	  }, {
 	    key: 'render',
 	    value: function render() {
@@ -32021,7 +32122,8 @@
 	
 	      var renderTableEntry = function renderTableEntry() {
 	        return shoppingCart.map(function (product) {
-	          return _react2.default.createElement(_TableEntry2.default, { key: product.modelNo, product: product, onClickDelete: _this2.handleDelete, quantityChange: _this2.handleQuantityChange });
+	          var keyValue = product.modelNo + '-' + product.template;
+	          return _react2.default.createElement(_TableEntry2.default, { key: keyValue, product: product, onClickDelete: _this2.handleDelete, quantityChange: _this2.handleQuantityChange });
 	        });
 	      };
 	
@@ -32101,16 +32203,7 @@
 	            _react2.default.createElement(
 	              'td',
 	              { colSpan: '3' },
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'input-field col s12' },
-	                _react2.default.createElement('input', { type: 'text', id: 'autocomplete-input', className: 'autocomplete' }),
-	                _react2.default.createElement(
-	                  'label',
-	                  { htmlFor: 'autocomplete-input' },
-	                  'Add Items'
-	                )
-	              )
+	              _react2.default.createElement(_AutocompleteName2.default, { onAddItem: this.handleAddNewItem })
 	            )
 	          )
 	        )
@@ -32313,6 +32406,23 @@
 	      }
 	    });
 	    return selectedProducts;
+	  },
+	  getAllNames: function getAllNames() {
+	    var names = {};
+	    //{ "Apple": null}
+	    _testDatabase2.default.products.forEach(function (product) {
+	      names[product.name] = null;
+	    });
+	    return names;
+	  },
+	  getProductWithName: function getProductWithName(name) {
+	    var productMatch = void 0;
+	    _testDatabase2.default.products.forEach(function (product) {
+	      if (product.name === name) {
+	        productMatch = product;
+	      }
+	    });
+	    return productMatch;
 	  }
 	};
 
@@ -32331,7 +32441,6 @@
 	    "description": "MOEN - Eva 4 in. Centerset 2-Handle High-Arc Bathroom Faucet in Brushed Nickel",
 	    "category": "faucet",
 	    "name": "faucet1",
-	    "template": "Bath1",
 	    "labor": "10"
 	  }, {
 	    "photo": "http:\/\/www.homedepot.com\/catalog\/productImages\/400_compressed\/34\/34e81148-a081-4f36-8614-9e6a607f0b3c_400_compressed.jpg",
@@ -32341,7 +32450,6 @@
 	    "description": "Elkay - Neptune All-in-One Drop-In Stainless Steel 15 in. 2-Hole Bar Sink",
 	    "category": "kitchen-sink",
 	    "name": "kitchensink1",
-	    "template": "Bath1",
 	    "labor": "10"
 	  }, {
 	    "photo": "http:\/\/www.homedepot.com\/catalog\/productImages\/400_compressed\/49\/49a62d7c-bd35-434f-a3e1-098eb8cff53b_400_compressed.jpg",
@@ -32351,7 +32459,6 @@
 	    "description": "TroposAir - Titan 72 in. Indoor\/Outdoor Brushed Nickel Ceiling Fan and Light",
 	    "category": "ceiling-fans-lights",
 	    "name": "ceilinglights1",
-	    "template": "Bath1",
 	    "labor": "11"
 	  }, {
 	    "photo": "http:\/\/www.homedepot.com\/catalog\/productImages\/400_compressed\/a9\/a9a00860-7082-4e0b-b311-b3c4c771b3c3_400_compressed.jpg",
@@ -32361,7 +32468,6 @@
 	    "description": "Delta - Zella 4 in. Centerset 2-Handle Bathroom Faucet in Chrome",
 	    "category": "faucet",
 	    "name": "faucet2",
-	    "template": "Bath1",
 	    "labor": "12"
 	  }, {
 	    "photo": "http:\/\/www.homedepot.com\/catalog\/productImages\/400_compressed\/ed\/ed858f0f-99b5-46ae-83ec-f1e7b193845f_400_compressed.jpg",
@@ -32371,7 +32477,6 @@
 	    "description": "Glacier Bay - Drop-In Stainless Steel 33 in. 4-Hole Double Basin Kitchen Sink",
 	    "category": "kitchen-sink",
 	    "name": "kitchensink2",
-	    "template": "Bath1",
 	    "labor": "14"
 	  }, {
 	    "photo": "http:\/\/www.homedepot.com\/catalog\/productImages\/400_compressed\/15\/15147c7f-2113-458b-b508-7a1754d2702b_400_compressed.jpg",
@@ -32381,7 +32486,6 @@
 	    "description": "Home Decorators Collection - Kensgrove 72 in. LED Indoor\/Outdoor Espresso Bronze Ceiling Fan",
 	    "category": "ceiling-fans-lights",
 	    "name": "ceilinglights1",
-	    "template": "Kitchen1",
 	    "labor": "15"
 	  }, {
 	    "photo": "http:\/\/www.homedepot.com\/catalog\/productImages\/400_compressed\/da\/da949f86-2b39-40a8-8c7d-d55747ecabb4_400_compressed.jpg",
@@ -32391,7 +32495,6 @@
 	    "description": "Pfister - Courant 4 in. Centerset 2-Handle Bathroom Faucet in Brushed Nickel",
 	    "category": "faucet",
 	    "name": "faucet3",
-	    "template": "Kitchen1",
 	    "labor": "16"
 	  }, {
 	    "photo": "http:\/\/www.homedepot.com\/catalog\/productImages\/400_compressed\/9e\/9e83a2df-3206-4448-87c5-e129cd2b3afe_400_compressed.jpg",
@@ -32401,7 +32504,6 @@
 	    "description": "SINKOLOGY - Pfister All-In-One Copper Kitchen Sink 33 in. 4-Hole Design Kit with Ashfield Pull Down Faucet in Rustic Bronze",
 	    "category": "kitchen-sink",
 	    "name": "kitchensink3",
-	    "template": "Kitchen1",
 	    "labor": "17"
 	  }, {
 	    "photo": "http:\/\/www.homedepot.com\/catalog\/productImages\/400_compressed\/7a\/7aff2237-d55a-4749-8835-56834f5d53ef_400_compressed.jpg",
@@ -32411,7 +32513,6 @@
 	    "description": "Hunter - Heathrow 52 in. Indoor Brushed Nickel Ceiling Fan with Light Kit",
 	    "category": "ceiling-fans-lights",
 	    "name": "ceilinglights2",
-	    "template": "Kitchen1",
 	    "labor": "18"
 	  }, {
 	    "photo": "http:\/\/www.homedepot.com\/catalog\/productImages\/400_compressed\/4c\/4ce94b27-608c-4384-b19c-d755b40edc4f_400_compressed.jpg",
@@ -32421,7 +32522,6 @@
 	    "description": "MOEN - Brantford 4 in. Centerset 2-Handle Low-Arc Bathroom Faucet in Brushed Nickel with Metal Drain Assembly",
 	    "category": "faucet",
 	    "name": "faucet4",
-	    "template": "Kitchen1",
 	    "labor": "19"
 	  }, {
 	    "photo": "http:\/\/www.homedepot.com\/catalog\/productImages\/400_compressed\/25\/25d619a2-935f-41fe-a3ee-44d3c311bdd0_400_compressed.jpg",
@@ -32431,7 +32531,6 @@
 	    "description": "Thermocast - Manhattan Drop-In Acrylic 33 in. 4-Hole Single Basin Kitchen Sink in White",
 	    "category": "kitchen-sink",
 	    "name": "kitchensink4",
-	    "template": "Livingroom1",
 	    "labor": "20"
 	  }, {
 	    "photo": "http:\/\/www.homedepot.com\/catalog\/productImages\/400_compressed\/d3\/d3eae112-2f1e-49cf-91fc-c80c126b6287_400_compressed.jpg",
@@ -32441,7 +32540,6 @@
 	    "description": "Hunter - Oakhurst 52 in. LED Indoor Low Profile Brushed Nickel Ceiling Fan with Light Kit",
 	    "category": "ceiling-fans-lights",
 	    "name": "ceilinglights3",
-	    "template": "Livingroom1",
 	    "labor": "21"
 	  }, {
 	    "photo": "http:\/\/www.homedepot.com\/catalog\/productImages\/400_compressed\/5c\/5c7956c1-5ddf-4714-9708-b461bbce4309_400_compressed.jpg",
@@ -32451,7 +32549,6 @@
 	    "description": "Delta - Lahara 4 in. Centerset 2-Handle Bathroom Faucet with Metal Drain Assembly in Champagne Bronze",
 	    "category": "faucet",
 	    "name": "faucet5",
-	    "template": "Livingroom1",
 	    "labor": "22"
 	  }, {
 	    "photo": "http:\/\/www.homedepot.com\/catalog\/productImages\/400_compressed\/ac\/ac08a37f-3b98-48f1-ade9-713ec33b8028_400_compressed.jpg",
@@ -32461,7 +32558,6 @@
 	    "description": "SINKOLOGY - Pfister All-In-One Angelico Copper Sink 33 in. Drop-In 3-Hole Kitchen Sink with Ashfield Pull Down Faucet Rustic Bronze",
 	    "category": "kitchen-sink",
 	    "name": "kitchensink5",
-	    "template": "Livingroom1",
 	    "labor": "23"
 	  }, {
 	    "photo": "http:\/\/www.homedepot.com\/catalog\/productImages\/400_compressed\/eb\/eb08ae36-f0d1-4ae2-8eae-08a3ab9a80f4_400_compressed.jpg",
@@ -32471,7 +32567,6 @@
 	    "description": "Hunter - Oakhurst 52 in. LED Indoor Low Profile New Bronze Ceiling Fan with Light Kit",
 	    "category": "ceiling-fans-lights",
 	    "name": "ceilinglights4",
-	    "template": "Livingroom1",
 	    "labor": "67"
 	  }] };
 
@@ -36311,6 +36406,90 @@
 	};
 	
 	module.exports = keyOf;
+
+/***/ }),
+/* 319 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _ProductAccess = __webpack_require__(237);
+	
+	var _ProductAccess2 = _interopRequireDefault(_ProductAccess);
+	
+	var _testProductAccess = __webpack_require__(272);
+	
+	var _testProductAccess2 = _interopRequireDefault(_testProductAccess);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var AutocompleteName = function (_Component) {
+	  _inherits(AutocompleteName, _Component);
+	
+	  function AutocompleteName() {
+	    _classCallCheck(this, AutocompleteName);
+	
+	    var _this = _possibleConstructorReturn(this, (AutocompleteName.__proto__ || Object.getPrototypeOf(AutocompleteName)).call(this));
+	
+	    _this.state = {};
+	
+	    return _this;
+	  }
+	
+	  _createClass(AutocompleteName, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      var that = this;
+	      var allProductNames = _testProductAccess2.default.getAllNames();
+	      //this would later be a promise function
+	      $(document).ready(function () {
+	        $('input.autocomplete').autocomplete({
+	          data: allProductNames,
+	          limit: 5, // The max amount of results that can be shown at once. Default: Infinity.
+	          onAutocomplete: function onAutocomplete(val) {
+	            // that.handleOnAutocomplete(val)
+	            $('input.autocomplete').val("");
+	            that.props.onAddItem(val);
+	          },
+	          minLength: 0 });
+	      });
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'input-field col s12' },
+	        _react2.default.createElement('input', { type: 'text', id: 'autocomplete-input', className: 'autocomplete' }),
+	        _react2.default.createElement(
+	          'label',
+	          { htmlFor: 'autocomplete-input' },
+	          'Type Here to Add Item'
+	        )
+	      );
+	    }
+	  }]);
+	
+	  return AutocompleteName;
+	}(_react.Component);
+	
+	exports.default = AutocompleteName;
 
 /***/ })
 /******/ ]);

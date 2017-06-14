@@ -60,13 +60,13 @@
 	
 	var _Main2 = _interopRequireDefault(_Main);
 	
-	var _reactRouterDom = __webpack_require__(272);
+	var _reactRouterDom = __webpack_require__(274);
 	
-	var _Nav = __webpack_require__(310);
+	var _Nav = __webpack_require__(312);
 	
 	var _Nav2 = _interopRequireDefault(_Nav);
 	
-	var _reactTapEventPlugin = __webpack_require__(311);
+	var _reactTapEventPlugin = __webpack_require__(313);
 	
 	var _reactTapEventPlugin2 = _interopRequireDefault(_reactTapEventPlugin);
 	
@@ -31396,12 +31396,12 @@
 /* 268 */
 /***/ (function(module, exports) {
 
-	'use strict';
+	"use strict";
 	
 	module.exports = {
-		Bath1: ['6410BN', '84603', 'HD320874LFR', 'HDDB33294', 'YG439-BN'],
-		Kitchen1: ['WS84912', '7413201.295', '67513W-6401', 'HD320874LFR', 'QK053'],
-		Livingroom1: ['WS84912', '7413201.295', '67513W-6401', 'HD320874LFR', 'QK053'],
+		Bath1: ["6410BN", "HD320874LFR", "88251+88278", "25706LF-ECO", "HDDB332274"],
+		Kitchen1: ["YG493OD-EB", "LF-048-COKK", "KDF-3322-GT529", "52110", "6610BN"],
+		Livingroom1: ["48400", "52125", "2538-CZMPU-DST", "SK101-33-GT529W", "52016"],
 	
 		all: ["6410BN", "HD320874LFR", "88251+88278", "25706LF-ECO", "HDDB332274", "YG493OD-EB", "LF-048-COKK", "KDF-3322-GT529", "52110", "6610BN", "48400", "52125", "2538-CZMPU-DST", "SK101-33-GT529W", "52016", "K-R99900-4D-BN", "K-RH5846-4-0", "51750", "84603", "HDSB252274", "YG439-BN", "WS84912SRN", "HDDB332294", "34914", "7764EBF", "HDDB332284QI", "YG446-BN", "67604W-6001", "K-RH5863-4-0", "CF544H-PEH", "WS84912", "HDSB252294", "YG188-NI", "67091W-6104", "VT3322G2", "AL383-BN", "7413201.295", "QK053", "AL383LED-BN", "LF-042-BRKK", "HDDB332284", "53331", "B510LF-PPU-ECO", "VT3322H0", "SW1422WH", "25984LF-OB-ECO", "VT3322B1", "58020", "B2511LF-PPU-ECO", "K-RH20060-4-NA", "14425", "WS84913SRN", "HDDB332274LFR", "52379", "67513W-6401", "HDDBD332210QB", "41350", "67513W-6027H2", "QK024", "YG216-WH", "LF-M42-YPYY", "HDSB252284", "YG533-SST-GLWH", "HKB5612AL", "K-3361-4-NA", "59183", "WS84503", "KS03322SB.010", "YG423-BN", "K-R76215-4D-BN", "K-RH5267-4-NA", "52012"]
 	};
@@ -31432,11 +31432,17 @@
 	
 	var _ProductAccess2 = _interopRequireDefault(_ProductAccess);
 	
+	var _testProductAccess = __webpack_require__(272);
+	
+	var _testProductAccess2 = _interopRequireDefault(_testProductAccess);
+	
 	var _templateConfig = __webpack_require__(268);
 	
 	var _templateConfig2 = _interopRequireDefault(_templateConfig);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
@@ -31453,29 +31459,161 @@
 			var _this = _possibleConstructorReturn(this, (NewEstimateRev1.__proto__ || Object.getPrototypeOf(NewEstimateRev1)).call(this));
 	
 			_this.state = {
-				templateValue: '0',
+				templateValue: 'Choose a Template',
 				salesmanValue: 'empty',
-				shoppingCart: []
+				shoppingCart: [],
+				shoppingCartTemplates: [],
+				subtotalMaterial: 0,
+				taxMaterial: 0,
+				totalMaterial: 0,
+				totalLabor: 0,
+				grandTotal: 0,
+				tax: 0.10
 			};
 			_this.handleOnAutocomplete = _this.handleOnAutocomplete.bind(_this);
 			_this.handleTemplateChange = _this.handleTemplateChange.bind(_this);
 			_this.handleSalesmanChange = _this.handleSalesmanChange.bind(_this);
 			_this.handleItemDelete = _this.handleItemDelete.bind(_this);
+			_this.handleChangeTotal = _this.handleChangeTotal.bind(_this);
 			return _this;
 		}
 	
 		_createClass(NewEstimateRev1, [{
 			key: 'handleOnAutocomplete',
 			value: function handleOnAutocomplete(val) {
-				console.log(val);
+				console.log(val, "hello");
+			}
+		}, {
+			key: 'handleChangeTotal',
+			value: function handleChangeTotal(subtotalMaterial, totalLabor) {
+				var tax = this.state.tax;
+	
+				var taxMaterial = tax * subtotalMaterial,
+				    totalMaterial = taxMaterial + subtotalMaterial,
+				    grandTotal = totalLabor + totalMaterial;
+	
+				this.setState({
+					subtotalMaterial: subtotalMaterial,
+					taxMaterial: taxMaterial,
+					totalLabor: totalLabor,
+					totalMaterial: totalMaterial,
+					grandTotal: grandTotal
+				});
 			}
 		}, {
 			key: 'handleTemplateChange',
 			value: function handleTemplateChange() {
-				console.log(_templateConfig2.default[event.target.innerHTML]);
-				this.setState({
-					templateValue: event.target.innerHTML
+				var templateValue = event.target.innerHTML;
+	
+				if (templateValue !== "Choose a Template") {
+					var templateModelNos = _templateConfig2.default[templateValue];
+					var _state = this.state,
+					    shoppingCartTemplates = _state.shoppingCartTemplates,
+					    shoppingCart = _state.shoppingCart;
+	
+					//Change this to database connection after demo. Testing is synchronous, database is async, use callbacks
+	
+					if (shoppingCartTemplates.indexOf(templateValue) === -1) {
+						shoppingCartTemplates.push(templateValue);
+						var newShoppingCartItems = _testProductAccess2.default.getModelNos(templateModelNos).filter(function (product) {
+							var addProduct = true;
+							shoppingCart.forEach(function (shoppingCartItem) {
+								if (shoppingCartItem.modelNo === product.modelNo) {
+									addProduct = false;
+								}
+							});
+							return addProduct;
+						});
+						//preparing for when database doesn't include templates
+						shoppingCart = [].concat(_toConsumableArray(shoppingCart), _toConsumableArray(newShoppingCartItems));
+					} else {
+						var templateIndex = shoppingCartTemplates.indexOf(templateValue);
+						var missingTemplateModelNos = templateModelNos.filter(function (templateModelNo) {
+							var templateNeededInShoppingcart = true;
+							shoppingCart.forEach(function (shoppingCartItem) {
+								if (templateModelNo === shoppingCartItem.modelNo) {
+									templateNeededInShoppingcart = false;
+								}
+							});
+							return templateNeededInShoppingcart;
+						});
+						if (missingTemplateModelNos.length > 0) {
+							shoppingCartTemplates.splice(templateIndex, 1);
+							shoppingCartTemplates.push(templateValue);
+							var _newShoppingCartItems = _testProductAccess2.default.getModelNos(templateModelNos).filter(function (product) {
+								var addProduct = true;
+								shoppingCart.forEach(function (shoppingCartItem) {
+									if (shoppingCartItem.modelNo === product.modelNo) {
+										addProduct = false;
+									}
+								});
+								return addProduct;
+							});
+							shoppingCart = [].concat(_toConsumableArray(shoppingCart), _toConsumableArray(_newShoppingCartItems));
+						}
+					}
+					var updatedShoppingCart = this.reorderShoppingCart(shoppingCart, templateValue);
+					this.setState({
+						templateValue: templateValue,
+						shoppingCart: updatedShoppingCart,
+						shoppingCartTemplates: shoppingCartTemplates
+					});
+				}
+			}
+	
+			// reordering shopping cart so that the latest template's items are all at the end
+	
+		}, {
+			key: 'reorderShoppingCart',
+			value: function reorderShoppingCart(shoppingCart, templateValue) {
+				var orderedShoppingCart = shoppingCart.filter(function () {
+					return true;
 				});
+				var ordered = true;
+				do {
+					var _ordered = true;
+					for (var i = orderedShoppingCart.length - 1; i >= 0; i--) {
+						if (i === orderedShoppingCart.length - 1) {
+							if (orderedShoppingCart[i].template === templateValue) {
+								console.log("first value in correct spot");
+							} else {
+								(function () {
+									console.log("first value not in correct spot");
+	
+									var firstTemplateIndex = void 0;
+									orderedShoppingCart.forEach(function (cartItem, index) {
+										if (firstTemplateIndex === undefined) {
+											firstTemplateIndex = index;
+										}
+									});
+									var firstTemplateItem = orderedShoppingCart[firstTemplateIndex];
+									orderedShoppingCart.splice(firstTemplateIndex, 1);
+									orderedShoppingCart.push(firstTemplateItem);
+									_ordered = false;
+									i = orderedShoppingCart.length;
+								})();
+							}
+						} else {
+							// not in first spot
+							if (orderedShoppingCart[i].template === templateValue) {
+								if (orderedShoppingCart[i + 1].template === templateValue) {
+									console.log("current template item is in order");
+								} else {
+									console.log("current template item is not in order");
+									var transposedCartItem = orderedShoppingCart[i];
+									orderedShoppingCart.splice(i, 1);
+									orderedShoppingCart.push(transposedCartItem);
+									_ordered = false;
+									i = orderedShoppingCart.length;
+								}
+							} else {
+								console.log("item is not in current template");
+							}
+						}
+					}
+				} while (ordered === false);
+	
+				return orderedShoppingCart;
 			}
 		}, {
 			key: 'handleSalesmanChange',
@@ -31489,10 +31627,21 @@
 			key: 'handleItemDelete',
 			value: function handleItemDelete(productIdentifier) {
 				var currentCart = this.state.shoppingCart;
+				var currentShoppingCartTemplate = this.state.shoppingCartTemplates;
 				var updatedCart = currentCart.filter(function (product) {
-					return product.name === productIdentifier ? false : true;
+					return product.modelNo === productIdentifier ? false : true;
+				});
+				var updatedShoppingCartTemplates = currentShoppingCartTemplate.filter(function (template) {
+					var keepTemplate = false;
+					updatedCart.forEach(function (cartItem) {
+						if (cartItem.template === template) {
+							keepTemplate = true;
+						}
+					});
+					return keepTemplate;
 				});
 				this.setState({
+					shoppingCartTemplates: updatedShoppingCartTemplates,
 					shoppingCart: updatedCart
 				});
 			}
@@ -31518,6 +31667,14 @@
 		}, {
 			key: 'render',
 			value: function render() {
+				var _state2 = this.state,
+				    grandTotal = _state2.grandTotal,
+				    subtotalMaterial = _state2.subtotalMaterial,
+				    totalLabor = _state2.totalLabor,
+				    totalMaterial = _state2.totalMaterial,
+				    taxMaterial = _state2.taxMaterial;
+	
+	
 				return _react2.default.createElement(
 					'div',
 					null,
@@ -31549,7 +31706,11 @@
 						_react2.default.createElement(
 							_reactMaterialize.Input,
 							{ s: 12, type: 'select', label: 'Template', defaultValue: this.state.templateValue, onChange: this.handleTemplateChange },
-							_react2.default.createElement('option', { value: '0' }),
+							_react2.default.createElement(
+								'option',
+								{ value: 'Choose a Template' },
+								'Choose a Template'
+							),
 							_react2.default.createElement(
 								'option',
 								{ value: 'Bath1' },
@@ -31570,7 +31731,7 @@
 					_react2.default.createElement(
 						_reactMaterialize.Row,
 						null,
-						_react2.default.createElement(_TableElement2.default, { shoppingCart: this.state.shoppingCart, onItemDelete: this.handleItemDelete })
+						_react2.default.createElement(_TableElement2.default, { shoppingCart: this.state.shoppingCart, onItemDelete: this.handleItemDelete, onChangeTotal: this.handleChangeTotal })
 					),
 					_react2.default.createElement(
 						_reactMaterialize.Row,
@@ -31619,54 +31780,20 @@
 										_react2.default.createElement(
 											'td',
 											null,
-											'$372.79'
+											'$',
+											subtotalMaterial.toFixed(2)
 										),
 										_react2.default.createElement(
 											'td',
 											null,
-											'$766.70'
-										),
-										_react2.default.createElement(
-											'td',
-											null,
-											'3.1365'
-										)
-									),
-									_react2.default.createElement(
-										'tr',
-										null,
-										_react2.default.createElement('td', null),
-										_react2.default.createElement(
-											'td',
-											null,
-											'$18.64'
-										),
-										_react2.default.createElement(
-											'td',
-											null,
-											'$513.36'
+											'$',
+											totalLabor.toFixed(2)
 										),
 										_react2.default.createElement(
 											'td',
 											null,
 											'3.1365'
 										)
-									),
-									_react2.default.createElement(
-										'tr',
-										null,
-										_react2.default.createElement('td', null),
-										_react2.default.createElement(
-											'td',
-											null,
-											'$319.43'
-										),
-										_react2.default.createElement(
-											'td',
-											null,
-											'$1,380.06'
-										),
-										_react2.default.createElement('td', null)
 									),
 									_react2.default.createElement(
 										'tr',
@@ -31679,7 +31806,8 @@
 										_react2.default.createElement(
 											'td',
 											null,
-											'$32.29'
+											'$',
+											taxMaterial.toFixed(2)
 										),
 										_react2.default.createElement('td', null),
 										_react2.default.createElement('td', null)
@@ -31695,12 +31823,14 @@
 										_react2.default.createElement(
 											'td',
 											null,
-											'$423.72'
+											'$',
+											totalMaterial.toFixed(2)
 										),
 										_react2.default.createElement(
 											'td',
 											null,
-											'$1,380.06'
+											'$',
+											totalLabor.toFixed(2)
 										),
 										_react2.default.createElement('td', null)
 									),
@@ -31715,7 +31845,8 @@
 										_react2.default.createElement(
 											'td',
 											null,
-											'$1803.78'
+											'$',
+											grandTotal.toFixed(2)
 										),
 										_react2.default.createElement('td', null),
 										_react2.default.createElement('td', null)
@@ -31771,9 +31902,15 @@
 	
 	    var _this = _possibleConstructorReturn(this, (TableElement.__proto__ || Object.getPrototypeOf(TableElement)).call(this));
 	
-	    _this.state = {};
+	    _this.state = {
+	      itemTotals: [],
+	      runningMaterialTotal: 0,
+	      laborCosts: 0
+	    };
 	    _this.handleNewEstimate = _this.handleNewEstimate.bind(_this);
 	    _this.handleDelete = _this.handleDelete.bind(_this);
+	    _this.handleQuantityChange = _this.handleQuantityChange.bind(_this);
+	    _this.updateQuantities = _this.updateQuantities.bind(_this);
 	    return _this;
 	  }
 	
@@ -31785,14 +31922,82 @@
 	  }, {
 	    key: 'handleDelete',
 	    value: function handleDelete(productIdentifier) {
+	      var itemTotals = this.state.itemTotals;
+	
+	      var runningMaterialTotal = 0,
+	          laborCosts = 0;
+	      itemTotals = itemTotals.filter(function (item) {
+	        return item.modelNo !== productIdentifier;
+	      });
+	      itemTotals.forEach(function (item) {
+	        runningMaterialTotal += item.total;
+	        laborCosts += item.labor;
+	      });
+	
+	      this.setState({
+	        itemTotals: itemTotals,
+	        runningMaterialTotal: runningMaterialTotal,
+	        laborCosts: laborCosts
+	      });
+	      this.props.onChangeTotal(runningMaterialTotal, laborCosts);
 	      this.props.onItemDelete(productIdentifier);
+	    }
+	  }, {
+	    key: 'updateQuantities',
+	    value: function updateQuantities() {
+	      var itemTotals = this.state.itemTotals;
+	
+	      var runningMaterialTotal = 0,
+	          laborCosts = 0;
+	
+	      itemTotals.forEach(function (item) {
+	        runningMaterialTotal += item.total;
+	        laborCosts += item.labor;
+	      });
+	      this.setState({
+	        runningMaterialTotal: runningMaterialTotal,
+	        laborCosts: laborCosts
+	      });
+	    }
+	  }, {
+	    key: 'handleQuantityChange',
+	    value: function handleQuantityChange(qty, price, total, modelNo, labor) {
+	      var itemTotals = this.state.itemTotals;
+	
+	      var updatedItem = itemTotals.length;
+	      var updatedMaterialTotal = total;
+	
+	      var runningMaterialTotal = 0,
+	          laborCosts = 0;
+	
+	      itemTotals.forEach(function (item, i) {
+	        if (item.modelNo === modelNo) {
+	          updatedItem = i;
+	        }
+	      });
+	
+	      itemTotals[updatedItem] = {
+	        modelNo: modelNo,
+	        total: total,
+	        labor: labor,
+	        qty: qty
+	      };
+	      itemTotals.forEach(function (item) {
+	        runningMaterialTotal += item.total;
+	        laborCosts += item.labor;
+	      });
+	
+	      this.setState({
+	        itemTotals: itemTotals,
+	        runningMaterialTotal: runningMaterialTotal,
+	        laborCosts: laborCosts
+	      });
+	      this.props.onChangeTotal(runningMaterialTotal, laborCosts);
 	    }
 	  }, {
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
-	      console.log(this.props.shoppingCart);
 	      var that = this;
-	
 	      $(document).ready(function () {
 	        $('input.autocomplete').autocomplete({
 	          data: {
@@ -31814,11 +32019,9 @@
 	
 	      var shoppingCart = this.props.shoppingCart;
 	
-	      console.log(shoppingCart);
 	      var renderTableEntry = function renderTableEntry() {
 	        return shoppingCart.map(function (product) {
-	          console.log(product);
-	          return _react2.default.createElement(_TableEntry2.default, { key: product.modelNo, product: product, onClickDelete: _this2.handleDelete });
+	          return _react2.default.createElement(_TableEntry2.default, { key: product.modelNo, product: product, onClickDelete: _this2.handleDelete, quantityChange: _this2.handleQuantityChange });
 	        });
 	      };
 	
@@ -31843,6 +32046,11 @@
 	            ),
 	            _react2.default.createElement(
 	              'th',
+	              { 'data-field': 'Quantity' },
+	              'Qty'
+	            ),
+	            _react2.default.createElement(
+	              'th',
 	              { 'data-field': 'ModelNo' },
 	              'ModelNo'
 	            ),
@@ -31864,7 +32072,7 @@
 	            _react2.default.createElement(
 	              'th',
 	              { 'data-field': 'Labor' },
-	              'Material'
+	              'Labor'
 	            ),
 	            _react2.default.createElement(
 	              'th',
@@ -31952,13 +32160,40 @@
 	    _this.state = {};
 	
 	    _this.handleDelete = _this.handleDelete.bind(_this);
+	    _this.handleQuantityChange = _this.handleQuantityChange.bind(_this);
+	    _this.handleEmptyInput = _this.handleEmptyInput.bind(_this);
 	    return _this;
 	  }
 	
 	  _createClass(TableEntry, [{
 	    key: 'handleDelete',
 	    value: function handleDelete() {
-	      this.props.onClickDelete(this.props.product.name);
+	      this.props.onClickDelete(this.props.product.modelNo);
+	    }
+	  }, {
+	    key: 'handleQuantityChange',
+	    value: function handleQuantityChange() {
+	      var product = this.props.product;
+	
+	      var qty = void 0,
+	          price = void 0;
+	      if (isNaN(this.refs.qty.value) || this.refs.qty.value === "") {
+	        qty = '0';
+	      } else {
+	        qty = this.refs.qty.value;
+	      }
+	
+	      price = product.price.replace(/\$(.*)/, '$1');
+	      var total = parseFloat(qty) * parseFloat(price);
+	      var laborCost = parseInt(product.labor) * parseFloat(qty);
+	      this.props.quantityChange(qty, price, total, product.modelNo, laborCost);
+	    }
+	  }, {
+	    key: 'handleEmptyInput',
+	    value: function handleEmptyInput() {
+	      if (isNaN(this.refs.qty.value) || this.refs.qty.value === "") {
+	        this.refs.qty.value = 0;
+	      }
 	    }
 	  }, {
 	    key: 'componentDidMount',
@@ -31970,7 +32205,7 @@
 	
 	      return _react2.default.createElement(
 	        'tr',
-	        null,
+	        { className: 'tableEntry' },
 	        _react2.default.createElement(
 	          'td',
 	          null,
@@ -31980,6 +32215,11 @@
 	          'td',
 	          null,
 	          product.category
+	        ),
+	        _react2.default.createElement(
+	          'td',
+	          null,
+	          _react2.default.createElement('input', { className: 'quantityInput', type: 'text', ref: 'qty', onChange: this.handleQuantityChange, onBlur: this.handleEmptyInput, defaultValue: '0' })
 	        ),
 	        _react2.default.createElement(
 	          'td',
@@ -32004,7 +32244,8 @@
 	        _react2.default.createElement(
 	          'td',
 	          null,
-	          '$10.00'
+	          '$',
+	          parseInt(product.labor).toFixed(2)
 	        ),
 	        _react2.default.createElement(
 	          'td',
@@ -32044,58 +32285,254 @@
 
 	'use strict';
 	
+	var _testDatabase = __webpack_require__(273);
+	
+	var _testDatabase2 = _interopRequireDefault(_testDatabase);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	module.exports = {
+	
+	  getModelNo: function getModelNo(modelNo) {
+	    var selectedProduct = void 0;
+	    _testDatabase2.default.products.forEach(function (product) {
+	      if (product.modelNo === modelNo) {
+	        selectedProduct = product;
+	      }
+	    });
+	    return selectedProduct;
+	  },
+	  allProducts: function allProducts() {
+	    return _testDatabase2.default.products;
+	  },
+	  getModelNos: function getModelNos(modelNos) {
+	    var selectedProducts = [];
+	    _testDatabase2.default.products.forEach(function (product) {
+	      if (modelNos.indexOf(product.modelNo) > -1) {
+	        selectedProducts.push(product);
+	      }
+	    });
+	    return selectedProducts;
+	  }
+	};
+
+/***/ }),
+/* 273 */
+/***/ (function(module, exports) {
+
+	"use strict";
+	
+	module.exports = {
+	  products: [{
+	    "photo": "http:\/\/www.homedepot.com\/catalog\/productImages\/400_compressed\/33\/333121b1-f38c-4579-a096-90fc55d7eb43_400_compressed.jpg",
+	    "price": "$108.86",
+	    "modelNo": "6410BN",
+	    "refURL": "http:\/\/www.homedepot.com\/s\/6410BN",
+	    "description": "MOEN - Eva 4 in. Centerset 2-Handle High-Arc Bathroom Faucet in Brushed Nickel",
+	    "category": "faucet",
+	    "name": "faucet1",
+	    "template": "Bath1",
+	    "labor": "10"
+	  }, {
+	    "photo": "http:\/\/www.homedepot.com\/catalog\/productImages\/400_compressed\/34\/34e81148-a081-4f36-8614-9e6a607f0b3c_400_compressed.jpg",
+	    "price": "$106.00",
+	    "modelNo": "HD320874LFR",
+	    "refURL": "http:\/\/www.homedepot.com\/s\/HD320874LFR",
+	    "description": "Elkay - Neptune All-in-One Drop-In Stainless Steel 15 in. 2-Hole Bar Sink",
+	    "category": "kitchen-sink",
+	    "name": "kitchensink1",
+	    "template": "Bath1",
+	    "labor": "10"
+	  }, {
+	    "photo": "http:\/\/www.homedepot.com\/catalog\/productImages\/400_compressed\/49\/49a62d7c-bd35-434f-a3e1-098eb8cff53b_400_compressed.jpg",
+	    "price": "$599.99",
+	    "modelNo": "88251+88278",
+	    "refURL": "http:\/\/www.homedepot.com\/s\/88251+88278",
+	    "description": "TroposAir - Titan 72 in. Indoor\/Outdoor Brushed Nickel Ceiling Fan and Light",
+	    "category": "ceiling-fans-lights",
+	    "name": "ceilinglights1",
+	    "template": "Bath1",
+	    "labor": "11"
+	  }, {
+	    "photo": "http:\/\/www.homedepot.com\/catalog\/productImages\/400_compressed\/a9\/a9a00860-7082-4e0b-b311-b3c4c771b3c3_400_compressed.jpg",
+	    "price": "$59.00",
+	    "modelNo": "25706LF-ECO",
+	    "refURL": "http:\/\/www.homedepot.com\/s\/25706LF-ECO",
+	    "description": "Delta - Zella 4 in. Centerset 2-Handle Bathroom Faucet in Chrome",
+	    "category": "faucet",
+	    "name": "faucet2",
+	    "template": "Bath1",
+	    "labor": "12"
+	  }, {
+	    "photo": "http:\/\/www.homedepot.com\/catalog\/productImages\/400_compressed\/ed\/ed858f0f-99b5-46ae-83ec-f1e7b193845f_400_compressed.jpg",
+	    "price": "$99.00",
+	    "modelNo": "HDDB332274",
+	    "refURL": "http:\/\/www.homedepot.com\/s\/HDDB332274",
+	    "description": "Glacier Bay - Drop-In Stainless Steel 33 in. 4-Hole Double Basin Kitchen Sink",
+	    "category": "kitchen-sink",
+	    "name": "kitchensink2",
+	    "template": "Bath1",
+	    "labor": "14"
+	  }, {
+	    "photo": "http:\/\/www.homedepot.com\/catalog\/productImages\/400_compressed\/15\/15147c7f-2113-458b-b508-7a1754d2702b_400_compressed.jpg",
+	    "price": "$299.00",
+	    "modelNo": "YG493OD-EB",
+	    "refURL": "http:\/\/www.homedepot.com\/s\/YG493OD-EB",
+	    "description": "Home Decorators Collection - Kensgrove 72 in. LED Indoor\/Outdoor Espresso Bronze Ceiling Fan",
+	    "category": "ceiling-fans-lights",
+	    "name": "ceilinglights1",
+	    "template": "Kitchen1",
+	    "labor": "15"
+	  }, {
+	    "photo": "http:\/\/www.homedepot.com\/catalog\/productImages\/400_compressed\/da\/da949f86-2b39-40a8-8c7d-d55747ecabb4_400_compressed.jpg",
+	    "price": "$59.00",
+	    "modelNo": "LF-048-COKK",
+	    "refURL": "http:\/\/www.homedepot.com\/s\/LF-048-COKK",
+	    "description": "Pfister - Courant 4 in. Centerset 2-Handle Bathroom Faucet in Brushed Nickel",
+	    "category": "faucet",
+	    "name": "faucet3",
+	    "template": "Kitchen1",
+	    "labor": "16"
+	  }, {
+	    "photo": "http:\/\/www.homedepot.com\/catalog\/productImages\/400_compressed\/9e\/9e83a2df-3206-4448-87c5-e129cd2b3afe_400_compressed.jpg",
+	    "price": "$868.45",
+	    "modelNo": "KDF-3322-GT529",
+	    "refURL": "http:\/\/www.homedepot.com\/s\/KDF-3322-GT529",
+	    "description": "SINKOLOGY - Pfister All-In-One Copper Kitchen Sink 33 in. 4-Hole Design Kit with Ashfield Pull Down Faucet in Rustic Bronze",
+	    "category": "kitchen-sink",
+	    "name": "kitchensink3",
+	    "template": "Kitchen1",
+	    "labor": "17"
+	  }, {
+	    "photo": "http:\/\/www.homedepot.com\/catalog\/productImages\/400_compressed\/7a\/7aff2237-d55a-4749-8835-56834f5d53ef_400_compressed.jpg",
+	    "price": "$96.75",
+	    "modelNo": "52110",
+	    "refURL": "http:\/\/www.homedepot.com\/s\/52110",
+	    "description": "Hunter - Heathrow 52 in. Indoor Brushed Nickel Ceiling Fan with Light Kit",
+	    "category": "ceiling-fans-lights",
+	    "name": "ceilinglights2",
+	    "template": "Kitchen1",
+	    "labor": "18"
+	  }, {
+	    "photo": "http:\/\/www.homedepot.com\/catalog\/productImages\/400_compressed\/4c\/4ce94b27-608c-4384-b19c-d755b40edc4f_400_compressed.jpg",
+	    "price": "$110.00",
+	    "modelNo": "6610BN",
+	    "refURL": "http:\/\/www.homedepot.com\/s\/6610BN",
+	    "description": "MOEN - Brantford 4 in. Centerset 2-Handle Low-Arc Bathroom Faucet in Brushed Nickel with Metal Drain Assembly",
+	    "category": "faucet",
+	    "name": "faucet4",
+	    "template": "Kitchen1",
+	    "labor": "19"
+	  }, {
+	    "photo": "http:\/\/www.homedepot.com\/catalog\/productImages\/400_compressed\/25\/25d619a2-935f-41fe-a3ee-44d3c311bdd0_400_compressed.jpg",
+	    "price": "$200.82",
+	    "modelNo": "48400",
+	    "refURL": "http:\/\/www.homedepot.com\/s\/48400",
+	    "description": "Thermocast - Manhattan Drop-In Acrylic 33 in. 4-Hole Single Basin Kitchen Sink in White",
+	    "category": "kitchen-sink",
+	    "name": "kitchensink4",
+	    "template": "Livingroom1",
+	    "labor": "20"
+	  }, {
+	    "photo": "http:\/\/www.homedepot.com\/catalog\/productImages\/400_compressed\/d3\/d3eae112-2f1e-49cf-91fc-c80c126b6287_400_compressed.jpg",
+	    "price": "$99.00",
+	    "modelNo": "52125",
+	    "refURL": "http:\/\/www.homedepot.com\/s\/52125",
+	    "description": "Hunter - Oakhurst 52 in. LED Indoor Low Profile Brushed Nickel Ceiling Fan with Light Kit",
+	    "category": "ceiling-fans-lights",
+	    "name": "ceilinglights3",
+	    "template": "Livingroom1",
+	    "labor": "21"
+	  }, {
+	    "photo": "http:\/\/www.homedepot.com\/catalog\/productImages\/400_compressed\/5c\/5c7956c1-5ddf-4714-9708-b461bbce4309_400_compressed.jpg",
+	    "price": "$124.76",
+	    "modelNo": "2538-CZMPU-DST",
+	    "refURL": "http:\/\/www.homedepot.com\/s\/2538-CZMPU-DST",
+	    "description": "Delta - Lahara 4 in. Centerset 2-Handle Bathroom Faucet with Metal Drain Assembly in Champagne Bronze",
+	    "category": "faucet",
+	    "name": "faucet5",
+	    "template": "Livingroom1",
+	    "labor": "22"
+	  }, {
+	    "photo": "http:\/\/www.homedepot.com\/catalog\/productImages\/400_compressed\/ac\/ac08a37f-3b98-48f1-ade9-713ec33b8028_400_compressed.jpg",
+	    "price": "$799.76",
+	    "modelNo": "SK101-33-GT529W",
+	    "refURL": "http:\/\/www.homedepot.com\/s\/SK101-33-GT529W",
+	    "description": "SINKOLOGY - Pfister All-In-One Angelico Copper Sink 33 in. Drop-In 3-Hole Kitchen Sink with Ashfield Pull Down Faucet Rustic Bronze",
+	    "category": "kitchen-sink",
+	    "name": "kitchensink5",
+	    "template": "Livingroom1",
+	    "labor": "23"
+	  }, {
+	    "photo": "http:\/\/www.homedepot.com\/catalog\/productImages\/400_compressed\/eb\/eb08ae36-f0d1-4ae2-8eae-08a3ab9a80f4_400_compressed.jpg",
+	    "price": "$99.99",
+	    "modelNo": "52016",
+	    "refURL": "http:\/\/www.homedepot.com\/s\/52016",
+	    "description": "Hunter - Oakhurst 52 in. LED Indoor Low Profile New Bronze Ceiling Fan with Light Kit",
+	    "category": "ceiling-fans-lights",
+	    "name": "ceilinglights4",
+	    "template": "Livingroom1",
+	    "labor": "67"
+	  }] };
+
+/***/ }),
+/* 274 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
 	exports.__esModule = true;
 	exports.withRouter = exports.matchPath = exports.Switch = exports.StaticRouter = exports.Router = exports.Route = exports.Redirect = exports.Prompt = exports.NavLink = exports.MemoryRouter = exports.Link = exports.HashRouter = exports.BrowserRouter = undefined;
 	
-	var _BrowserRouter2 = __webpack_require__(273);
+	var _BrowserRouter2 = __webpack_require__(275);
 	
 	var _BrowserRouter3 = _interopRequireDefault(_BrowserRouter2);
 	
-	var _HashRouter2 = __webpack_require__(297);
+	var _HashRouter2 = __webpack_require__(299);
 	
 	var _HashRouter3 = _interopRequireDefault(_HashRouter2);
 	
-	var _Link2 = __webpack_require__(299);
+	var _Link2 = __webpack_require__(301);
 	
 	var _Link3 = _interopRequireDefault(_Link2);
 	
-	var _MemoryRouter2 = __webpack_require__(300);
+	var _MemoryRouter2 = __webpack_require__(302);
 	
 	var _MemoryRouter3 = _interopRequireDefault(_MemoryRouter2);
 	
-	var _NavLink2 = __webpack_require__(301);
+	var _NavLink2 = __webpack_require__(303);
 	
 	var _NavLink3 = _interopRequireDefault(_NavLink2);
 	
-	var _Prompt2 = __webpack_require__(302);
+	var _Prompt2 = __webpack_require__(304);
 	
 	var _Prompt3 = _interopRequireDefault(_Prompt2);
 	
-	var _Redirect2 = __webpack_require__(303);
+	var _Redirect2 = __webpack_require__(305);
 	
 	var _Redirect3 = _interopRequireDefault(_Redirect2);
 	
-	var _Route2 = __webpack_require__(304);
+	var _Route2 = __webpack_require__(306);
 	
 	var _Route3 = _interopRequireDefault(_Route2);
 	
-	var _Router2 = __webpack_require__(305);
+	var _Router2 = __webpack_require__(307);
 	
 	var _Router3 = _interopRequireDefault(_Router2);
 	
-	var _StaticRouter2 = __webpack_require__(306);
+	var _StaticRouter2 = __webpack_require__(308);
 	
 	var _StaticRouter3 = _interopRequireDefault(_StaticRouter2);
 	
-	var _Switch2 = __webpack_require__(307);
+	var _Switch2 = __webpack_require__(309);
 	
 	var _Switch3 = _interopRequireDefault(_Switch2);
 	
-	var _matchPath2 = __webpack_require__(308);
+	var _matchPath2 = __webpack_require__(310);
 	
 	var _matchPath3 = _interopRequireDefault(_matchPath2);
 	
-	var _withRouter2 = __webpack_require__(309);
+	var _withRouter2 = __webpack_require__(311);
 	
 	var _withRouter3 = _interopRequireDefault(_withRouter2);
 	
@@ -32116,7 +32553,7 @@
 	exports.withRouter = _withRouter3.default;
 
 /***/ }),
-/* 273 */
+/* 275 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -32131,11 +32568,11 @@
 	
 	var _propTypes2 = _interopRequireDefault(_propTypes);
 	
-	var _createBrowserHistory = __webpack_require__(274);
+	var _createBrowserHistory = __webpack_require__(276);
 	
 	var _createBrowserHistory2 = _interopRequireDefault(_createBrowserHistory);
 	
-	var _reactRouter = __webpack_require__(283);
+	var _reactRouter = __webpack_require__(285);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -32180,7 +32617,7 @@
 	exports.default = BrowserRouter;
 
 /***/ }),
-/* 274 */
+/* 276 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -32191,23 +32628,23 @@
 	
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 	
-	var _warning = __webpack_require__(275);
+	var _warning = __webpack_require__(277);
 	
 	var _warning2 = _interopRequireDefault(_warning);
 	
-	var _invariant = __webpack_require__(276);
+	var _invariant = __webpack_require__(278);
 	
 	var _invariant2 = _interopRequireDefault(_invariant);
 	
-	var _LocationUtils = __webpack_require__(277);
+	var _LocationUtils = __webpack_require__(279);
 	
-	var _PathUtils = __webpack_require__(280);
+	var _PathUtils = __webpack_require__(282);
 	
-	var _createTransitionManager = __webpack_require__(281);
+	var _createTransitionManager = __webpack_require__(283);
 	
 	var _createTransitionManager2 = _interopRequireDefault(_createTransitionManager);
 	
-	var _DOMUtils = __webpack_require__(282);
+	var _DOMUtils = __webpack_require__(284);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -32493,7 +32930,7 @@
 	exports.default = createBrowserHistory;
 
 /***/ }),
-/* 275 */
+/* 277 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -32560,7 +32997,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }),
-/* 276 */
+/* 278 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -32618,7 +33055,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }),
-/* 277 */
+/* 279 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -32628,15 +33065,15 @@
 	
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 	
-	var _resolvePathname = __webpack_require__(278);
+	var _resolvePathname = __webpack_require__(280);
 	
 	var _resolvePathname2 = _interopRequireDefault(_resolvePathname);
 	
-	var _valueEqual = __webpack_require__(279);
+	var _valueEqual = __webpack_require__(281);
 	
 	var _valueEqual2 = _interopRequireDefault(_valueEqual);
 	
-	var _PathUtils = __webpack_require__(280);
+	var _PathUtils = __webpack_require__(282);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -32686,7 +33123,7 @@
 	};
 
 /***/ }),
-/* 278 */
+/* 280 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -32761,7 +33198,7 @@
 	module.exports = resolvePathname;
 
 /***/ }),
-/* 279 */
+/* 281 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -32806,7 +33243,7 @@
 	exports.default = valueEqual;
 
 /***/ }),
-/* 280 */
+/* 282 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -32870,14 +33307,14 @@
 	};
 
 /***/ }),
-/* 281 */
+/* 283 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	exports.__esModule = true;
 	
-	var _warning = __webpack_require__(275);
+	var _warning = __webpack_require__(277);
 	
 	var _warning2 = _interopRequireDefault(_warning);
 	
@@ -32960,7 +33397,7 @@
 	exports.default = createTransitionManager;
 
 /***/ }),
-/* 282 */
+/* 284 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -33020,7 +33457,7 @@
 	};
 
 /***/ }),
-/* 283 */
+/* 285 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33028,39 +33465,39 @@
 	exports.__esModule = true;
 	exports.withRouter = exports.matchPath = exports.Switch = exports.StaticRouter = exports.Router = exports.Route = exports.Redirect = exports.Prompt = exports.MemoryRouter = undefined;
 	
-	var _MemoryRouter2 = __webpack_require__(284);
+	var _MemoryRouter2 = __webpack_require__(286);
 	
 	var _MemoryRouter3 = _interopRequireDefault(_MemoryRouter2);
 	
-	var _Prompt2 = __webpack_require__(287);
+	var _Prompt2 = __webpack_require__(289);
 	
 	var _Prompt3 = _interopRequireDefault(_Prompt2);
 	
-	var _Redirect2 = __webpack_require__(288);
+	var _Redirect2 = __webpack_require__(290);
 	
 	var _Redirect3 = _interopRequireDefault(_Redirect2);
 	
-	var _Route2 = __webpack_require__(289);
+	var _Route2 = __webpack_require__(291);
 	
 	var _Route3 = _interopRequireDefault(_Route2);
 	
-	var _Router2 = __webpack_require__(286);
+	var _Router2 = __webpack_require__(288);
 	
 	var _Router3 = _interopRequireDefault(_Router2);
 	
-	var _StaticRouter2 = __webpack_require__(293);
+	var _StaticRouter2 = __webpack_require__(295);
 	
 	var _StaticRouter3 = _interopRequireDefault(_StaticRouter2);
 	
-	var _Switch2 = __webpack_require__(294);
+	var _Switch2 = __webpack_require__(296);
 	
 	var _Switch3 = _interopRequireDefault(_Switch2);
 	
-	var _matchPath2 = __webpack_require__(290);
+	var _matchPath2 = __webpack_require__(292);
 	
 	var _matchPath3 = _interopRequireDefault(_matchPath2);
 	
-	var _withRouter2 = __webpack_require__(295);
+	var _withRouter2 = __webpack_require__(297);
 	
 	var _withRouter3 = _interopRequireDefault(_withRouter2);
 	
@@ -33077,7 +33514,7 @@
 	exports.withRouter = _withRouter3.default;
 
 /***/ }),
-/* 284 */
+/* 286 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33092,11 +33529,11 @@
 	
 	var _propTypes2 = _interopRequireDefault(_propTypes);
 	
-	var _createMemoryHistory = __webpack_require__(285);
+	var _createMemoryHistory = __webpack_require__(287);
 	
 	var _createMemoryHistory2 = _interopRequireDefault(_createMemoryHistory);
 	
-	var _Router = __webpack_require__(286);
+	var _Router = __webpack_require__(288);
 	
 	var _Router2 = _interopRequireDefault(_Router);
 	
@@ -33143,7 +33580,7 @@
 	exports.default = MemoryRouter;
 
 /***/ }),
-/* 285 */
+/* 287 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33154,15 +33591,15 @@
 	
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 	
-	var _warning = __webpack_require__(275);
+	var _warning = __webpack_require__(277);
 	
 	var _warning2 = _interopRequireDefault(_warning);
 	
-	var _PathUtils = __webpack_require__(280);
+	var _PathUtils = __webpack_require__(282);
 	
-	var _LocationUtils = __webpack_require__(277);
+	var _LocationUtils = __webpack_require__(279);
 	
-	var _createTransitionManager = __webpack_require__(281);
+	var _createTransitionManager = __webpack_require__(283);
 	
 	var _createTransitionManager2 = _interopRequireDefault(_createTransitionManager);
 	
@@ -33318,7 +33755,7 @@
 	exports.default = createMemoryHistory;
 
 /***/ }),
-/* 286 */
+/* 288 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33327,11 +33764,11 @@
 	
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 	
-	var _warning = __webpack_require__(275);
+	var _warning = __webpack_require__(277);
 	
 	var _warning2 = _interopRequireDefault(_warning);
 	
-	var _invariant = __webpack_require__(276);
+	var _invariant = __webpack_require__(278);
 	
 	var _invariant2 = _interopRequireDefault(_invariant);
 	
@@ -33442,7 +33879,7 @@
 	exports.default = Router;
 
 /***/ }),
-/* 287 */
+/* 289 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33531,7 +33968,7 @@
 	exports.default = Prompt;
 
 /***/ }),
-/* 288 */
+/* 290 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33620,7 +34057,7 @@
 	exports.default = Redirect;
 
 /***/ }),
-/* 289 */
+/* 291 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33629,7 +34066,7 @@
 	
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 	
-	var _warning = __webpack_require__(275);
+	var _warning = __webpack_require__(277);
 	
 	var _warning2 = _interopRequireDefault(_warning);
 	
@@ -33641,7 +34078,7 @@
 	
 	var _propTypes2 = _interopRequireDefault(_propTypes);
 	
-	var _matchPath = __webpack_require__(290);
+	var _matchPath = __webpack_require__(292);
 	
 	var _matchPath2 = _interopRequireDefault(_matchPath);
 	
@@ -33770,14 +34207,14 @@
 	exports.default = Route;
 
 /***/ }),
-/* 290 */
+/* 292 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	exports.__esModule = true;
 	
-	var _pathToRegexp = __webpack_require__(291);
+	var _pathToRegexp = __webpack_require__(293);
 	
 	var _pathToRegexp2 = _interopRequireDefault(_pathToRegexp);
 	
@@ -33850,10 +34287,10 @@
 	exports.default = matchPath;
 
 /***/ }),
-/* 291 */
+/* 293 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var isarray = __webpack_require__(292)
+	var isarray = __webpack_require__(294)
 	
 	/**
 	 * Expose `pathToRegexp`.
@@ -34282,7 +34719,7 @@
 
 
 /***/ }),
-/* 292 */
+/* 294 */
 /***/ (function(module, exports) {
 
 	module.exports = Array.isArray || function (arr) {
@@ -34291,7 +34728,7 @@
 
 
 /***/ }),
-/* 293 */
+/* 295 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -34300,7 +34737,7 @@
 	
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 	
-	var _invariant = __webpack_require__(276);
+	var _invariant = __webpack_require__(278);
 	
 	var _invariant2 = _interopRequireDefault(_invariant);
 	
@@ -34312,9 +34749,9 @@
 	
 	var _propTypes2 = _interopRequireDefault(_propTypes);
 	
-	var _PathUtils = __webpack_require__(280);
+	var _PathUtils = __webpack_require__(282);
 	
-	var _Router = __webpack_require__(286);
+	var _Router = __webpack_require__(288);
 	
 	var _Router2 = _interopRequireDefault(_Router);
 	
@@ -34473,7 +34910,7 @@
 	exports.default = StaticRouter;
 
 /***/ }),
-/* 294 */
+/* 296 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -34488,11 +34925,11 @@
 	
 	var _propTypes2 = _interopRequireDefault(_propTypes);
 	
-	var _warning = __webpack_require__(275);
+	var _warning = __webpack_require__(277);
 	
 	var _warning2 = _interopRequireDefault(_warning);
 	
-	var _matchPath = __webpack_require__(290);
+	var _matchPath = __webpack_require__(292);
 	
 	var _matchPath2 = _interopRequireDefault(_matchPath);
 	
@@ -34565,7 +35002,7 @@
 	exports.default = Switch;
 
 /***/ }),
-/* 295 */
+/* 297 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -34582,11 +35019,11 @@
 	
 	var _propTypes2 = _interopRequireDefault(_propTypes);
 	
-	var _hoistNonReactStatics = __webpack_require__(296);
+	var _hoistNonReactStatics = __webpack_require__(298);
 	
 	var _hoistNonReactStatics2 = _interopRequireDefault(_hoistNonReactStatics);
 	
-	var _Route = __webpack_require__(289);
+	var _Route = __webpack_require__(291);
 	
 	var _Route2 = _interopRequireDefault(_Route);
 	
@@ -34619,7 +35056,7 @@
 	exports.default = withRouter;
 
 /***/ }),
-/* 296 */
+/* 298 */
 /***/ (function(module, exports) {
 
 	/**
@@ -34675,7 +35112,7 @@
 
 
 /***/ }),
-/* 297 */
+/* 299 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -34690,11 +35127,11 @@
 	
 	var _propTypes2 = _interopRequireDefault(_propTypes);
 	
-	var _createHashHistory = __webpack_require__(298);
+	var _createHashHistory = __webpack_require__(300);
 	
 	var _createHashHistory2 = _interopRequireDefault(_createHashHistory);
 	
-	var _reactRouter = __webpack_require__(283);
+	var _reactRouter = __webpack_require__(285);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -34738,7 +35175,7 @@
 	exports.default = HashRouter;
 
 /***/ }),
-/* 298 */
+/* 300 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -34747,23 +35184,23 @@
 	
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 	
-	var _warning = __webpack_require__(275);
+	var _warning = __webpack_require__(277);
 	
 	var _warning2 = _interopRequireDefault(_warning);
 	
-	var _invariant = __webpack_require__(276);
+	var _invariant = __webpack_require__(278);
 	
 	var _invariant2 = _interopRequireDefault(_invariant);
 	
-	var _LocationUtils = __webpack_require__(277);
+	var _LocationUtils = __webpack_require__(279);
 	
-	var _PathUtils = __webpack_require__(280);
+	var _PathUtils = __webpack_require__(282);
 	
-	var _createTransitionManager = __webpack_require__(281);
+	var _createTransitionManager = __webpack_require__(283);
 	
 	var _createTransitionManager2 = _interopRequireDefault(_createTransitionManager);
 	
-	var _DOMUtils = __webpack_require__(282);
+	var _DOMUtils = __webpack_require__(284);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -35065,7 +35502,7 @@
 	exports.default = createHashHistory;
 
 /***/ }),
-/* 299 */
+/* 301 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -35172,14 +35609,14 @@
 	exports.default = Link;
 
 /***/ }),
-/* 300 */
+/* 302 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	exports.__esModule = true;
 	
-	var _reactRouter = __webpack_require__(283);
+	var _reactRouter = __webpack_require__(285);
 	
 	Object.defineProperty(exports, 'default', {
 	  enumerable: true,
@@ -35189,7 +35626,7 @@
 	});
 
 /***/ }),
-/* 301 */
+/* 303 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -35208,9 +35645,9 @@
 	
 	var _propTypes2 = _interopRequireDefault(_propTypes);
 	
-	var _reactRouter = __webpack_require__(283);
+	var _reactRouter = __webpack_require__(285);
 	
-	var _Link = __webpack_require__(299);
+	var _Link = __webpack_require__(301);
 	
 	var _Link2 = _interopRequireDefault(_Link);
 	
@@ -35274,40 +35711,6 @@
 	exports.default = NavLink;
 
 /***/ }),
-/* 302 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	exports.__esModule = true;
-	
-	var _reactRouter = __webpack_require__(283);
-	
-	Object.defineProperty(exports, 'default', {
-	  enumerable: true,
-	  get: function get() {
-	    return _reactRouter.Prompt;
-	  }
-	});
-
-/***/ }),
-/* 303 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	exports.__esModule = true;
-	
-	var _reactRouter = __webpack_require__(283);
-	
-	Object.defineProperty(exports, 'default', {
-	  enumerable: true,
-	  get: function get() {
-	    return _reactRouter.Redirect;
-	  }
-	});
-
-/***/ }),
 /* 304 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -35315,12 +35718,12 @@
 	
 	exports.__esModule = true;
 	
-	var _reactRouter = __webpack_require__(283);
+	var _reactRouter = __webpack_require__(285);
 	
 	Object.defineProperty(exports, 'default', {
 	  enumerable: true,
 	  get: function get() {
-	    return _reactRouter.Route;
+	    return _reactRouter.Prompt;
 	  }
 	});
 
@@ -35332,12 +35735,12 @@
 	
 	exports.__esModule = true;
 	
-	var _reactRouter = __webpack_require__(283);
+	var _reactRouter = __webpack_require__(285);
 	
 	Object.defineProperty(exports, 'default', {
 	  enumerable: true,
 	  get: function get() {
-	    return _reactRouter.Router;
+	    return _reactRouter.Redirect;
 	  }
 	});
 
@@ -35349,12 +35752,12 @@
 	
 	exports.__esModule = true;
 	
-	var _reactRouter = __webpack_require__(283);
+	var _reactRouter = __webpack_require__(285);
 	
 	Object.defineProperty(exports, 'default', {
 	  enumerable: true,
 	  get: function get() {
-	    return _reactRouter.StaticRouter;
+	    return _reactRouter.Route;
 	  }
 	});
 
@@ -35366,12 +35769,12 @@
 	
 	exports.__esModule = true;
 	
-	var _reactRouter = __webpack_require__(283);
+	var _reactRouter = __webpack_require__(285);
 	
 	Object.defineProperty(exports, 'default', {
 	  enumerable: true,
 	  get: function get() {
-	    return _reactRouter.Switch;
+	    return _reactRouter.Router;
 	  }
 	});
 
@@ -35383,12 +35786,12 @@
 	
 	exports.__esModule = true;
 	
-	var _reactRouter = __webpack_require__(283);
+	var _reactRouter = __webpack_require__(285);
 	
 	Object.defineProperty(exports, 'default', {
 	  enumerable: true,
 	  get: function get() {
-	    return _reactRouter.matchPath;
+	    return _reactRouter.StaticRouter;
 	  }
 	});
 
@@ -35400,7 +35803,41 @@
 	
 	exports.__esModule = true;
 	
-	var _reactRouter = __webpack_require__(283);
+	var _reactRouter = __webpack_require__(285);
+	
+	Object.defineProperty(exports, 'default', {
+	  enumerable: true,
+	  get: function get() {
+	    return _reactRouter.Switch;
+	  }
+	});
+
+/***/ }),
+/* 310 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	exports.__esModule = true;
+	
+	var _reactRouter = __webpack_require__(285);
+	
+	Object.defineProperty(exports, 'default', {
+	  enumerable: true,
+	  get: function get() {
+	    return _reactRouter.matchPath;
+	  }
+	});
+
+/***/ }),
+/* 311 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	exports.__esModule = true;
+	
+	var _reactRouter = __webpack_require__(285);
 	
 	Object.defineProperty(exports, 'default', {
 	  enumerable: true,
@@ -35410,7 +35847,7 @@
 	});
 
 /***/ }),
-/* 310 */
+/* 312 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -35425,7 +35862,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactRouterDom = __webpack_require__(272);
+	var _reactRouterDom = __webpack_require__(274);
 	
 	var _reactMaterialize = __webpack_require__(185);
 	
@@ -35472,11 +35909,11 @@
 	exports.default = Nav;
 
 /***/ }),
-/* 311 */
+/* 313 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {var invariant = __webpack_require__(8);
-	var defaultClickRejectionStrategy = __webpack_require__(312);
+	var defaultClickRejectionStrategy = __webpack_require__(314);
 	
 	var alreadyInjected = false;
 	
@@ -35498,14 +35935,14 @@
 	  alreadyInjected = true;
 	
 	  __webpack_require__(46).injection.injectEventPluginsByName({
-	    'TapEventPlugin':       __webpack_require__(313)(shouldRejectClick)
+	    'TapEventPlugin':       __webpack_require__(315)(shouldRejectClick)
 	  });
 	};
 	
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }),
-/* 312 */
+/* 314 */
 /***/ (function(module, exports) {
 
 	module.exports = function(lastTouchEvent, clickTimestamp) {
@@ -35516,7 +35953,7 @@
 
 
 /***/ }),
-/* 313 */
+/* 315 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -35540,14 +35977,14 @@
 	
 	"use strict";
 	
-	var EventConstants = __webpack_require__(314);
+	var EventConstants = __webpack_require__(316);
 	var EventPluginUtils = __webpack_require__(48);
 	var EventPropagators = __webpack_require__(45);
 	var SyntheticUIEvent = __webpack_require__(79);
-	var TouchEventUtils = __webpack_require__(315);
+	var TouchEventUtils = __webpack_require__(317);
 	var ViewportMetrics = __webpack_require__(80);
 	
-	var keyOf = __webpack_require__(316);
+	var keyOf = __webpack_require__(318);
 	var topLevelTypes = EventConstants.topLevelTypes;
 	
 	var isStartish = EventPluginUtils.isStartish;
@@ -35693,7 +36130,7 @@
 
 
 /***/ }),
-/* 314 */
+/* 316 */
 /***/ (function(module, exports) {
 
 	/**
@@ -35789,7 +36226,7 @@
 	module.exports = EventConstants;
 
 /***/ }),
-/* 315 */
+/* 317 */
 /***/ (function(module, exports) {
 
 	/**
@@ -35837,7 +36274,7 @@
 
 
 /***/ }),
-/* 316 */
+/* 318 */
 /***/ (function(module, exports) {
 
 	"use strict";

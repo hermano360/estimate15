@@ -1,7 +1,13 @@
-.bgIcons {
-    background-image: url("aquadata_awards.jpg");
-    background-repeat: no-repeat;
-background-position: right top;
-background-attachment: fixed;
-background-size: auto 100%;
+.tableEntry {
+	font-size: 10px;
+	line-height: 1;
+}
+table tbody td, table tbody th {
+	padding:0 5px 0 5px;
+}
+input[type=text].quantityInput {
+	height: 2rem;
+	text-align: center;
+	font-size: 10px;
+	margin-bottom: 10px
 }

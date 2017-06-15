@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Row,Input,Icon,Col,Table,Autocomplete} from 'react-materialize'
+import {Row,Input,Icon,Col,Table,Autocomplete,Button} from 'react-materialize'
 
 import TableElement from './TableElement'
 import ProductAccess from '../../api/ProductAccess'
@@ -29,22 +29,25 @@ class NewEstimateRev1 extends Component {
 		this.handleChangeTotal		=	this.handleChangeTotal.bind(this);
 		this.handleAddIndividualItem=	this.handleAddIndividualItem.bind(this);
 	}
-	handleOnAutocomplete(val){
-		console.log(val,"hello")
-	}
-	whichItemsToAddToShoppingCart(shoppingCart, modelNos, template){
-		debugger
-		let filteredModelNos = modelNos.filter((modelNo)=>{
-			let acceptableModelNo = true;
-			shoppingCart.forEach((cartItem)=>{
-				if(cartItem.modelNo === modelNo && cartItem.template === template){
-					acceptableModelNo = false;
-				}
-			})
-			return acceptableModelNo
+
+	addTemplateToProducts(products,template){
+		return products.map((product)=>{
+			product.template = template;
+			return product
 		})
-		debugger
-		return filteredModelNos
+	}
+
+	addTemplateToState(templateCollection, template){
+		let templateCollectionCopy = templateCollection.filter(() => true);
+		let templateIndex = templateCollectionCopy.indexOf(template);
+		if(templateIndex === -1){
+			templateCollectionCopy.push(template)
+		} else {
+			templateCollectionCopy.splice(templateIndex,1);
+			templateCollectionCopy.push(template);
+			// reorder templateCollection
+		}
+		return templateCollectionCopy
 	}
 
 	handleAddIndividualItem(productName){
@@ -63,7 +66,6 @@ class NewEstimateRev1 extends Component {
 						...shoppingCartNew
 						]
 					})}
-		
 	}
 
 	handleChangeTotal(subtotalMaterial,totalLabor){
@@ -79,139 +81,143 @@ class NewEstimateRev1 extends Component {
 			totalMaterial,
 			grandTotal
 		})
+	}	
 
+	handleGenerateEstimate(){
+		console.log("generate new estimate")
 	}
+
+	handleItemDelete(productIdentifier,typeOfCart){
+		let currentCart;
+		if(typeOfCart==='individual'){
+			currentCart = this.state.shoppingCartIndividuals;
+		} else {
+			currentCart = this.state.shoppingCart;
+		}
+		const currentShoppingCartTemplate = this.state.shoppingCartTemplates;
+		const updatedCart = currentCart.filter((product)=>{
+			return product.modelNo === productIdentifier ? false : true
+		})
+		const updatedShoppingCartTemplates = currentShoppingCartTemplate.filter((template)=>{
+			let keepTemplate = false;
+			updatedCart.forEach((cartItem)=>{
+				if(cartItem.template === template){
+					keepTemplate = true;
+				}
+			})
+			return keepTemplate
+		});
+
+		if(typeOfCart==='individual'){
+			this.setState({
+				shoppingCartIndividuals:updatedCart
+			})
+		} else {
+			this.setState({
+				shoppingCartTemplates: updatedShoppingCartTemplates,
+				shoppingCart:updatedCart
+			})
+		}
+	}
+
+	handleOnAutocomplete(val){
+		console.log(val,"hello")
+	}
+
+	handleSalesmanChange(){
+		console.log(event.target.innerHTML);
+		this.refs.templateSelection.state.value = 'Choose a Template';
+		this.setState({
+			salesmanValue:event.target.innerHTML
+		})
+	}
+
+	handleTemplateChange(){
+		const templateValue = event.target.innerHTML;
+
+		if(templateValue !== "Choose a Template"){
+			const templateModelNos = templateConfig[templateValue];
+			let {shoppingCartTemplates,shoppingCart} = this.state;
+				let filteredModelNos = this.whichItemsToAddToShoppingCart(shoppingCart, templateModelNos, templateValue);
+				let itemsToAddToShoppingCart = testProductAccess.getModelNos(filteredModelNos);
+				let itemsWithTemplate = this.addTemplateToProducts(itemsToAddToShoppingCart,templateValue);
+				let shoppingCartUnordered = [...shoppingCart,...itemsWithTemplate];
+				shoppingCart = this.reorderShoppingCart(shoppingCartUnordered, templateValue);
+				shoppingCartTemplates = this.addTemplateToState(shoppingCartTemplates, templateValue)
+				this.setState({
+					shoppingCart,
+					shoppingCartTemplates
+				})
+		}
+	}
+
+	reorderShoppingCart(shoppingCart, templateValue){
+		let orderedShoppingCart = shoppingCart.filter(()=>true);
+		let ordered = true;
+		do {
+			let ordered = true;
+			for(let i = orderedShoppingCart.length-1; i >= 0; i--){
+				if(i === orderedShoppingCart.length-1){
+					if(orderedShoppingCart[i].template===templateValue){
+						console.log("first value in correct spot")
+					} else {
+						console.log("first value not in correct spot");
+
+						let firstTemplateIndex;
+						orderedShoppingCart.forEach((cartItem,index)=>{
+							if(firstTemplateIndex=== undefined){
+								firstTemplateIndex = index;
+							}
+						})
+						let firstTemplateItem = orderedShoppingCart[firstTemplateIndex];
+						orderedShoppingCart.splice(firstTemplateIndex,1);
+						orderedShoppingCart.push(firstTemplateItem);
+						ordered = false;
+						i = orderedShoppingCart.length
+					}
+				} else {
+					if(orderedShoppingCart[i].template === templateValue){
+						if(orderedShoppingCart[i+1].template === templateValue){
+							console.log("current template item is in order")
+						} else {
+							console.log("current template item is not in order")
+							let transposedCartItem = orderedShoppingCart[i];
+							orderedShoppingCart.splice(i,1);
+							orderedShoppingCart.push(transposedCartItem);
+							ordered = false;
+							i = orderedShoppingCart.length
+						}
+					} else {
+						console.log("item is not in current template")
+					}
+				}
+			}
+		} while(ordered === false)
+
+		return orderedShoppingCart
+	}
+
 	resetTemplateValue(){
 		// this.refs.templateSelection.state.value = 'Choose a Template';
 	}
-	addTemplateToState(templateCollection, template){
-		let templateCollectionCopy = templateCollection.filter(() => true);
-		let templateIndex = templateCollectionCopy.indexOf(template);
-		if(templateIndex === -1){
-			templateCollectionCopy.push(template)
-		} else {
-			templateCollectionCopy.splice(templateIndex,1);
-			templateCollectionCopy.push(template);
-			// reorder templateCollection
-		}
-		return templateCollectionCopy
-	}
-handleTemplateChange(){
-	const templateValue = event.target.innerHTML;
 
-	if(templateValue !== "Choose a Template"){
-		const templateModelNos = templateConfig[templateValue];
-		let {shoppingCartTemplates,shoppingCart} = this.state;
-			let filteredModelNos = this.whichItemsToAddToShoppingCart(shoppingCart, templateModelNos, templateValue);
-			let itemsToAddToShoppingCart = testProductAccess.getModelNos(filteredModelNos);
-			let itemsWithTemplate = this.addTemplateToProducts(itemsToAddToShoppingCart,templateValue);
-			let shoppingCartUnordered = [...shoppingCart,...itemsWithTemplate];
-			shoppingCart = this.reorderShoppingCart(shoppingCartUnordered, templateValue);
-			shoppingCartTemplates = this.addTemplateToState(shoppingCartTemplates, templateValue)
-			this.setState({
-				shoppingCart,
-				shoppingCartTemplates
-			})
-	}
-}
+	whichItemsToAddToShoppingCart(shoppingCart, modelNos, template){
 
-
-
-addTemplateToProducts(products,template){
-	return products.map((product)=>{
-		product.template = template;
-		return product
-	})
-}
-
-// reordering shopping cart so that the latest template's items are all at the end
-reorderShoppingCart(shoppingCart, templateValue){
-	let orderedShoppingCart = shoppingCart.filter(()=>true);
-	let ordered = true;
-	do {
-		let ordered = true;
-		for(let i = orderedShoppingCart.length-1; i >= 0; i--){
-			if(i === orderedShoppingCart.length-1){
-				if(orderedShoppingCart[i].template===templateValue){
-					console.log("first value in correct spot")
-				} else {
-					console.log("first value not in correct spot");
-
-					let firstTemplateIndex;
-					orderedShoppingCart.forEach((cartItem,index)=>{
-						if(firstTemplateIndex=== undefined){
-							firstTemplateIndex = index;
-						}
-					})
-					let firstTemplateItem = orderedShoppingCart[firstTemplateIndex];
-					orderedShoppingCart.splice(firstTemplateIndex,1);
-					orderedShoppingCart.push(firstTemplateItem);
-					ordered = false;
-					i = orderedShoppingCart.length
+		let filteredModelNos = modelNos.filter((modelNo)=>{
+			let acceptableModelNo = true;
+			shoppingCart.forEach((cartItem)=>{
+				if(cartItem.modelNo === modelNo && cartItem.template === template){
+					acceptableModelNo = false;
 				}
-			} else {
-// not in first spot
-if(orderedShoppingCart[i].template === templateValue){
-	if(orderedShoppingCart[i+1].template === templateValue){
-		console.log("current template item is in order")
-	} else {
-		console.log("current template item is not in order")
-		let transposedCartItem = orderedShoppingCart[i];
-		orderedShoppingCart.splice(i,1);
-		orderedShoppingCart.push(transposedCartItem);
-		ordered = false;
-		i = orderedShoppingCart.length
-	}
-} else {
-	console.log("item is not in current template")
-}
-}
-}
-} while(ordered === false)
-
-return orderedShoppingCart
-
-}
-handleSalesmanChange(){
-	console.log(event.target.innerHTML);
-	this.refs.templateSelection.state.value = 'Choose a Template';
-	this.setState({
-		salesmanValue:event.target.innerHTML
-	})
-}
-handleItemDelete(productIdentifier,typeOfCart){
-	let currentCart;
-	if(typeOfCart==='individual'){
-		currentCart = this.state.shoppingCartIndividuals;
-	} else {
-		currentCart = this.state.shoppingCart;
-	}
-	const currentShoppingCartTemplate = this.state.shoppingCartTemplates;
-	const updatedCart = currentCart.filter((product)=>{
-		return product.modelNo === productIdentifier ? false : true
-	})
-	const updatedShoppingCartTemplates = currentShoppingCartTemplate.filter((template)=>{
-		let keepTemplate = false;
-		updatedCart.forEach((cartItem)=>{
-			if(cartItem.template === template){
-				keepTemplate = true;
-			}
+			})
+			return acceptableModelNo
 		})
-		return keepTemplate
-	});
 
-	if(typeOfCart==='individual'){
-		this.setState({
-			shoppingCartIndividuals:updatedCart
-		})
-	} else {
-		this.setState({
-			shoppingCartTemplates: updatedShoppingCartTemplates,
-			shoppingCart:updatedCart
-		})
+		return filteredModelNos
 	}
 
-}
+
+
 componentDidMount(){
 
 }
@@ -222,65 +228,66 @@ render() {
 	return (
 		<div>
 		<Row>
-		<Input s={6} label="Salesman" type='select' defaultValue={this.state.salesmanValue} validate onChange={this.handleSalesmanChange}>
-		<option value='empty'></option>
-		<option value='1'>Robert Leon</option>
-		<option value='2'>Steve Smith</option>
-		<option value='3'>Antonio Vargas</option>
-		</Input>
-		<Input s={12} label="Project Description"/>
-		<Input label="Scope" s={12} />
-		<Input s={12} ref="templateSelection" type='select' label="Template" defaultValue={this.state.templateValue} onChange={this.handleTemplateChange}>
-		<option value='Choose a Template'>Choose a Template</option>
-		<option value='Bath1'>Bath1</option>
-		<option value='Kitchen1'>Kitchen1</option>
-		<option value='Livingroom1'>Livingroom1</option>
-		</Input>
+			<Input s={6} label="Salesman" type='select' defaultValue={this.state.salesmanValue} validate onChange={this.handleSalesmanChange}>
+				<option value='empty'></option>
+				<option value='1'>Robert Leon</option>
+				<option value='2'>Steve Smith</option>
+				<option value='3'>Antonio Vargas</option>
+			</Input>
+			<Input s={12} label="Project Description"/>
+			<Input label="Scope" s={12} />
+			<Input s={12} ref="templateSelection" type='select' label="Template" defaultValue={this.state.templateValue} onChange={this.handleTemplateChange}>
+				<option value='Choose a Template'>Choose a Template</option>
+				<option value='Bath1'>Bath1</option>
+				<option value='Kitchen1'>Kitchen1</option>
+				<option value='Livingroom1'>Livingroom1</option>
+			</Input>
 		</Row>
 		<Row>
-		<TableElement shoppingCart={this.state.shoppingCart} shoppingCartIndividuals = {this.state.shoppingCartIndividuals} onItemDelete={this.handleItemDelete} onChangeTotal={this.handleChangeTotal} addIndividualItem={this.handleAddIndividualItem}/>
+			<TableElement shoppingCart={this.state.shoppingCart} shoppingCartIndividuals = {this.state.shoppingCartIndividuals} onItemDelete={this.handleItemDelete} onChangeTotal={this.handleChangeTotal} addIndividualItem={this.handleAddIndividualItem}/>
 		</Row>
 
 		<Row>
-		<Col s={4} offset="s7">
-		<Table >
-		<thead>
-		<tr>
-		<th data-field=" "></th>
-		<th data-field="Material">Materials</th>
-		<th data-field="Labor">Labor</th>
-		<th data-field="Days">Days</th>
-		</tr>
-		</thead>
+			<Col s={4} offset="s7">
+				<Table >
+					<thead>
+						<tr>
+							<th data-field=" "></th>
+							<th data-field="Material">Materials</th>
+							<th data-field="Labor">Labor</th>
+							<th data-field="Days">Days</th>
+						</tr>
+					</thead>
 
-		<tbody>
-		<tr>
-		<td>Subtotal</td>
-		<td>${subtotalMaterial.toFixed(2)}</td>
-		<td>${totalLabor.toFixed(2)}</td>
-		<td>3.1365</td>
-		</tr>
-		<tr>
-		<td>Tax</td>
-		<td>${taxMaterial.toFixed(2)}</td>
-		<td></td>
-		<td></td>
-		</tr>
-		<tr>
-		<td>Total</td>
-		<td>${totalMaterial.toFixed(2)}</td>
-		<td>${totalLabor.toFixed(2)}</td>
-		<td></td>
-		</tr>	
-		<tr>
-		<td>Grand Total</td>
-		<td>${grandTotal.toFixed(2)}</td>
-		<td></td>
-		<td></td>
-		</tr>				
-		</tbody>
-		</Table>
-		</Col>
+					<tbody>
+						<tr>
+							<td>Subtotal</td>
+							<td>${subtotalMaterial.toFixed(2)}</td>
+							<td>${totalLabor.toFixed(2)}</td>
+							<td>3.1365</td>
+						</tr>
+						<tr>
+							<td>Tax</td>
+							<td>${taxMaterial.toFixed(2)}</td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>Total</td>
+							<td>${totalMaterial.toFixed(2)}</td>
+							<td>${totalLabor.toFixed(2)}</td>
+							<td></td>
+						</tr>	
+						<tr>
+							<td>Grand Total</td>
+							<td>${grandTotal.toFixed(2)}</td>
+							<td></td>
+							<td></td>
+						</tr>				
+					</tbody>
+				</Table>
+				<Button onClick={this.props.generateEstimate}>Generate Estimate</Button>
+			</Col>
 		</Row>
 
 		</div>

@@ -21911,6 +21911,10 @@
 	
 	var _NewEstimateRev2 = _interopRequireDefault(_NewEstimateRev);
 	
+	var _EstimatePage = __webpack_require__(320);
+	
+	var _EstimatePage2 = _interopRequireDefault(_EstimatePage);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -21929,9 +21933,11 @@
 	
 	    _this.state = {
 	      // page:'Intro'
+	      //page: 'EstimatePage'
 	      page: 'NewEstimateRev1'
 	    };
 	    _this.handleNewEstimate = _this.handleNewEstimate.bind(_this);
+	    _this.handleGenerateEstimate = _this.handleGenerateEstimate.bind(_this);
 	    return _this;
 	  }
 	
@@ -21943,14 +21949,32 @@
 	      });
 	    }
 	  }, {
+	    key: 'handleGenerateEstimate',
+	    value: function handleGenerateEstimate() {
+	      this.setState({
+	        page: 'EstimatePage'
+	      });
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
-	      if (this.state.page === 'Intro') {
-	        return _react2.default.createElement(_Intro2.default, { newEstimate: this.handleNewEstimate });
-	      } else if (this.state.page === 'NewEstimate') {
-	        return _react2.default.createElement(_NewEstimate2.default, null);
-	      } else if (this.state.page === 'NewEstimateRev1') {
-	        return _react2.default.createElement(_NewEstimateRev2.default, null);
+	      var page = this.state.page;
+	
+	      switch (page) {
+	        case 'Intro':
+	          return _react2.default.createElement(_Intro2.default, { newEstimate: this.handleNewEstimate });
+	          break;
+	        case 'NewEstimate':
+	          return _react2.default.createElement(_NewEstimate2.default, null);
+	          break;
+	        case 'NewEstimateRev1':
+	          return _react2.default.createElement(_NewEstimateRev2.default, { generateEstimate: this.handleGenerateEstimate });
+	          break;
+	        case 'EstimatePage':
+	          return _react2.default.createElement(_EstimatePage2.default, null);
+	          break;
+	        default:
+	
 	      }
 	    }
 	  }]);
@@ -31481,25 +31505,28 @@
 		}
 	
 		_createClass(NewEstimateRev1, [{
-			key: 'handleOnAutocomplete',
-			value: function handleOnAutocomplete(val) {
-				console.log(val, "hello");
+			key: 'addTemplateToProducts',
+			value: function addTemplateToProducts(products, template) {
+				return products.map(function (product) {
+					product.template = template;
+					return product;
+				});
 			}
 		}, {
-			key: 'whichItemsToAddToShoppingCart',
-			value: function whichItemsToAddToShoppingCart(shoppingCart, modelNos, template) {
-				debugger;
-				var filteredModelNos = modelNos.filter(function (modelNo) {
-					var acceptableModelNo = true;
-					shoppingCart.forEach(function (cartItem) {
-						if (cartItem.modelNo === modelNo && cartItem.template === template) {
-							acceptableModelNo = false;
-						}
-					});
-					return acceptableModelNo;
+			key: 'addTemplateToState',
+			value: function addTemplateToState(templateCollection, template) {
+				var templateCollectionCopy = templateCollection.filter(function () {
+					return true;
 				});
-				debugger;
-				return filteredModelNos;
+				var templateIndex = templateCollectionCopy.indexOf(template);
+				if (templateIndex === -1) {
+					templateCollectionCopy.push(template);
+				} else {
+					templateCollectionCopy.splice(templateIndex, 1);
+					templateCollectionCopy.push(template);
+					// reorder templateCollection
+				}
+				return templateCollectionCopy;
 			}
 		}, {
 			key: 'handleAddIndividualItem',
@@ -31537,120 +31564,9 @@
 				});
 			}
 		}, {
-			key: 'resetTemplateValue',
-			value: function resetTemplateValue() {
-				// this.refs.templateSelection.state.value = 'Choose a Template';
-			}
-		}, {
-			key: 'addTemplateToState',
-			value: function addTemplateToState(templateCollection, template) {
-				var templateCollectionCopy = templateCollection.filter(function () {
-					return true;
-				});
-				var templateIndex = templateCollectionCopy.indexOf(template);
-				if (templateIndex === -1) {
-					templateCollectionCopy.push(template);
-				} else {
-					templateCollectionCopy.splice(templateIndex, 1);
-					templateCollectionCopy.push(template);
-					// reorder templateCollection
-				}
-				return templateCollectionCopy;
-			}
-		}, {
-			key: 'handleTemplateChange',
-			value: function handleTemplateChange() {
-				var templateValue = event.target.innerHTML;
-	
-				if (templateValue !== "Choose a Template") {
-					var templateModelNos = _templateConfig2.default[templateValue];
-					var _state = this.state,
-					    shoppingCartTemplates = _state.shoppingCartTemplates,
-					    shoppingCart = _state.shoppingCart;
-	
-					var filteredModelNos = this.whichItemsToAddToShoppingCart(shoppingCart, templateModelNos, templateValue);
-					var itemsToAddToShoppingCart = _testProductAccess2.default.getModelNos(filteredModelNos);
-					var itemsWithTemplate = this.addTemplateToProducts(itemsToAddToShoppingCart, templateValue);
-					var shoppingCartUnordered = [].concat(_toConsumableArray(shoppingCart), _toConsumableArray(itemsWithTemplate));
-					shoppingCart = this.reorderShoppingCart(shoppingCartUnordered, templateValue);
-					shoppingCartTemplates = this.addTemplateToState(shoppingCartTemplates, templateValue);
-					this.setState({
-						shoppingCart: shoppingCart,
-						shoppingCartTemplates: shoppingCartTemplates
-					});
-				}
-			}
-		}, {
-			key: 'addTemplateToProducts',
-			value: function addTemplateToProducts(products, template) {
-				return products.map(function (product) {
-					product.template = template;
-					return product;
-				});
-			}
-	
-			// reordering shopping cart so that the latest template's items are all at the end
-	
-		}, {
-			key: 'reorderShoppingCart',
-			value: function reorderShoppingCart(shoppingCart, templateValue) {
-				var orderedShoppingCart = shoppingCart.filter(function () {
-					return true;
-				});
-				var ordered = true;
-				do {
-					var _ordered = true;
-					for (var i = orderedShoppingCart.length - 1; i >= 0; i--) {
-						if (i === orderedShoppingCart.length - 1) {
-							if (orderedShoppingCart[i].template === templateValue) {
-								console.log("first value in correct spot");
-							} else {
-								(function () {
-									console.log("first value not in correct spot");
-	
-									var firstTemplateIndex = void 0;
-									orderedShoppingCart.forEach(function (cartItem, index) {
-										if (firstTemplateIndex === undefined) {
-											firstTemplateIndex = index;
-										}
-									});
-									var firstTemplateItem = orderedShoppingCart[firstTemplateIndex];
-									orderedShoppingCart.splice(firstTemplateIndex, 1);
-									orderedShoppingCart.push(firstTemplateItem);
-									_ordered = false;
-									i = orderedShoppingCart.length;
-								})();
-							}
-						} else {
-							// not in first spot
-							if (orderedShoppingCart[i].template === templateValue) {
-								if (orderedShoppingCart[i + 1].template === templateValue) {
-									console.log("current template item is in order");
-								} else {
-									console.log("current template item is not in order");
-									var transposedCartItem = orderedShoppingCart[i];
-									orderedShoppingCart.splice(i, 1);
-									orderedShoppingCart.push(transposedCartItem);
-									_ordered = false;
-									i = orderedShoppingCart.length;
-								}
-							} else {
-								console.log("item is not in current template");
-							}
-						}
-					}
-				} while (ordered === false);
-	
-				return orderedShoppingCart;
-			}
-		}, {
-			key: 'handleSalesmanChange',
-			value: function handleSalesmanChange() {
-				console.log(event.target.innerHTML);
-				this.refs.templateSelection.state.value = 'Choose a Template';
-				this.setState({
-					salesmanValue: event.target.innerHTML
-				});
+			key: 'handleGenerateEstimate',
+			value: function handleGenerateEstimate() {
+				console.log("generate new estimate");
 			}
 		}, {
 			key: 'handleItemDelete',
@@ -31685,6 +31601,115 @@
 						shoppingCart: updatedCart
 					});
 				}
+			}
+		}, {
+			key: 'handleOnAutocomplete',
+			value: function handleOnAutocomplete(val) {
+				console.log(val, "hello");
+			}
+		}, {
+			key: 'handleSalesmanChange',
+			value: function handleSalesmanChange() {
+				console.log(event.target.innerHTML);
+				this.refs.templateSelection.state.value = 'Choose a Template';
+				this.setState({
+					salesmanValue: event.target.innerHTML
+				});
+			}
+		}, {
+			key: 'handleTemplateChange',
+			value: function handleTemplateChange() {
+				var templateValue = event.target.innerHTML;
+	
+				if (templateValue !== "Choose a Template") {
+					var templateModelNos = _templateConfig2.default[templateValue];
+					var _state = this.state,
+					    shoppingCartTemplates = _state.shoppingCartTemplates,
+					    shoppingCart = _state.shoppingCart;
+	
+					var filteredModelNos = this.whichItemsToAddToShoppingCart(shoppingCart, templateModelNos, templateValue);
+					var itemsToAddToShoppingCart = _testProductAccess2.default.getModelNos(filteredModelNos);
+					var itemsWithTemplate = this.addTemplateToProducts(itemsToAddToShoppingCart, templateValue);
+					var shoppingCartUnordered = [].concat(_toConsumableArray(shoppingCart), _toConsumableArray(itemsWithTemplate));
+					shoppingCart = this.reorderShoppingCart(shoppingCartUnordered, templateValue);
+					shoppingCartTemplates = this.addTemplateToState(shoppingCartTemplates, templateValue);
+					this.setState({
+						shoppingCart: shoppingCart,
+						shoppingCartTemplates: shoppingCartTemplates
+					});
+				}
+			}
+		}, {
+			key: 'reorderShoppingCart',
+			value: function reorderShoppingCart(shoppingCart, templateValue) {
+				var orderedShoppingCart = shoppingCart.filter(function () {
+					return true;
+				});
+				var ordered = true;
+				do {
+					var _ordered = true;
+					for (var i = orderedShoppingCart.length - 1; i >= 0; i--) {
+						if (i === orderedShoppingCart.length - 1) {
+							if (orderedShoppingCart[i].template === templateValue) {
+								console.log("first value in correct spot");
+							} else {
+								(function () {
+									console.log("first value not in correct spot");
+	
+									var firstTemplateIndex = void 0;
+									orderedShoppingCart.forEach(function (cartItem, index) {
+										if (firstTemplateIndex === undefined) {
+											firstTemplateIndex = index;
+										}
+									});
+									var firstTemplateItem = orderedShoppingCart[firstTemplateIndex];
+									orderedShoppingCart.splice(firstTemplateIndex, 1);
+									orderedShoppingCart.push(firstTemplateItem);
+									_ordered = false;
+									i = orderedShoppingCart.length;
+								})();
+							}
+						} else {
+							if (orderedShoppingCart[i].template === templateValue) {
+								if (orderedShoppingCart[i + 1].template === templateValue) {
+									console.log("current template item is in order");
+								} else {
+									console.log("current template item is not in order");
+									var transposedCartItem = orderedShoppingCart[i];
+									orderedShoppingCart.splice(i, 1);
+									orderedShoppingCart.push(transposedCartItem);
+									_ordered = false;
+									i = orderedShoppingCart.length;
+								}
+							} else {
+								console.log("item is not in current template");
+							}
+						}
+					}
+				} while (ordered === false);
+	
+				return orderedShoppingCart;
+			}
+		}, {
+			key: 'resetTemplateValue',
+			value: function resetTemplateValue() {
+				// this.refs.templateSelection.state.value = 'Choose a Template';
+			}
+		}, {
+			key: 'whichItemsToAddToShoppingCart',
+			value: function whichItemsToAddToShoppingCart(shoppingCart, modelNos, template) {
+	
+				var filteredModelNos = modelNos.filter(function (modelNo) {
+					var acceptableModelNo = true;
+					shoppingCart.forEach(function (cartItem) {
+						if (cartItem.modelNo === modelNo && cartItem.template === template) {
+							acceptableModelNo = false;
+						}
+					});
+					return acceptableModelNo;
+				});
+	
+				return filteredModelNos;
 			}
 		}, {
 			key: 'componentDidMount',
@@ -31877,6 +31902,11 @@
 										_react2.default.createElement('td', null)
 									)
 								)
+							),
+							_react2.default.createElement(
+								_reactMaterialize.Button,
+								{ onClick: this.props.generateEstimate },
+								'Generate Estimate'
 							)
 						)
 					)
@@ -32462,7 +32492,7 @@
 	        }
 	      }
 	    });
-	    debugger;
+	
 	    return productCopy;
 	  }
 	};
@@ -36447,6 +36477,364 @@
 	};
 	
 	module.exports = keyOf;
+
+/***/ }),
+/* 320 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactMaterialize = __webpack_require__(185);
+	
+	var _EstimateHeader = __webpack_require__(321);
+	
+	var _EstimateHeader2 = _interopRequireDefault(_EstimateHeader);
+	
+	var _CustomerInfo = __webpack_require__(322);
+	
+	var _CustomerInfo2 = _interopRequireDefault(_CustomerInfo);
+	
+	var _ScopeOfWork = __webpack_require__(323);
+	
+	var _ScopeOfWork2 = _interopRequireDefault(_ScopeOfWork);
+	
+	var _Specifications = __webpack_require__(324);
+	
+	var _Specifications2 = _interopRequireDefault(_Specifications);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var EstimatePage = function (_Component) {
+	  _inherits(EstimatePage, _Component);
+	
+	  function EstimatePage() {
+	    _classCallCheck(this, EstimatePage);
+	
+	    var _this = _possibleConstructorReturn(this, (EstimatePage.__proto__ || Object.getPrototypeOf(EstimatePage)).call(this));
+	
+	    _this.state = {};
+	    _this.handleNewEstimate = _this.handleNewEstimate.bind(_this);
+	    return _this;
+	  }
+	
+	  _createClass(EstimatePage, [{
+	    key: 'handleNewEstimate',
+	    value: function handleNewEstimate() {
+	      this.props.newEstimate();
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        _reactMaterialize.Row,
+	        null,
+	        _react2.default.createElement(
+	          _reactMaterialize.Col,
+	          { s: 10, offset: 's1' },
+	          _react2.default.createElement(_EstimateHeader2.default, null),
+	          _react2.default.createElement(_CustomerInfo2.default, null),
+	          _react2.default.createElement(_ScopeOfWork2.default, null),
+	          _react2.default.createElement(_Specifications2.default, null)
+	        )
+	      );
+	    }
+	  }]);
+	
+	  return EstimatePage;
+	}(_react.Component);
+	
+	exports.default = EstimatePage;
+
+/***/ }),
+/* 321 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var EstimateHeader = function (_Component) {
+	  _inherits(EstimateHeader, _Component);
+	
+	  function EstimateHeader() {
+	    _classCallCheck(this, EstimateHeader);
+	
+	    var _this = _possibleConstructorReturn(this, (EstimateHeader.__proto__ || Object.getPrototypeOf(EstimateHeader)).call(this));
+	
+	    _this.state = {
+	      page: 'intro'
+	    };
+	    _this.handleNewEstimate = _this.handleNewEstimate.bind(_this);
+	    return _this;
+	  }
+	
+	  _createClass(EstimateHeader, [{
+	    key: 'handleNewEstimate',
+	    value: function handleNewEstimate() {
+	      this.props.newEstimate();
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        _react2.default.createElement('img', { src: 'http://via.placeholder.com/150x150' }),
+	        _react2.default.createElement(
+	          'div',
+	          null,
+	          _react2.default.createElement(
+	            'span',
+	            null,
+	            'Pro Builders Express,Inc'
+	          ),
+	          '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000'
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          null,
+	          'Date: 30-May-17 Page: Page 1 of 2'
+	        )
+	      );
+	    }
+	  }]);
+	
+	  return EstimateHeader;
+	}(_react.Component);
+	
+	exports.default = EstimateHeader;
+
+/***/ }),
+/* 322 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var CustomerInfo = function (_Component) {
+	  _inherits(CustomerInfo, _Component);
+	
+	  function CustomerInfo() {
+	    _classCallCheck(this, CustomerInfo);
+	
+	    var _this = _possibleConstructorReturn(this, (CustomerInfo.__proto__ || Object.getPrototypeOf(CustomerInfo)).call(this));
+	
+	    _this.state = {
+	      page: 'intro'
+	    };
+	    _this.handleNewEstimate = _this.handleNewEstimate.bind(_this);
+	    return _this;
+	  }
+	
+	  _createClass(CustomerInfo, [{
+	    key: 'handleNewEstimate',
+	    value: function handleNewEstimate() {
+	      this.props.newEstimate();
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        'Customer: First Last Quote: Date: 5/30/2017 By: Bob Leon Desc: ...'
+	      );
+	    }
+	  }]);
+	
+	  return CustomerInfo;
+	}(_react.Component);
+	
+	exports.default = CustomerInfo;
+
+/***/ }),
+/* 323 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactMaterialize = __webpack_require__(185);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var ScopeOfWork = function (_Component) {
+	  _inherits(ScopeOfWork, _Component);
+	
+	  function ScopeOfWork() {
+	    _classCallCheck(this, ScopeOfWork);
+	
+	    var _this = _possibleConstructorReturn(this, (ScopeOfWork.__proto__ || Object.getPrototypeOf(ScopeOfWork)).call(this));
+	
+	    _this.state = {
+	      page: 'intro'
+	    };
+	    _this.handleNewEstimate = _this.handleNewEstimate.bind(_this);
+	    return _this;
+	  }
+	
+	  _createClass(ScopeOfWork, [{
+	    key: 'handleNewEstimate',
+	    value: function handleNewEstimate() {
+	      this.props.newEstimate();
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'estimate-page-heading' },
+	          ' Scope Of Work '
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'scope-of-work-text' },
+	          'Scope of Work that was put in during the estimate'
+	        )
+	      );
+	    }
+	  }]);
+	
+	  return ScopeOfWork;
+	}(_react.Component);
+	
+	exports.default = ScopeOfWork;
+
+/***/ }),
+/* 324 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var Specifications = function (_Component) {
+	  _inherits(Specifications, _Component);
+	
+	  function Specifications() {
+	    _classCallCheck(this, Specifications);
+	
+	    var _this = _possibleConstructorReturn(this, (Specifications.__proto__ || Object.getPrototypeOf(Specifications)).call(this));
+	
+	    _this.state = {
+	      page: 'intro'
+	    };
+	    _this.handleNewEstimate = _this.handleNewEstimate.bind(_this);
+	    return _this;
+	  }
+	
+	  _createClass(Specifications, [{
+	    key: 'handleNewEstimate',
+	    value: function handleNewEstimate() {
+	      this.props.newEstimate();
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'estimate-page-heading' },
+	          'Specifications'
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          null,
+	          'Certain Specifications'
+	        )
+	      );
+	    }
+	  }]);
+	
+	  return Specifications;
+	}(_react.Component);
+	
+	exports.default = Specifications;
 
 /***/ })
 /******/ ]);

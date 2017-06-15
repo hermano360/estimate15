@@ -32,12 +32,17 @@ module.exports = {
     return names
   },
   getProductWithName: function(name){
-    let productMatch;
+    let productCopy = {};
     testDatabase.products.forEach((product)=>{
       if(product.name === name){
-        productMatch = product
+        for(let key in product){
+          if(key !== 'template'){
+            productCopy[key] = product[key]
+          }
+        }
       }
     })
-    return productMatch
+    debugger
+    return productCopy
   }
 }

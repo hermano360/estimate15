@@ -15,6 +15,7 @@ class TableElement extends Component {
     }
     this.handleNewEstimate=this.handleNewEstimate.bind(this);
     this.handleDelete=this.handleDelete.bind(this);
+    this.handleIndividualDelete=this.handleIndividualDelete.bind(this);
     this.handleQuantityChange= this.handleQuantityChange.bind(this);
     this.updateQuantities = this.updateQuantities.bind(this);
     this.handleAddNewItem = this.handleAddNewItem.bind(this);
@@ -43,7 +44,29 @@ class TableElement extends Component {
   		laborCosts
   	})
   	this.props.onChangeTotal(runningMaterialTotal,laborCosts)
-  	this.props.onItemDelete(productIdentifier)
+  	this.props.onItemDelete(productIdentifier,'template')
+  }
+
+  	handleIndividualDelete(productIdentifier){
+  	let {itemTotals} = this.state;
+  	let runningMaterialTotal=0,
+  		laborCosts = 0;
+  	itemTotals = itemTotals.filter((item)=>{
+  		return item.modelNo !== productIdentifier
+  	})
+  	itemTotals.forEach((item)=>{
+  		runningMaterialTotal += item.total;
+  		laborCosts += item.labor;
+  	})
+
+  	this.setState({
+  		itemTotals,
+  		runningMaterialTotal,
+  		laborCosts
+  	})
+  	this.props.onChangeTotal(runningMaterialTotal,laborCosts)
+  	this.props.onItemDelete(productIdentifier,'individual')
+
   }
   updateQuantities(){
   	let{itemTotals} = this.state;
@@ -98,12 +121,20 @@ class TableElement extends Component {
   	}
 
   render(){
-  	const {shoppingCart} = this.props;
+  	const {shoppingCart,shoppingCartIndividuals} = this.props;
   	const renderTableEntry = ()=>{
   		return shoppingCart.map((product)=>{
   			let keyValue = `${product.modelNo}-${product.template}`
   			return (
   				<TableEntry key={keyValue} product={product} onClickDelete={this.handleDelete} quantityChange={this.handleQuantityChange}/>
+  			)
+  		})
+  	}
+  	const renderIndividualTableEntry = ()=>{
+  		  	return shoppingCartIndividuals.map((product)=>{
+  			let keyValue = `${product.modelNo}-Individual`
+  			return (
+  				<TableEntry key={keyValue} product={product} onClickDelete={this.handleIndividualDelete} quantityChange={this.handleQuantityChange}/>
   			)
   		})
   	}
@@ -128,6 +159,7 @@ class TableElement extends Component {
 
 		<tbody>
 			{renderTableEntry()}
+			{renderIndividualTableEntry()}
 			<tr>
 				<td colSpan="3">
 				<AutocompleteName onAddItem={this.handleAddNewItem}/>

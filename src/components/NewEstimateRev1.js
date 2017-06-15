@@ -19,7 +19,8 @@ class NewEstimateRev1 extends Component {
 			totalMaterial:0,
 			totalLabor:0,
 			grandTotal:0,
-			tax:0.10
+			tax:0.10,
+			shoppingCartIndividuals:[]
 		}
 		this.handleOnAutocomplete	=	this.handleOnAutocomplete.bind(this);
 		this.handleTemplateChange	=	this.handleTemplateChange.bind(this);
@@ -27,7 +28,6 @@ class NewEstimateRev1 extends Component {
 		this.handleItemDelete		=	this.handleItemDelete.bind(this);
 		this.handleChangeTotal		=	this.handleChangeTotal.bind(this);
 		this.handleAddIndividualItem=	this.handleAddIndividualItem.bind(this);
-		this.addItemToShoppingCart	=	this.addItemToShoppingCart.bind(this);
 	}
 	handleOnAutocomplete(val){
 		console.log(val,"hello")
@@ -48,46 +48,24 @@ class NewEstimateRev1 extends Component {
 	}
 
 	handleAddIndividualItem(productName){
-		this.addItemToShoppingCart(testProductAccess.getProductWithName(productName),"")
-	}
-	addItemToShoppingCart(item,template){
-		// item to shoppingcart only if the modelNo and template for that specific item isn't already listed
-		debugger
-		const {shoppingCart} = this.state;
-		let shoppingCartCopy = shoppingCart.filter(()=> true);
+		let {shoppingCartIndividuals} = this.state;
 		let addItem = true;
-		shoppingCartCopy.forEach((cartItem)=>{
-			if(cartItem.modelNo === item.modelNo && cartItem.template === template){
-				addItem = false
+		shoppingCartIndividuals.forEach((item)=>{
+			if(item.name === productName){
+				addItem = false;
 			}
 		})
-		debugger
 		if(addItem){
-			shoppingCartCopy.push(item)
-		}
-		this.setState({
-			shoppingCart:shoppingCartCopy
-		})
+				let shoppingCartNew = this.addTemplateToProducts([testProductAccess.getProductWithName(productName)],"");
+					this.setState({
+						shoppingCartIndividuals:[
+						...shoppingCartIndividuals,
+						...shoppingCartNew
+						]
+					})}
+		
 	}
-	addItemToShoppingCart(item,template){
-		// item to shoppingcart only if the modelNo and template for that specific item isn't already listed
-		debugger
-		const {shoppingCart} = this.state;
-		let shoppingCartCopy = shoppingCart.filter(()=> true);
-		let addItem = true;
-		shoppingCartCopy.forEach((cartItem)=>{
-			if(cartItem.modelNo === item.modelNo && cartItem.template === template){
-				addItem = false
-			}
-		})
-		debugger
-		if(addItem){
-			shoppingCartCopy.push(item)
-		}
-		this.setState({
-			shoppingCart:shoppingCartCopy
-		})
-	}
+
 	handleChangeTotal(subtotalMaterial,totalLabor){
 		let {tax} = this.state;
 		let taxMaterial = tax * subtotalMaterial,
@@ -134,79 +112,10 @@ handleTemplateChange(){
 				shoppingCart,
 				shoppingCartTemplates
 			})
-
-		 
-		//let updatedShoppingCart = this.reorderShoppingCart(shoppingCart, templateValue);
-		// this.setState({
-		// 	templateValue,
-		// })
 	}
 }
 
-// handleTemplateChange(){
-// 	const templateValue = event.target.innerHTML;
 
-// 	if(templateValue !== "Choose a Template"){
-// 		const templateModelNos = templateConfig[templateValue];
-// 		let {shoppingCartTemplates,shoppingCart} = this.state;
-
-// 		//Change this to database connection after demo. Testing is synchronous, database is async, use callbacks
-// 		if(shoppingCartTemplates.indexOf(templateValue)=== -1){
-// 			shoppingCartTemplates.push(templateValue);
-// 			let newShoppingCartItems = testProductAccess.getModelNos(templateModelNos).filter((product)=>{
-// 				let addProduct = true;
-// 				shoppingCart.forEach((shoppingCartItem)=>{
-// 					if(shoppingCartItem.modelNo === product.modelNo && shoppingCartItem.template === product.template){
-// 						addProduct = false
-// 					}
-// 				})
-// 				return addProduct
-// 			})
-// 			//preparing for when database doesn't include templates
-// 			newShoppingCartItems = this.addTemplateToProducts(newShoppingCartItems,templateValue);
-
-// 			shoppingCart=[
-// 			...shoppingCart,
-// 			...newShoppingCartItems
-// 			];
-// 		} else {
-// 			let templateIndex = shoppingCartTemplates.indexOf(templateValue);
-// 			let missingTemplateModelNos = templateModelNos.filter((templateModelNo)=>{
-// 				let templateNeededInShoppingcart = true;
-// 				shoppingCart.forEach((shoppingCartItem)=>{
-// 					if(templateModelNo === shoppingCartItem.modelNo){
-// 						templateNeededInShoppingcart = false;
-// 					}
-// 				})
-// 				return templateNeededInShoppingcart
-// 			})
-// 			if(missingTemplateModelNos.length > 0 ){
-// 				shoppingCartTemplates.splice(templateIndex,1);
-// 				shoppingCartTemplates.push(templateValue);
-// 				let newShoppingCartItems = testProductAccess.getModelNos(templateModelNos).filter((product)=>{
-// 					let addProduct = true;
-// 					shoppingCart.forEach((shoppingCartItem)=>{
-// 						if(shoppingCartItem.modelNo === product.modelNo){
-// 							addProduct = false
-// 						}
-// 					})
-// 					return addProduct
-// 				})
-// 				newShoppingCartItems = this.addTemplateToProducts(newShoppingCartItems,templateValue);
-
-// 				shoppingCart=[...shoppingCart,
-// 				...newShoppingCartItems
-// 				];
-// 			}
-// 		}
-// 		let updatedShoppingCart = this.reorderShoppingCart(shoppingCart, templateValue);
-// 		this.setState({
-// 			templateValue,
-// 			shoppingCart: updatedShoppingCart,
-// 			shoppingCartTemplates
-// 		})
-// 	}
-// }
 
 addTemplateToProducts(products,template){
 	return products.map((product)=>{
@@ -270,8 +179,13 @@ handleSalesmanChange(){
 		salesmanValue:event.target.innerHTML
 	})
 }
-handleItemDelete(productIdentifier){
-	const currentCart = this.state.shoppingCart;
+handleItemDelete(productIdentifier,typeOfCart){
+	let currentCart;
+	if(typeOfCart==='individual'){
+		currentCart = this.state.shoppingCartIndividuals;
+	} else {
+		currentCart = this.state.shoppingCart;
+	}
 	const currentShoppingCartTemplate = this.state.shoppingCartTemplates;
 	const updatedCart = currentCart.filter((product)=>{
 		return product.modelNo === productIdentifier ? false : true
@@ -284,11 +198,19 @@ handleItemDelete(productIdentifier){
 			}
 		})
 		return keepTemplate
-	})
-	this.setState({
-		shoppingCartTemplates: updatedShoppingCartTemplates,
-		shoppingCart:updatedCart
-	})
+	});
+
+	if(typeOfCart==='individual'){
+		this.setState({
+			shoppingCartIndividuals:updatedCart
+		})
+	} else {
+		this.setState({
+			shoppingCartTemplates: updatedShoppingCartTemplates,
+			shoppingCart:updatedCart
+		})
+	}
+
 }
 componentDidMount(){
 
@@ -316,7 +238,7 @@ render() {
 		</Input>
 		</Row>
 		<Row>
-		<TableElement shoppingCart={this.state.shoppingCart} onItemDelete={this.handleItemDelete} onChangeTotal={this.handleChangeTotal} addIndividualItem={this.handleAddIndividualItem}/>
+		<TableElement shoppingCart={this.state.shoppingCart} shoppingCartIndividuals = {this.state.shoppingCartIndividuals} onItemDelete={this.handleItemDelete} onChangeTotal={this.handleChangeTotal} addIndividualItem={this.handleAddIndividualItem}/>
 		</Row>
 
 		<Row>

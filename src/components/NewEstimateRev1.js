@@ -33,6 +33,7 @@ class NewEstimateRev1 extends Component {
 		console.log(val,"hello")
 	}
 	whichItemsToAddToShoppingCart(shoppingCart, modelNos, template){
+		debugger
 		let filteredModelNos = modelNos.filter((modelNo)=>{
 			let acceptableModelNo = true;
 			shoppingCart.forEach((cartItem)=>{
@@ -42,6 +43,7 @@ class NewEstimateRev1 extends Component {
 			})
 			return acceptableModelNo
 		})
+		debugger
 		return filteredModelNos
 	}
 
@@ -50,6 +52,7 @@ class NewEstimateRev1 extends Component {
 	}
 	addItemToShoppingCart(item,template){
 		// item to shoppingcart only if the modelNo and template for that specific item isn't already listed
+		debugger
 		const {shoppingCart} = this.state;
 		let shoppingCartCopy = shoppingCart.filter(()=> true);
 		let addItem = true;
@@ -58,6 +61,26 @@ class NewEstimateRev1 extends Component {
 				addItem = false
 			}
 		})
+		debugger
+		if(addItem){
+			shoppingCartCopy.push(item)
+		}
+		this.setState({
+			shoppingCart:shoppingCartCopy
+		})
+	}
+	addItemToShoppingCart(item,template){
+		// item to shoppingcart only if the modelNo and template for that specific item isn't already listed
+		debugger
+		const {shoppingCart} = this.state;
+		let shoppingCartCopy = shoppingCart.filter(()=> true);
+		let addItem = true;
+		shoppingCartCopy.forEach((cartItem)=>{
+			if(cartItem.modelNo === item.modelNo && cartItem.template === template){
+				addItem = false
+			}
+		})
+		debugger
 		if(addItem){
 			shoppingCartCopy.push(item)
 		}
@@ -83,59 +106,40 @@ class NewEstimateRev1 extends Component {
 	resetTemplateValue(){
 		// this.refs.templateSelection.state.value = 'Choose a Template';
 	}
+	addTemplateToState(templateCollection, template){
+		let templateCollectionCopy = templateCollection.filter(() => true);
+		let templateIndex = templateCollectionCopy.indexOf(template);
+		if(templateIndex === -1){
+			templateCollectionCopy.push(template)
+		} else {
+			templateCollectionCopy.splice(templateIndex,1);
+			templateCollectionCopy.push(template);
+			// reorder templateCollection
+		}
+		return templateCollectionCopy
+	}
 handleTemplateChange(){
 	const templateValue = event.target.innerHTML;
 
 	if(templateValue !== "Choose a Template"){
 		const templateModelNos = templateConfig[templateValue];
 		let {shoppingCartTemplates,shoppingCart} = this.state;
-
-		//Change this to database connection after demo. Testing is synchronous, database is async, use callbacks
-		if(shoppingCartTemplates.indexOf(templateValue)=== -1){
-			shoppingCartTemplates.push(templateValue);
 			let filteredModelNos = this.whichItemsToAddToShoppingCart(shoppingCart, templateModelNos, templateValue);
 			let itemsToAddToShoppingCart = testProductAccess.getModelNos(filteredModelNos);
 			let itemsWithTemplate = this.addTemplateToProducts(itemsToAddToShoppingCart,templateValue);
-			itemsWithTemplate.forEach((item)=>{
-				this.addItemToShoppingCart(item,templateValue);
+			let shoppingCartUnordered = [...shoppingCart,...itemsWithTemplate];
+			shoppingCart = this.reorderShoppingCart(shoppingCartUnordered, templateValue);
+			shoppingCartTemplates = this.addTemplateToState(shoppingCartTemplates, templateValue)
+			this.setState({
+				shoppingCart,
+				shoppingCartTemplates
 			})
 
-		} else {
-			let templateIndex = shoppingCartTemplates.indexOf(templateValue);
-			let missingTemplateModelNos = templateModelNos.filter((templateModelNo)=>{
-				let templateNeededInShoppingcart = true;
-				shoppingCart.forEach((shoppingCartItem)=>{
-					if(templateModelNo === shoppingCartItem.modelNo){
-						templateNeededInShoppingcart = false;
-					}
-				})
-				return templateNeededInShoppingcart
-			})
-			if(missingTemplateModelNos.length > 0 ){
-				shoppingCartTemplates.splice(templateIndex,1);
-				shoppingCartTemplates.push(templateValue);
-				let newShoppingCartItems = testProductAccess.getModelNos(templateModelNos).filter((product)=>{
-					let addProduct = true;
-					shoppingCart.forEach((shoppingCartItem)=>{
-						if(shoppingCartItem.modelNo === product.modelNo){
-							addProduct = false
-						}
-					})
-					return addProduct
-				})
-				newShoppingCartItems = this.addTemplateToProducts(newShoppingCartItems,templateValue);
-
-				shoppingCart=[...shoppingCart,
-				...newShoppingCartItems
-				];
-			}
-		}
-		let updatedShoppingCart = this.reorderShoppingCart(shoppingCart, templateValue);
-		this.setState({
-			templateValue,
-			shoppingCart: updatedShoppingCart,
-			shoppingCartTemplates
-		})
+		 
+		//let updatedShoppingCart = this.reorderShoppingCart(shoppingCart, templateValue);
+		// this.setState({
+		// 	templateValue,
+		// })
 	}
 }
 

@@ -31488,6 +31488,7 @@
 		}, {
 			key: 'whichItemsToAddToShoppingCart',
 			value: function whichItemsToAddToShoppingCart(shoppingCart, modelNos, template) {
+				debugger;
 				var filteredModelNos = modelNos.filter(function (modelNo) {
 					var acceptableModelNo = true;
 					shoppingCart.forEach(function (cartItem) {
@@ -31497,6 +31498,7 @@
 					});
 					return acceptableModelNo;
 				});
+				debugger;
 				return filteredModelNos;
 			}
 		}, {
@@ -31508,6 +31510,7 @@
 			key: 'addItemToShoppingCart',
 			value: function addItemToShoppingCart(item, template) {
 				// item to shoppingcart only if the modelNo and template for that specific item isn't already listed
+				debugger;
 				var shoppingCart = this.state.shoppingCart;
 	
 				var shoppingCartCopy = shoppingCart.filter(function () {
@@ -31519,6 +31522,31 @@
 						addItem = false;
 					}
 				});
+				debugger;
+				if (addItem) {
+					shoppingCartCopy.push(item);
+				}
+				this.setState({
+					shoppingCart: shoppingCartCopy
+				});
+			}
+		}, {
+			key: 'addItemToShoppingCart',
+			value: function addItemToShoppingCart(items, template) {
+				// item to shoppingcart only if the modelNo and template for that specific item isn't already listed
+				debugger;
+				var shoppingCart = this.state.shoppingCart;
+	
+				var shoppingCartCopy = shoppingCart.filter(function () {
+					return true;
+				});
+				var addItem = true;
+				shoppingCartCopy.forEach(function (cartItem) {
+					if (cartItem.modelNo === item.modelNo && cartItem.template === template) {
+						addItem = false;
+					}
+				});
+				debugger;
 				if (addItem) {
 					shoppingCartCopy.push(item);
 				}
@@ -31549,10 +31577,24 @@
 				// this.refs.templateSelection.state.value = 'Choose a Template';
 			}
 		}, {
+			key: 'addTemplateToState',
+			value: function addTemplateToState(templateCollection, template) {
+				var templateCollectionCopy = templateCollection.filter(function () {
+					return true;
+				});
+				var templateIndex = templateCollectionCopy.indexOf(template);
+				if (templateIndex === -1) {
+					templateCollectionCopy.push(template);
+				} else {
+					templateCollectionCopy.splice(templateIndex, 1);
+					templateCollectionCopy.push(template);
+					// reorder templateCollection
+				}
+				return templateCollectionCopy;
+			}
+		}, {
 			key: 'handleTemplateChange',
 			value: function handleTemplateChange() {
-				var _this2 = this;
-	
 				var templateValue = event.target.innerHTML;
 	
 				if (templateValue !== "Choose a Template") {
@@ -31561,50 +31603,21 @@
 					    shoppingCartTemplates = _state.shoppingCartTemplates,
 					    shoppingCart = _state.shoppingCart;
 	
-					//Change this to database connection after demo. Testing is synchronous, database is async, use callbacks
-	
-					if (shoppingCartTemplates.indexOf(templateValue) === -1) {
-						shoppingCartTemplates.push(templateValue);
-						var filteredModelNos = this.whichItemsToAddToShoppingCart(shoppingCart, templateModelNos, templateValue);
-						var itemsToAddToShoppingCart = _testProductAccess2.default.getModelNos(filteredModelNos);
-						var itemsWithTemplate = this.addTemplateToProducts(itemsToAddToShoppingCart, templateValue);
-						itemsWithTemplate.forEach(function (item) {
-							_this2.addItemToShoppingCart(item, templateValue);
-						});
-					} else {
-						var templateIndex = shoppingCartTemplates.indexOf(templateValue);
-						var missingTemplateModelNos = templateModelNos.filter(function (templateModelNo) {
-							var templateNeededInShoppingcart = true;
-							shoppingCart.forEach(function (shoppingCartItem) {
-								if (templateModelNo === shoppingCartItem.modelNo) {
-									templateNeededInShoppingcart = false;
-								}
-							});
-							return templateNeededInShoppingcart;
-						});
-						if (missingTemplateModelNos.length > 0) {
-							shoppingCartTemplates.splice(templateIndex, 1);
-							shoppingCartTemplates.push(templateValue);
-							var newShoppingCartItems = _testProductAccess2.default.getModelNos(templateModelNos).filter(function (product) {
-								var addProduct = true;
-								shoppingCart.forEach(function (shoppingCartItem) {
-									if (shoppingCartItem.modelNo === product.modelNo) {
-										addProduct = false;
-									}
-								});
-								return addProduct;
-							});
-							newShoppingCartItems = this.addTemplateToProducts(newShoppingCartItems, templateValue);
-	
-							shoppingCart = [].concat(_toConsumableArray(shoppingCart), _toConsumableArray(newShoppingCartItems));
-						}
-					}
-					var updatedShoppingCart = this.reorderShoppingCart(shoppingCart, templateValue);
+					var filteredModelNos = this.whichItemsToAddToShoppingCart(shoppingCart, templateModelNos, templateValue);
+					var itemsToAddToShoppingCart = _testProductAccess2.default.getModelNos(filteredModelNos);
+					var itemsWithTemplate = this.addTemplateToProducts(itemsToAddToShoppingCart, templateValue);
+					var shoppingCartUnordered = [].concat(_toConsumableArray(shoppingCart), _toConsumableArray(itemsWithTemplate));
+					shoppingCart = this.reorderShoppingCart(shoppingCartUnordered, templateValue);
+					shoppingCartTemplates = this.addTemplateToState(shoppingCartTemplates, templateValue);
 					this.setState({
-						templateValue: templateValue,
-						shoppingCart: updatedShoppingCart,
+						shoppingCart: shoppingCart,
 						shoppingCartTemplates: shoppingCartTemplates
 					});
+	
+					//let updatedShoppingCart = this.reorderShoppingCart(shoppingCart, templateValue);
+					// this.setState({
+					// 	templateValue,
+					// })
 				}
 			}
 	

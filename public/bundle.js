@@ -60,13 +60,13 @@
 	
 	var _Main2 = _interopRequireDefault(_Main);
 	
-	var _reactRouterDom = __webpack_require__(275);
+	var _reactRouterDom = __webpack_require__(280);
 	
-	var _Nav = __webpack_require__(313);
+	var _Nav = __webpack_require__(318);
 	
 	var _Nav2 = _interopRequireDefault(_Nav);
 	
-	var _reactTapEventPlugin = __webpack_require__(314);
+	var _reactTapEventPlugin = __webpack_require__(319);
 	
 	var _reactTapEventPlugin2 = _interopRequireDefault(_reactTapEventPlugin);
 	
@@ -21911,7 +21911,7 @@
 	
 	var _NewEstimateRev2 = _interopRequireDefault(_NewEstimateRev);
 	
-	var _EstimatePage = __webpack_require__(320);
+	var _EstimatePage = __webpack_require__(275);
 	
 	var _EstimatePage2 = _interopRequireDefault(_EstimatePage);
 	
@@ -32647,58 +32647,909 @@
 
 	'use strict';
 	
+	Object.defineProperty(exports, "__esModule", {
+	          value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactMaterialize = __webpack_require__(185);
+	
+	var _EstimateHeader = __webpack_require__(276);
+	
+	var _EstimateHeader2 = _interopRequireDefault(_EstimateHeader);
+	
+	var _CustomerInfo = __webpack_require__(277);
+	
+	var _CustomerInfo2 = _interopRequireDefault(_CustomerInfo);
+	
+	var _ScopeOfWork = __webpack_require__(278);
+	
+	var _ScopeOfWork2 = _interopRequireDefault(_ScopeOfWork);
+	
+	var _Specifications = __webpack_require__(279);
+	
+	var _Specifications2 = _interopRequireDefault(_Specifications);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var axios = __webpack_require__(238);
+	
+	var EstimatePage = function (_Component) {
+	          _inherits(EstimatePage, _Component);
+	
+	          function EstimatePage() {
+	                    _classCallCheck(this, EstimatePage);
+	
+	                    var _this = _possibleConstructorReturn(this, (EstimatePage.__proto__ || Object.getPrototypeOf(EstimatePage)).call(this));
+	
+	                    _this.state = {
+	                              cows: 5
+	                    };
+	                    _this.handleNewEstimate = _this.handleNewEstimate.bind(_this);
+	                    return _this;
+	          }
+	
+	          _createClass(EstimatePage, [{
+	                    key: 'handleNewEstimate',
+	                    value: function handleNewEstimate() {
+	                              this.props.newEstimate();
+	                    }
+	          }, {
+	                    key: 'componentDidMount',
+	                    value: function componentDidMount() {
+	                              var html = $('#printThisBitch')[0].outerHTML;
+	
+	                              console.log(html);
+	                              var requestUrl = '/pdfTest';
+	                              axios({
+	                                        method: 'post',
+	                                        url: requestUrl,
+	                                        data: {
+	                                                  html: html
+	                                        }
+	                              }).then(function (res) {
+	                                        console.log('successful');
+	                              }).catch(function (error) {
+	                                        console.log('not successful');
+	                                        console.log(error);
+	                              });
+	
+	                              // pdf.create($('html')[0]).toFile(['/test.pdf'],function(err, res){
+	                              //   console.log(res.filename);
+	                              // });
+	
+	                              // var pdf = new jsPDF('p', 'pt', 'letter'),
+	                              // // source can be HTML-formatted string, or a reference
+	                              // // to an actual DOM element from which the text will be scraped.
+	                              // source = $('#printThisBitch')[0],
+	
+	
+	                              // // we support special element handlers. Register them with jQuery-style 
+	                              // // ID selector for either ID or node name. ("#iAmID", "div", "span" etc.)
+	                              // // There is no support for any other type of selectors 
+	                              // // (class, of compound) at this time.
+	                              // specialElementHandlers = {
+	                              //     // element with id of "bypass" - jQuery style selector
+	                              //     // '#bypassme': function (element, renderer) {
+	                              //     //     // true = "handled elsewhere, bypass text extraction"
+	                              //     //     return true
+	                              //     // }
+	                              // };
+	                              // let margins = {
+	                              //     top: 80,
+	                              //     bottom: 60,
+	                              //     left: 40,
+	                              //     width: 522
+	                              // };
+	                              // // all coords and widths are in jsPDF instance's declared units
+	                              // // 'inches' in this case
+	                              // pdf.fromHTML(
+	                              // source, // HTML string or DOM elem ref.
+	                              // margins.left, // x coord
+	                              // margins.top, { // y coord
+	                              //     'width': margins.width, // max width of content on PDF
+	                              //     'elementHandlers': specialElementHandlers
+	                              // },
+	
+	                              // function (dispose) {
+	                              //     // dispose: object with X, Y of the last line add to the PDF 
+	                              //     //          this allow the insertion of new lines after html
+	                              //     pdf.save('Test.pdf');
+	                              // }, margins);
+	                    }
+	          }, {
+	                    key: 'render',
+	                    value: function render() {
+	                              return _react2.default.createElement(
+	                                        'div',
+	                                        { id: 'printThisBitch' },
+	                                        _react2.default.createElement('img', { src: 'file:///placeholder.png', alt: 'BQueen' }),
+	                                        _react2.default.createElement('img', { src: 'placeholder.png', alt: 'BQueen' }),
+	                                        _react2.default.createElement('img', { src: 'file:\\\\\\placeholder.png', alt: 'BQueen' }),
+	                                        _react2.default.createElement('img', { src: 'http://via.placeholder.com/350x150', alt: 'BQueen' }),
+	                                        _react2.default.createElement(
+	                                                  'div',
+	                                                  null,
+	                                                  _react2.default.createElement(
+	                                                            'span',
+	                                                            null,
+	                                                            'Pro Builders Express,Inc'
+	                                                  ),
+	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000'
+	                                        ),
+	                                        _react2.default.createElement(
+	                                                  'div',
+	                                                  { style: { color: "blue" } },
+	                                                  'Date: 30-May-17 Page: Page 1 of 2'
+	                                        ),
+	                                        'There are ',
+	                                        this.state.cows,
+	                                        _react2.default.createElement(
+	                                                  'div',
+	                                                  null,
+	                                                  'Customer: First Last Quote: Date: 5/30/2017 By: Bob Leon Desc: ...',
+	                                                  _react2.default.createElement(
+	                                                            'span',
+	                                                            null,
+	                                                            'Pro Builders Express,Inc'
+	                                                  ),
+	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-',
+	                                                  _react2.default.createElement(
+	                                                            'span',
+	                                                            null,
+	                                                            'Pro Builders Express,Inc'
+	                                                  ),
+	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
+	                                                  _react2.default.createElement(
+	                                                            'span',
+	                                                            null,
+	                                                            'Pro Builders Express,Inc'
+	                                                  ),
+	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
+	                                                  _react2.default.createElement(
+	                                                            'span',
+	                                                            null,
+	                                                            'Pro Builders Express,Inc'
+	                                                  ),
+	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
+	                                                  _react2.default.createElement(
+	                                                            'span',
+	                                                            null,
+	                                                            'Pro Builders Express,Inc'
+	                                                  ),
+	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
+	                                                  _react2.default.createElement(
+	                                                            'span',
+	                                                            null,
+	                                                            'Pro Builders Express,Inc'
+	                                                  ),
+	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
+	                                                  _react2.default.createElement(
+	                                                            'span',
+	                                                            null,
+	                                                            'Pro Builders Express,Inc'
+	                                                  ),
+	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
+	                                                  _react2.default.createElement(
+	                                                            'span',
+	                                                            null,
+	                                                            'Pro Builders Express,Inc'
+	                                                  ),
+	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
+	                                                  _react2.default.createElement(
+	                                                            'span',
+	                                                            null,
+	                                                            'Pro Builders Express,Inc'
+	                                                  ),
+	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
+	                                                  _react2.default.createElement(
+	                                                            'span',
+	                                                            null,
+	                                                            'Pro Builders Express,Inc'
+	                                                  ),
+	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
+	                                                  _react2.default.createElement(
+	                                                            'span',
+	                                                            null,
+	                                                            'Pro Builders Express,Inc'
+	                                                  ),
+	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
+	                                                  _react2.default.createElement(
+	                                                            'span',
+	                                                            null,
+	                                                            'Pro Builders Express,Inc'
+	                                                  ),
+	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
+	                                                  _react2.default.createElement(
+	                                                            'span',
+	                                                            null,
+	                                                            'Pro Builders Express,Inc'
+	                                                  ),
+	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
+	                                                  _react2.default.createElement(
+	                                                            'span',
+	                                                            null,
+	                                                            'Pro Builders Express,Inc'
+	                                                  ),
+	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
+	                                                  _react2.default.createElement(
+	                                                            'span',
+	                                                            null,
+	                                                            'Pro Builders Express,Inc'
+	                                                  ),
+	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
+	                                                  _react2.default.createElement(
+	                                                            'span',
+	                                                            null,
+	                                                            'Pro Builders Express,Inc'
+	                                                  ),
+	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
+	                                                  _react2.default.createElement(
+	                                                            'span',
+	                                                            null,
+	                                                            'Pro Builders Express,Inc'
+	                                                  ),
+	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
+	                                                  _react2.default.createElement(
+	                                                            'span',
+	                                                            null,
+	                                                            'Pro Builders Express,Inc'
+	                                                  ),
+	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-',
+	                                                  _react2.default.createElement(
+	                                                            'span',
+	                                                            null,
+	                                                            'Pro Builders Express,Inc'
+	                                                  ),
+	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
+	                                                  _react2.default.createElement(
+	                                                            'span',
+	                                                            null,
+	                                                            'Pro Builders Express,Inc'
+	                                                  ),
+	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
+	                                                  _react2.default.createElement(
+	                                                            'span',
+	                                                            null,
+	                                                            'Pro Builders Express,Inc'
+	                                                  ),
+	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
+	                                                  _react2.default.createElement(
+	                                                            'span',
+	                                                            null,
+	                                                            'Pro Builders Express,Inc'
+	                                                  ),
+	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
+	                                                  _react2.default.createElement(
+	                                                            'span',
+	                                                            null,
+	                                                            'Pro Builders Express,Inc'
+	                                                  ),
+	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
+	                                                  _react2.default.createElement(
+	                                                            'span',
+	                                                            null,
+	                                                            'Pro Builders Express,Inc'
+	                                                  ),
+	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
+	                                                  _react2.default.createElement(
+	                                                            'span',
+	                                                            null,
+	                                                            'Pro Builders Express,Inc'
+	                                                  ),
+	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
+	                                                  _react2.default.createElement(
+	                                                            'span',
+	                                                            null,
+	                                                            'Pro Builders Express,Inc'
+	                                                  ),
+	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
+	                                                  _react2.default.createElement(
+	                                                            'span',
+	                                                            null,
+	                                                            'Pro Builders Express,Inc'
+	                                                  ),
+	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
+	                                                  _react2.default.createElement(
+	                                                            'span',
+	                                                            null,
+	                                                            'Pro Builders Express,Inc'
+	                                                  ),
+	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
+	                                                  _react2.default.createElement(
+	                                                            'span',
+	                                                            null,
+	                                                            'Pro Builders Express,Inc'
+	                                                  ),
+	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
+	                                                  _react2.default.createElement(
+	                                                            'span',
+	                                                            null,
+	                                                            'Pro Builders Express,Inc'
+	                                                  ),
+	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
+	                                                  _react2.default.createElement(
+	                                                            'span',
+	                                                            null,
+	                                                            'Pro Builders Express,Inc'
+	                                                  ),
+	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
+	                                                  _react2.default.createElement(
+	                                                            'span',
+	                                                            null,
+	                                                            'Pro Builders Express,Inc'
+	                                                  ),
+	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
+	                                                  _react2.default.createElement(
+	                                                            'span',
+	                                                            null,
+	                                                            'Pro Builders Express,Inc'
+	                                                  ),
+	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
+	                                                  _react2.default.createElement(
+	                                                            'span',
+	                                                            null,
+	                                                            'Pro Builders Express,Inc'
+	                                                  ),
+	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
+	                                                  _react2.default.createElement(
+	                                                            'span',
+	                                                            null,
+	                                                            'Pro Builders Express,Inc'
+	                                                  ),
+	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-',
+	                                                  _react2.default.createElement(
+	                                                            'span',
+	                                                            null,
+	                                                            'Pro Builders Express,Inc'
+	                                                  ),
+	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
+	                                                  _react2.default.createElement(
+	                                                            'span',
+	                                                            null,
+	                                                            'Pro Builders Express,Inc'
+	                                                  ),
+	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
+	                                                  _react2.default.createElement(
+	                                                            'span',
+	                                                            null,
+	                                                            'Pro Builders Express,Inc'
+	                                                  ),
+	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
+	                                                  _react2.default.createElement(
+	                                                            'span',
+	                                                            null,
+	                                                            'Pro Builders Express,Inc'
+	                                                  ),
+	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
+	                                                  _react2.default.createElement(
+	                                                            'span',
+	                                                            null,
+	                                                            'Pro Builders Express,Inc'
+	                                                  ),
+	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
+	                                                  _react2.default.createElement(
+	                                                            'span',
+	                                                            null,
+	                                                            'Pro Builders Express,Inc'
+	                                                  ),
+	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
+	                                                  _react2.default.createElement(
+	                                                            'span',
+	                                                            null,
+	                                                            'Pro Builders Express,Inc'
+	                                                  ),
+	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
+	                                                  _react2.default.createElement(
+	                                                            'span',
+	                                                            null,
+	                                                            'Pro Builders Express,Inc'
+	                                                  ),
+	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
+	                                                  _react2.default.createElement(
+	                                                            'span',
+	                                                            null,
+	                                                            'Pro Builders Express,Inc'
+	                                                  ),
+	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
+	                                                  _react2.default.createElement(
+	                                                            'span',
+	                                                            null,
+	                                                            'Pro Builders Express,Inc'
+	                                                  ),
+	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
+	                                                  _react2.default.createElement(
+	                                                            'span',
+	                                                            null,
+	                                                            'Pro Builders Express,Inc'
+	                                                  ),
+	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
+	                                                  _react2.default.createElement(
+	                                                            'span',
+	                                                            null,
+	                                                            'Pro Builders Express,Inc'
+	                                                  ),
+	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
+	                                                  _react2.default.createElement(
+	                                                            'span',
+	                                                            null,
+	                                                            'Pro Builders Express,Inc'
+	                                                  ),
+	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
+	                                                  _react2.default.createElement(
+	                                                            'span',
+	                                                            null,
+	                                                            'Pro Builders Express,Inc'
+	                                                  ),
+	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
+	                                                  _react2.default.createElement(
+	                                                            'span',
+	                                                            null,
+	                                                            'Pro Builders Express,Inc'
+	                                                  ),
+	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
+	                                                  _react2.default.createElement(
+	                                                            'span',
+	                                                            null,
+	                                                            'Pro Builders Express,Inc'
+	                                                  ),
+	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
+	                                                  _react2.default.createElement(
+	                                                            'span',
+	                                                            null,
+	                                                            'Pro Builders Express,Inc'
+	                                                  ),
+	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-',
+	                                                  _react2.default.createElement(
+	                                                            'span',
+	                                                            null,
+	                                                            'Pro Builders Express,Inc'
+	                                                  ),
+	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
+	                                                  _react2.default.createElement(
+	                                                            'span',
+	                                                            null,
+	                                                            'Pro Builders Express,Inc'
+	                                                  ),
+	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
+	                                                  _react2.default.createElement(
+	                                                            'span',
+	                                                            null,
+	                                                            'Pro Builders Express,Inc'
+	                                                  ),
+	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
+	                                                  _react2.default.createElement(
+	                                                            'span',
+	                                                            null,
+	                                                            'Pro Builders Express,Inc'
+	                                                  ),
+	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
+	                                                  _react2.default.createElement(
+	                                                            'span',
+	                                                            null,
+	                                                            'Pro Builders Express,Inc'
+	                                                  ),
+	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
+	                                                  _react2.default.createElement(
+	                                                            'span',
+	                                                            null,
+	                                                            'Pro Builders Express,Inc'
+	                                                  ),
+	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
+	                                                  _react2.default.createElement(
+	                                                            'span',
+	                                                            null,
+	                                                            'Pro Builders Express,Inc'
+	                                                  ),
+	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
+	                                                  _react2.default.createElement(
+	                                                            'span',
+	                                                            null,
+	                                                            'Pro Builders Express,Inc'
+	                                                  ),
+	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
+	                                                  _react2.default.createElement(
+	                                                            'span',
+	                                                            null,
+	                                                            'Pro Builders Express,Inc'
+	                                                  ),
+	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
+	                                                  _react2.default.createElement(
+	                                                            'span',
+	                                                            null,
+	                                                            'Pro Builders Express,Inc'
+	                                                  ),
+	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
+	                                                  _react2.default.createElement(
+	                                                            'span',
+	                                                            null,
+	                                                            'Pro Builders Express,Inc'
+	                                                  ),
+	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
+	                                                  _react2.default.createElement(
+	                                                            'span',
+	                                                            null,
+	                                                            'Pro Builders Express,Inc'
+	                                                  ),
+	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
+	                                                  _react2.default.createElement(
+	                                                            'span',
+	                                                            null,
+	                                                            'Pro Builders Express,Inc'
+	                                                  ),
+	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
+	                                                  _react2.default.createElement(
+	                                                            'span',
+	                                                            null,
+	                                                            'Pro Builders Express,Inc'
+	                                                  ),
+	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
+	                                                  _react2.default.createElement(
+	                                                            'span',
+	                                                            null,
+	                                                            'Pro Builders Express,Inc'
+	                                                  ),
+	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
+	                                                  _react2.default.createElement(
+	                                                            'span',
+	                                                            null,
+	                                                            'Pro Builders Express,Inc'
+	                                                  ),
+	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
+	                                                  _react2.default.createElement(_EstimateHeader2.default, null)
+	                                        ),
+	                                        _react2.default.createElement(
+	                                                  'div',
+	                                                  null,
+	                                                  _react2.default.createElement(
+	                                                            'div',
+	                                                            { style: { 'backgroundColor': '#13788e', color: 'white', width: '100%', 'textAlign': 'center', border: 'black 1px solid' } },
+	                                                            ' Scope Of Work '
+	                                                  ),
+	                                                  _react2.default.createElement(
+	                                                            'div',
+	                                                            { className: 'scope-of-work-text' },
+	                                                            'Scope of Work that was put in during the estimate'
+	                                                  )
+	                                        )
+	                              );
+	                    }
+	          }]);
+	
+	          return EstimatePage;
+	}(_react.Component);
+	
+	exports.default = EstimatePage;
+
+/***/ }),
+/* 276 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var EstimateHeader = function (_Component) {
+	  _inherits(EstimateHeader, _Component);
+	
+	  function EstimateHeader() {
+	    _classCallCheck(this, EstimateHeader);
+	
+	    var _this = _possibleConstructorReturn(this, (EstimateHeader.__proto__ || Object.getPrototypeOf(EstimateHeader)).call(this));
+	
+	    _this.state = {
+	      page: 'intro'
+	    };
+	    _this.handleNewEstimate = _this.handleNewEstimate.bind(_this);
+	    return _this;
+	  }
+	
+	  _createClass(EstimateHeader, [{
+	    key: 'handleNewEstimate',
+	    value: function handleNewEstimate() {
+	      this.props.newEstimate();
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        'Pro Builders Express,Inc!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
+	      );
+	    }
+	  }]);
+	
+	  return EstimateHeader;
+	}(_react.Component);
+	
+	exports.default = EstimateHeader;
+
+/***/ }),
+/* 277 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var CustomerInfo = function (_Component) {
+	  _inherits(CustomerInfo, _Component);
+	
+	  function CustomerInfo() {
+	    _classCallCheck(this, CustomerInfo);
+	
+	    var _this = _possibleConstructorReturn(this, (CustomerInfo.__proto__ || Object.getPrototypeOf(CustomerInfo)).call(this));
+	
+	    _this.state = {
+	      page: 'intro'
+	    };
+	    _this.handleNewEstimate = _this.handleNewEstimate.bind(_this);
+	    return _this;
+	  }
+	
+	  _createClass(CustomerInfo, [{
+	    key: 'handleNewEstimate',
+	    value: function handleNewEstimate() {
+	      this.props.newEstimate();
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        'Customer: First Last Quote: Date: 5/30/2017 By: Bob Leon Desc: ...'
+	      );
+	    }
+	  }]);
+	
+	  return CustomerInfo;
+	}(_react.Component);
+	
+	exports.default = CustomerInfo;
+
+/***/ }),
+/* 278 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactMaterialize = __webpack_require__(185);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var ScopeOfWork = function (_Component) {
+	  _inherits(ScopeOfWork, _Component);
+	
+	  function ScopeOfWork() {
+	    _classCallCheck(this, ScopeOfWork);
+	
+	    var _this = _possibleConstructorReturn(this, (ScopeOfWork.__proto__ || Object.getPrototypeOf(ScopeOfWork)).call(this));
+	
+	    _this.state = {
+	      page: 'intro'
+	    };
+	    _this.handleNewEstimate = _this.handleNewEstimate.bind(_this);
+	    return _this;
+	  }
+	
+	  _createClass(ScopeOfWork, [{
+	    key: 'handleNewEstimate',
+	    value: function handleNewEstimate() {
+	      this.props.newEstimate();
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'estimate-page-heading' },
+	          ' Scope Of Work '
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'scope-of-work-text' },
+	          'Scope of Work that was put in during the estimate'
+	        )
+	      );
+	    }
+	  }]);
+	
+	  return ScopeOfWork;
+	}(_react.Component);
+	
+	exports.default = ScopeOfWork;
+
+/***/ }),
+/* 279 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var Specifications = function (_Component) {
+	  _inherits(Specifications, _Component);
+	
+	  function Specifications() {
+	    _classCallCheck(this, Specifications);
+	
+	    var _this = _possibleConstructorReturn(this, (Specifications.__proto__ || Object.getPrototypeOf(Specifications)).call(this));
+	
+	    _this.state = {
+	      page: 'intro'
+	    };
+	    _this.handleNewEstimate = _this.handleNewEstimate.bind(_this);
+	    return _this;
+	  }
+	
+	  _createClass(Specifications, [{
+	    key: 'handleNewEstimate',
+	    value: function handleNewEstimate() {
+	      this.props.newEstimate();
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'estimate-page-heading' },
+	          'Specifications'
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          null,
+	          'Certain Specifications'
+	        )
+	      );
+	    }
+	  }]);
+	
+	  return Specifications;
+	}(_react.Component);
+	
+	exports.default = Specifications;
+
+/***/ }),
+/* 280 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
 	exports.__esModule = true;
 	exports.withRouter = exports.matchPath = exports.Switch = exports.StaticRouter = exports.Router = exports.Route = exports.Redirect = exports.Prompt = exports.NavLink = exports.MemoryRouter = exports.Link = exports.HashRouter = exports.BrowserRouter = undefined;
 	
-	var _BrowserRouter2 = __webpack_require__(276);
+	var _BrowserRouter2 = __webpack_require__(281);
 	
 	var _BrowserRouter3 = _interopRequireDefault(_BrowserRouter2);
 	
-	var _HashRouter2 = __webpack_require__(300);
+	var _HashRouter2 = __webpack_require__(305);
 	
 	var _HashRouter3 = _interopRequireDefault(_HashRouter2);
 	
-	var _Link2 = __webpack_require__(302);
+	var _Link2 = __webpack_require__(307);
 	
 	var _Link3 = _interopRequireDefault(_Link2);
 	
-	var _MemoryRouter2 = __webpack_require__(303);
+	var _MemoryRouter2 = __webpack_require__(308);
 	
 	var _MemoryRouter3 = _interopRequireDefault(_MemoryRouter2);
 	
-	var _NavLink2 = __webpack_require__(304);
+	var _NavLink2 = __webpack_require__(309);
 	
 	var _NavLink3 = _interopRequireDefault(_NavLink2);
 	
-	var _Prompt2 = __webpack_require__(305);
+	var _Prompt2 = __webpack_require__(310);
 	
 	var _Prompt3 = _interopRequireDefault(_Prompt2);
 	
-	var _Redirect2 = __webpack_require__(306);
+	var _Redirect2 = __webpack_require__(311);
 	
 	var _Redirect3 = _interopRequireDefault(_Redirect2);
 	
-	var _Route2 = __webpack_require__(307);
+	var _Route2 = __webpack_require__(312);
 	
 	var _Route3 = _interopRequireDefault(_Route2);
 	
-	var _Router2 = __webpack_require__(308);
+	var _Router2 = __webpack_require__(313);
 	
 	var _Router3 = _interopRequireDefault(_Router2);
 	
-	var _StaticRouter2 = __webpack_require__(309);
+	var _StaticRouter2 = __webpack_require__(314);
 	
 	var _StaticRouter3 = _interopRequireDefault(_StaticRouter2);
 	
-	var _Switch2 = __webpack_require__(310);
+	var _Switch2 = __webpack_require__(315);
 	
 	var _Switch3 = _interopRequireDefault(_Switch2);
 	
-	var _matchPath2 = __webpack_require__(311);
+	var _matchPath2 = __webpack_require__(316);
 	
 	var _matchPath3 = _interopRequireDefault(_matchPath2);
 	
-	var _withRouter2 = __webpack_require__(312);
+	var _withRouter2 = __webpack_require__(317);
 	
 	var _withRouter3 = _interopRequireDefault(_withRouter2);
 	
@@ -32719,7 +33570,7 @@
 	exports.withRouter = _withRouter3.default;
 
 /***/ }),
-/* 276 */
+/* 281 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -32734,11 +33585,11 @@
 	
 	var _propTypes2 = _interopRequireDefault(_propTypes);
 	
-	var _createBrowserHistory = __webpack_require__(277);
+	var _createBrowserHistory = __webpack_require__(282);
 	
 	var _createBrowserHistory2 = _interopRequireDefault(_createBrowserHistory);
 	
-	var _reactRouter = __webpack_require__(286);
+	var _reactRouter = __webpack_require__(291);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -32783,7 +33634,7 @@
 	exports.default = BrowserRouter;
 
 /***/ }),
-/* 277 */
+/* 282 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -32794,23 +33645,23 @@
 	
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 	
-	var _warning = __webpack_require__(278);
+	var _warning = __webpack_require__(283);
 	
 	var _warning2 = _interopRequireDefault(_warning);
 	
-	var _invariant = __webpack_require__(279);
+	var _invariant = __webpack_require__(284);
 	
 	var _invariant2 = _interopRequireDefault(_invariant);
 	
-	var _LocationUtils = __webpack_require__(280);
+	var _LocationUtils = __webpack_require__(285);
 	
-	var _PathUtils = __webpack_require__(283);
+	var _PathUtils = __webpack_require__(288);
 	
-	var _createTransitionManager = __webpack_require__(284);
+	var _createTransitionManager = __webpack_require__(289);
 	
 	var _createTransitionManager2 = _interopRequireDefault(_createTransitionManager);
 	
-	var _DOMUtils = __webpack_require__(285);
+	var _DOMUtils = __webpack_require__(290);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -33096,7 +33947,7 @@
 	exports.default = createBrowserHistory;
 
 /***/ }),
-/* 278 */
+/* 283 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -33163,7 +34014,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }),
-/* 279 */
+/* 284 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -33221,7 +34072,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }),
-/* 280 */
+/* 285 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33231,15 +34082,15 @@
 	
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 	
-	var _resolvePathname = __webpack_require__(281);
+	var _resolvePathname = __webpack_require__(286);
 	
 	var _resolvePathname2 = _interopRequireDefault(_resolvePathname);
 	
-	var _valueEqual = __webpack_require__(282);
+	var _valueEqual = __webpack_require__(287);
 	
 	var _valueEqual2 = _interopRequireDefault(_valueEqual);
 	
-	var _PathUtils = __webpack_require__(283);
+	var _PathUtils = __webpack_require__(288);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -33289,7 +34140,7 @@
 	};
 
 /***/ }),
-/* 281 */
+/* 286 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -33364,7 +34215,7 @@
 	module.exports = resolvePathname;
 
 /***/ }),
-/* 282 */
+/* 287 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -33409,7 +34260,7 @@
 	exports.default = valueEqual;
 
 /***/ }),
-/* 283 */
+/* 288 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -33473,14 +34324,14 @@
 	};
 
 /***/ }),
-/* 284 */
+/* 289 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	exports.__esModule = true;
 	
-	var _warning = __webpack_require__(278);
+	var _warning = __webpack_require__(283);
 	
 	var _warning2 = _interopRequireDefault(_warning);
 	
@@ -33563,7 +34414,7 @@
 	exports.default = createTransitionManager;
 
 /***/ }),
-/* 285 */
+/* 290 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -33623,7 +34474,7 @@
 	};
 
 /***/ }),
-/* 286 */
+/* 291 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33631,39 +34482,39 @@
 	exports.__esModule = true;
 	exports.withRouter = exports.matchPath = exports.Switch = exports.StaticRouter = exports.Router = exports.Route = exports.Redirect = exports.Prompt = exports.MemoryRouter = undefined;
 	
-	var _MemoryRouter2 = __webpack_require__(287);
+	var _MemoryRouter2 = __webpack_require__(292);
 	
 	var _MemoryRouter3 = _interopRequireDefault(_MemoryRouter2);
 	
-	var _Prompt2 = __webpack_require__(290);
+	var _Prompt2 = __webpack_require__(295);
 	
 	var _Prompt3 = _interopRequireDefault(_Prompt2);
 	
-	var _Redirect2 = __webpack_require__(291);
+	var _Redirect2 = __webpack_require__(296);
 	
 	var _Redirect3 = _interopRequireDefault(_Redirect2);
 	
-	var _Route2 = __webpack_require__(292);
+	var _Route2 = __webpack_require__(297);
 	
 	var _Route3 = _interopRequireDefault(_Route2);
 	
-	var _Router2 = __webpack_require__(289);
+	var _Router2 = __webpack_require__(294);
 	
 	var _Router3 = _interopRequireDefault(_Router2);
 	
-	var _StaticRouter2 = __webpack_require__(296);
+	var _StaticRouter2 = __webpack_require__(301);
 	
 	var _StaticRouter3 = _interopRequireDefault(_StaticRouter2);
 	
-	var _Switch2 = __webpack_require__(297);
+	var _Switch2 = __webpack_require__(302);
 	
 	var _Switch3 = _interopRequireDefault(_Switch2);
 	
-	var _matchPath2 = __webpack_require__(293);
+	var _matchPath2 = __webpack_require__(298);
 	
 	var _matchPath3 = _interopRequireDefault(_matchPath2);
 	
-	var _withRouter2 = __webpack_require__(298);
+	var _withRouter2 = __webpack_require__(303);
 	
 	var _withRouter3 = _interopRequireDefault(_withRouter2);
 	
@@ -33680,7 +34531,7 @@
 	exports.withRouter = _withRouter3.default;
 
 /***/ }),
-/* 287 */
+/* 292 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33695,11 +34546,11 @@
 	
 	var _propTypes2 = _interopRequireDefault(_propTypes);
 	
-	var _createMemoryHistory = __webpack_require__(288);
+	var _createMemoryHistory = __webpack_require__(293);
 	
 	var _createMemoryHistory2 = _interopRequireDefault(_createMemoryHistory);
 	
-	var _Router = __webpack_require__(289);
+	var _Router = __webpack_require__(294);
 	
 	var _Router2 = _interopRequireDefault(_Router);
 	
@@ -33746,7 +34597,7 @@
 	exports.default = MemoryRouter;
 
 /***/ }),
-/* 288 */
+/* 293 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33757,15 +34608,15 @@
 	
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 	
-	var _warning = __webpack_require__(278);
+	var _warning = __webpack_require__(283);
 	
 	var _warning2 = _interopRequireDefault(_warning);
 	
-	var _PathUtils = __webpack_require__(283);
+	var _PathUtils = __webpack_require__(288);
 	
-	var _LocationUtils = __webpack_require__(280);
+	var _LocationUtils = __webpack_require__(285);
 	
-	var _createTransitionManager = __webpack_require__(284);
+	var _createTransitionManager = __webpack_require__(289);
 	
 	var _createTransitionManager2 = _interopRequireDefault(_createTransitionManager);
 	
@@ -33921,7 +34772,7 @@
 	exports.default = createMemoryHistory;
 
 /***/ }),
-/* 289 */
+/* 294 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33930,11 +34781,11 @@
 	
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 	
-	var _warning = __webpack_require__(278);
+	var _warning = __webpack_require__(283);
 	
 	var _warning2 = _interopRequireDefault(_warning);
 	
-	var _invariant = __webpack_require__(279);
+	var _invariant = __webpack_require__(284);
 	
 	var _invariant2 = _interopRequireDefault(_invariant);
 	
@@ -34045,7 +34896,7 @@
 	exports.default = Router;
 
 /***/ }),
-/* 290 */
+/* 295 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -34134,7 +34985,7 @@
 	exports.default = Prompt;
 
 /***/ }),
-/* 291 */
+/* 296 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -34223,7 +35074,7 @@
 	exports.default = Redirect;
 
 /***/ }),
-/* 292 */
+/* 297 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -34232,7 +35083,7 @@
 	
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 	
-	var _warning = __webpack_require__(278);
+	var _warning = __webpack_require__(283);
 	
 	var _warning2 = _interopRequireDefault(_warning);
 	
@@ -34244,7 +35095,7 @@
 	
 	var _propTypes2 = _interopRequireDefault(_propTypes);
 	
-	var _matchPath = __webpack_require__(293);
+	var _matchPath = __webpack_require__(298);
 	
 	var _matchPath2 = _interopRequireDefault(_matchPath);
 	
@@ -34373,14 +35224,14 @@
 	exports.default = Route;
 
 /***/ }),
-/* 293 */
+/* 298 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	exports.__esModule = true;
 	
-	var _pathToRegexp = __webpack_require__(294);
+	var _pathToRegexp = __webpack_require__(299);
 	
 	var _pathToRegexp2 = _interopRequireDefault(_pathToRegexp);
 	
@@ -34453,10 +35304,10 @@
 	exports.default = matchPath;
 
 /***/ }),
-/* 294 */
+/* 299 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var isarray = __webpack_require__(295)
+	var isarray = __webpack_require__(300)
 	
 	/**
 	 * Expose `pathToRegexp`.
@@ -34885,7 +35736,7 @@
 
 
 /***/ }),
-/* 295 */
+/* 300 */
 /***/ (function(module, exports) {
 
 	module.exports = Array.isArray || function (arr) {
@@ -34894,7 +35745,7 @@
 
 
 /***/ }),
-/* 296 */
+/* 301 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -34903,7 +35754,7 @@
 	
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 	
-	var _invariant = __webpack_require__(279);
+	var _invariant = __webpack_require__(284);
 	
 	var _invariant2 = _interopRequireDefault(_invariant);
 	
@@ -34915,9 +35766,9 @@
 	
 	var _propTypes2 = _interopRequireDefault(_propTypes);
 	
-	var _PathUtils = __webpack_require__(283);
+	var _PathUtils = __webpack_require__(288);
 	
-	var _Router = __webpack_require__(289);
+	var _Router = __webpack_require__(294);
 	
 	var _Router2 = _interopRequireDefault(_Router);
 	
@@ -35076,7 +35927,7 @@
 	exports.default = StaticRouter;
 
 /***/ }),
-/* 297 */
+/* 302 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -35091,11 +35942,11 @@
 	
 	var _propTypes2 = _interopRequireDefault(_propTypes);
 	
-	var _warning = __webpack_require__(278);
+	var _warning = __webpack_require__(283);
 	
 	var _warning2 = _interopRequireDefault(_warning);
 	
-	var _matchPath = __webpack_require__(293);
+	var _matchPath = __webpack_require__(298);
 	
 	var _matchPath2 = _interopRequireDefault(_matchPath);
 	
@@ -35168,7 +36019,7 @@
 	exports.default = Switch;
 
 /***/ }),
-/* 298 */
+/* 303 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -35185,11 +36036,11 @@
 	
 	var _propTypes2 = _interopRequireDefault(_propTypes);
 	
-	var _hoistNonReactStatics = __webpack_require__(299);
+	var _hoistNonReactStatics = __webpack_require__(304);
 	
 	var _hoistNonReactStatics2 = _interopRequireDefault(_hoistNonReactStatics);
 	
-	var _Route = __webpack_require__(292);
+	var _Route = __webpack_require__(297);
 	
 	var _Route2 = _interopRequireDefault(_Route);
 	
@@ -35222,7 +36073,7 @@
 	exports.default = withRouter;
 
 /***/ }),
-/* 299 */
+/* 304 */
 /***/ (function(module, exports) {
 
 	/**
@@ -35278,7 +36129,7 @@
 
 
 /***/ }),
-/* 300 */
+/* 305 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -35293,11 +36144,11 @@
 	
 	var _propTypes2 = _interopRequireDefault(_propTypes);
 	
-	var _createHashHistory = __webpack_require__(301);
+	var _createHashHistory = __webpack_require__(306);
 	
 	var _createHashHistory2 = _interopRequireDefault(_createHashHistory);
 	
-	var _reactRouter = __webpack_require__(286);
+	var _reactRouter = __webpack_require__(291);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -35341,7 +36192,7 @@
 	exports.default = HashRouter;
 
 /***/ }),
-/* 301 */
+/* 306 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -35350,23 +36201,23 @@
 	
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 	
-	var _warning = __webpack_require__(278);
+	var _warning = __webpack_require__(283);
 	
 	var _warning2 = _interopRequireDefault(_warning);
 	
-	var _invariant = __webpack_require__(279);
+	var _invariant = __webpack_require__(284);
 	
 	var _invariant2 = _interopRequireDefault(_invariant);
 	
-	var _LocationUtils = __webpack_require__(280);
+	var _LocationUtils = __webpack_require__(285);
 	
-	var _PathUtils = __webpack_require__(283);
+	var _PathUtils = __webpack_require__(288);
 	
-	var _createTransitionManager = __webpack_require__(284);
+	var _createTransitionManager = __webpack_require__(289);
 	
 	var _createTransitionManager2 = _interopRequireDefault(_createTransitionManager);
 	
-	var _DOMUtils = __webpack_require__(285);
+	var _DOMUtils = __webpack_require__(290);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -35668,7 +36519,7 @@
 	exports.default = createHashHistory;
 
 /***/ }),
-/* 302 */
+/* 307 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -35775,14 +36626,14 @@
 	exports.default = Link;
 
 /***/ }),
-/* 303 */
+/* 308 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	exports.__esModule = true;
 	
-	var _reactRouter = __webpack_require__(286);
+	var _reactRouter = __webpack_require__(291);
 	
 	Object.defineProperty(exports, 'default', {
 	  enumerable: true,
@@ -35792,7 +36643,7 @@
 	});
 
 /***/ }),
-/* 304 */
+/* 309 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -35811,9 +36662,9 @@
 	
 	var _propTypes2 = _interopRequireDefault(_propTypes);
 	
-	var _reactRouter = __webpack_require__(286);
+	var _reactRouter = __webpack_require__(291);
 	
-	var _Link = __webpack_require__(302);
+	var _Link = __webpack_require__(307);
 	
 	var _Link2 = _interopRequireDefault(_Link);
 	
@@ -35877,91 +36728,6 @@
 	exports.default = NavLink;
 
 /***/ }),
-/* 305 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	exports.__esModule = true;
-	
-	var _reactRouter = __webpack_require__(286);
-	
-	Object.defineProperty(exports, 'default', {
-	  enumerable: true,
-	  get: function get() {
-	    return _reactRouter.Prompt;
-	  }
-	});
-
-/***/ }),
-/* 306 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	exports.__esModule = true;
-	
-	var _reactRouter = __webpack_require__(286);
-	
-	Object.defineProperty(exports, 'default', {
-	  enumerable: true,
-	  get: function get() {
-	    return _reactRouter.Redirect;
-	  }
-	});
-
-/***/ }),
-/* 307 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	exports.__esModule = true;
-	
-	var _reactRouter = __webpack_require__(286);
-	
-	Object.defineProperty(exports, 'default', {
-	  enumerable: true,
-	  get: function get() {
-	    return _reactRouter.Route;
-	  }
-	});
-
-/***/ }),
-/* 308 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	exports.__esModule = true;
-	
-	var _reactRouter = __webpack_require__(286);
-	
-	Object.defineProperty(exports, 'default', {
-	  enumerable: true,
-	  get: function get() {
-	    return _reactRouter.Router;
-	  }
-	});
-
-/***/ }),
-/* 309 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	exports.__esModule = true;
-	
-	var _reactRouter = __webpack_require__(286);
-	
-	Object.defineProperty(exports, 'default', {
-	  enumerable: true,
-	  get: function get() {
-	    return _reactRouter.StaticRouter;
-	  }
-	});
-
-/***/ }),
 /* 310 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -35969,12 +36735,12 @@
 	
 	exports.__esModule = true;
 	
-	var _reactRouter = __webpack_require__(286);
+	var _reactRouter = __webpack_require__(291);
 	
 	Object.defineProperty(exports, 'default', {
 	  enumerable: true,
 	  get: function get() {
-	    return _reactRouter.Switch;
+	    return _reactRouter.Prompt;
 	  }
 	});
 
@@ -35986,12 +36752,12 @@
 	
 	exports.__esModule = true;
 	
-	var _reactRouter = __webpack_require__(286);
+	var _reactRouter = __webpack_require__(291);
 	
 	Object.defineProperty(exports, 'default', {
 	  enumerable: true,
 	  get: function get() {
-	    return _reactRouter.matchPath;
+	    return _reactRouter.Redirect;
 	  }
 	});
 
@@ -36003,7 +36769,92 @@
 	
 	exports.__esModule = true;
 	
-	var _reactRouter = __webpack_require__(286);
+	var _reactRouter = __webpack_require__(291);
+	
+	Object.defineProperty(exports, 'default', {
+	  enumerable: true,
+	  get: function get() {
+	    return _reactRouter.Route;
+	  }
+	});
+
+/***/ }),
+/* 313 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	exports.__esModule = true;
+	
+	var _reactRouter = __webpack_require__(291);
+	
+	Object.defineProperty(exports, 'default', {
+	  enumerable: true,
+	  get: function get() {
+	    return _reactRouter.Router;
+	  }
+	});
+
+/***/ }),
+/* 314 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	exports.__esModule = true;
+	
+	var _reactRouter = __webpack_require__(291);
+	
+	Object.defineProperty(exports, 'default', {
+	  enumerable: true,
+	  get: function get() {
+	    return _reactRouter.StaticRouter;
+	  }
+	});
+
+/***/ }),
+/* 315 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	exports.__esModule = true;
+	
+	var _reactRouter = __webpack_require__(291);
+	
+	Object.defineProperty(exports, 'default', {
+	  enumerable: true,
+	  get: function get() {
+	    return _reactRouter.Switch;
+	  }
+	});
+
+/***/ }),
+/* 316 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	exports.__esModule = true;
+	
+	var _reactRouter = __webpack_require__(291);
+	
+	Object.defineProperty(exports, 'default', {
+	  enumerable: true,
+	  get: function get() {
+	    return _reactRouter.matchPath;
+	  }
+	});
+
+/***/ }),
+/* 317 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	exports.__esModule = true;
+	
+	var _reactRouter = __webpack_require__(291);
 	
 	Object.defineProperty(exports, 'default', {
 	  enumerable: true,
@@ -36013,7 +36864,7 @@
 	});
 
 /***/ }),
-/* 313 */
+/* 318 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -36028,7 +36879,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactRouterDom = __webpack_require__(275);
+	var _reactRouterDom = __webpack_require__(280);
 	
 	var _reactMaterialize = __webpack_require__(185);
 	
@@ -36075,11 +36926,11 @@
 	exports.default = Nav;
 
 /***/ }),
-/* 314 */
+/* 319 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {var invariant = __webpack_require__(8);
-	var defaultClickRejectionStrategy = __webpack_require__(315);
+	var defaultClickRejectionStrategy = __webpack_require__(320);
 	
 	var alreadyInjected = false;
 	
@@ -36101,14 +36952,14 @@
 	  alreadyInjected = true;
 	
 	  __webpack_require__(46).injection.injectEventPluginsByName({
-	    'TapEventPlugin':       __webpack_require__(316)(shouldRejectClick)
+	    'TapEventPlugin':       __webpack_require__(321)(shouldRejectClick)
 	  });
 	};
 	
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }),
-/* 315 */
+/* 320 */
 /***/ (function(module, exports) {
 
 	module.exports = function(lastTouchEvent, clickTimestamp) {
@@ -36119,7 +36970,7 @@
 
 
 /***/ }),
-/* 316 */
+/* 321 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -36143,14 +36994,14 @@
 	
 	"use strict";
 	
-	var EventConstants = __webpack_require__(317);
+	var EventConstants = __webpack_require__(322);
 	var EventPluginUtils = __webpack_require__(48);
 	var EventPropagators = __webpack_require__(45);
 	var SyntheticUIEvent = __webpack_require__(79);
-	var TouchEventUtils = __webpack_require__(318);
+	var TouchEventUtils = __webpack_require__(323);
 	var ViewportMetrics = __webpack_require__(80);
 	
-	var keyOf = __webpack_require__(319);
+	var keyOf = __webpack_require__(324);
 	var topLevelTypes = EventConstants.topLevelTypes;
 	
 	var isStartish = EventPluginUtils.isStartish;
@@ -36296,7 +37147,7 @@
 
 
 /***/ }),
-/* 317 */
+/* 322 */
 /***/ (function(module, exports) {
 
 	/**
@@ -36392,7 +37243,7 @@
 	module.exports = EventConstants;
 
 /***/ }),
-/* 318 */
+/* 323 */
 /***/ (function(module, exports) {
 
 	/**
@@ -36440,7 +37291,7 @@
 
 
 /***/ }),
-/* 319 */
+/* 324 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -36477,364 +37328,6 @@
 	};
 	
 	module.exports = keyOf;
-
-/***/ }),
-/* 320 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-	var _react = __webpack_require__(1);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _reactMaterialize = __webpack_require__(185);
-	
-	var _EstimateHeader = __webpack_require__(321);
-	
-	var _EstimateHeader2 = _interopRequireDefault(_EstimateHeader);
-	
-	var _CustomerInfo = __webpack_require__(322);
-	
-	var _CustomerInfo2 = _interopRequireDefault(_CustomerInfo);
-	
-	var _ScopeOfWork = __webpack_require__(323);
-	
-	var _ScopeOfWork2 = _interopRequireDefault(_ScopeOfWork);
-	
-	var _Specifications = __webpack_require__(324);
-	
-	var _Specifications2 = _interopRequireDefault(_Specifications);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
-	var EstimatePage = function (_Component) {
-	  _inherits(EstimatePage, _Component);
-	
-	  function EstimatePage() {
-	    _classCallCheck(this, EstimatePage);
-	
-	    var _this = _possibleConstructorReturn(this, (EstimatePage.__proto__ || Object.getPrototypeOf(EstimatePage)).call(this));
-	
-	    _this.state = {};
-	    _this.handleNewEstimate = _this.handleNewEstimate.bind(_this);
-	    return _this;
-	  }
-	
-	  _createClass(EstimatePage, [{
-	    key: 'handleNewEstimate',
-	    value: function handleNewEstimate() {
-	      this.props.newEstimate();
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      return _react2.default.createElement(
-	        _reactMaterialize.Row,
-	        null,
-	        _react2.default.createElement(
-	          _reactMaterialize.Col,
-	          { s: 10, offset: 's1' },
-	          _react2.default.createElement(_EstimateHeader2.default, null),
-	          _react2.default.createElement(_CustomerInfo2.default, null),
-	          _react2.default.createElement(_ScopeOfWork2.default, null),
-	          _react2.default.createElement(_Specifications2.default, null)
-	        )
-	      );
-	    }
-	  }]);
-	
-	  return EstimatePage;
-	}(_react.Component);
-	
-	exports.default = EstimatePage;
-
-/***/ }),
-/* 321 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-	var _react = __webpack_require__(1);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
-	var EstimateHeader = function (_Component) {
-	  _inherits(EstimateHeader, _Component);
-	
-	  function EstimateHeader() {
-	    _classCallCheck(this, EstimateHeader);
-	
-	    var _this = _possibleConstructorReturn(this, (EstimateHeader.__proto__ || Object.getPrototypeOf(EstimateHeader)).call(this));
-	
-	    _this.state = {
-	      page: 'intro'
-	    };
-	    _this.handleNewEstimate = _this.handleNewEstimate.bind(_this);
-	    return _this;
-	  }
-	
-	  _createClass(EstimateHeader, [{
-	    key: 'handleNewEstimate',
-	    value: function handleNewEstimate() {
-	      this.props.newEstimate();
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      return _react2.default.createElement(
-	        'div',
-	        null,
-	        _react2.default.createElement('img', { src: 'http://via.placeholder.com/150x150' }),
-	        _react2.default.createElement(
-	          'div',
-	          null,
-	          _react2.default.createElement(
-	            'span',
-	            null,
-	            'Pro Builders Express,Inc'
-	          ),
-	          '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000'
-	        ),
-	        _react2.default.createElement(
-	          'div',
-	          null,
-	          'Date: 30-May-17 Page: Page 1 of 2'
-	        )
-	      );
-	    }
-	  }]);
-	
-	  return EstimateHeader;
-	}(_react.Component);
-	
-	exports.default = EstimateHeader;
-
-/***/ }),
-/* 322 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-	var _react = __webpack_require__(1);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
-	var CustomerInfo = function (_Component) {
-	  _inherits(CustomerInfo, _Component);
-	
-	  function CustomerInfo() {
-	    _classCallCheck(this, CustomerInfo);
-	
-	    var _this = _possibleConstructorReturn(this, (CustomerInfo.__proto__ || Object.getPrototypeOf(CustomerInfo)).call(this));
-	
-	    _this.state = {
-	      page: 'intro'
-	    };
-	    _this.handleNewEstimate = _this.handleNewEstimate.bind(_this);
-	    return _this;
-	  }
-	
-	  _createClass(CustomerInfo, [{
-	    key: 'handleNewEstimate',
-	    value: function handleNewEstimate() {
-	      this.props.newEstimate();
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      return _react2.default.createElement(
-	        'div',
-	        null,
-	        'Customer: First Last Quote: Date: 5/30/2017 By: Bob Leon Desc: ...'
-	      );
-	    }
-	  }]);
-	
-	  return CustomerInfo;
-	}(_react.Component);
-	
-	exports.default = CustomerInfo;
-
-/***/ }),
-/* 323 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-	var _react = __webpack_require__(1);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _reactMaterialize = __webpack_require__(185);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
-	var ScopeOfWork = function (_Component) {
-	  _inherits(ScopeOfWork, _Component);
-	
-	  function ScopeOfWork() {
-	    _classCallCheck(this, ScopeOfWork);
-	
-	    var _this = _possibleConstructorReturn(this, (ScopeOfWork.__proto__ || Object.getPrototypeOf(ScopeOfWork)).call(this));
-	
-	    _this.state = {
-	      page: 'intro'
-	    };
-	    _this.handleNewEstimate = _this.handleNewEstimate.bind(_this);
-	    return _this;
-	  }
-	
-	  _createClass(ScopeOfWork, [{
-	    key: 'handleNewEstimate',
-	    value: function handleNewEstimate() {
-	      this.props.newEstimate();
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      return _react2.default.createElement(
-	        'div',
-	        null,
-	        _react2.default.createElement(
-	          'div',
-	          { className: 'estimate-page-heading' },
-	          ' Scope Of Work '
-	        ),
-	        _react2.default.createElement(
-	          'div',
-	          { className: 'scope-of-work-text' },
-	          'Scope of Work that was put in during the estimate'
-	        )
-	      );
-	    }
-	  }]);
-	
-	  return ScopeOfWork;
-	}(_react.Component);
-	
-	exports.default = ScopeOfWork;
-
-/***/ }),
-/* 324 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-	var _react = __webpack_require__(1);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
-	var Specifications = function (_Component) {
-	  _inherits(Specifications, _Component);
-	
-	  function Specifications() {
-	    _classCallCheck(this, Specifications);
-	
-	    var _this = _possibleConstructorReturn(this, (Specifications.__proto__ || Object.getPrototypeOf(Specifications)).call(this));
-	
-	    _this.state = {
-	      page: 'intro'
-	    };
-	    _this.handleNewEstimate = _this.handleNewEstimate.bind(_this);
-	    return _this;
-	  }
-	
-	  _createClass(Specifications, [{
-	    key: 'handleNewEstimate',
-	    value: function handleNewEstimate() {
-	      this.props.newEstimate();
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      return _react2.default.createElement(
-	        'div',
-	        null,
-	        _react2.default.createElement(
-	          'div',
-	          { className: 'estimate-page-heading' },
-	          'Specifications'
-	        ),
-	        _react2.default.createElement(
-	          'div',
-	          null,
-	          'Certain Specifications'
-	        )
-	      );
-	    }
-	  }]);
-	
-	  return Specifications;
-	}(_react.Component);
-	
-	exports.default = Specifications;
 
 /***/ })
 /******/ ]);

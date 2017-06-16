@@ -13,7 +13,10 @@
   "dependencies": {
     "axios": "^0.16.1",
     "body-parser": "^1.17.2",
+    "cheerio": "^1.0.0-rc.1",
     "express": "^4.15.2",
+    "fs": "0.0.1-security",
+    "html-pdf": "^2.1.0",
     "i": "^0.3.5",
     "material-ui": "^0.18.1",
     "mongodb": "^2.2.26",

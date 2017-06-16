@@ -1,8 +1,8 @@
 {
-  "name": "google-water",
+  "name": "esti-mate15",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
@@ -35,6 +35,7 @@
     "babel-loader": "^6.2.5",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.16.0",
+    "nodemon": "^1.11.0",
     "webpack": "^1.13.2"
   }
 }

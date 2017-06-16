@@ -28,6 +28,7 @@ class NewEstimateRev1 extends Component {
 		this.handleItemDelete		=	this.handleItemDelete.bind(this);
 		this.handleChangeTotal		=	this.handleChangeTotal.bind(this);
 		this.handleAddIndividualItem=	this.handleAddIndividualItem.bind(this);
+		this.clickEstimate=	this.clickEstimate.bind(this);
 	}
 
 	addTemplateToProducts(products,template){
@@ -48,6 +49,12 @@ class NewEstimateRev1 extends Component {
 			// reorder templateCollection
 		}
 		return templateCollectionCopy
+	}
+	clickEstimate(){
+		let scopeText = this.refs.scopeOfWorkText.state.value;
+		let {shoppingCart,shoppingCartIndividuals} = this.state;
+
+		this.props.generateEstimate(scopeText,shoppingCart,shoppingCartIndividuals)
 	}
 
 	handleAddIndividualItem(productName){
@@ -235,7 +242,7 @@ render() {
 				<option value='3'>Antonio Vargas</option>
 			</Input>
 			<Input s={12} label="Project Description"/>
-			<Input label="Scope" s={12} />
+			<Input ref="scopeOfWorkText" label="Scope" s={12} />
 			<Input s={12} ref="templateSelection" type='select' label="Template" defaultValue={this.state.templateValue} onChange={this.handleTemplateChange}>
 				<option value='Choose a Template'>Choose a Template</option>
 				<option value='Bath1'>Bath1</option>
@@ -286,7 +293,7 @@ render() {
 						</tr>				
 					</tbody>
 				</Table>
-				<Button onClick={this.props.generateEstimate}>Generate Estimate</Button>
+				<Button onClick={this.clickEstimate}>Generate Estimate</Button>
 			</Col>
 		</Row>
 

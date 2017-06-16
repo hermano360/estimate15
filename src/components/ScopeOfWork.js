@@ -6,21 +6,15 @@ class ScopeOfWork extends Component {
 
    constructor(){
     super()
-    this.state = {
-      page:'intro'
     }
-    this.handleNewEstimate=this.handleNewEstimate.bind(this)
-  }
-  handleNewEstimate(){
-  	this.props.newEstimate()
-  }
+
 
 
   render(){
     return (
       <div>
-        <div className="estimate-page-heading"> Scope Of Work </div>
-        <div className="scope-of-work-text" >Scope of Work that was put in during the estimate</div>
+        <div style={{'backgroundColor': '#13788e', color: 'white', width:'100%', 'textAlign':'center', border:'black 1px solid'}}> Scope Of Work </div>
+        <p style={{'minHeight': '50px'}}>{this.props.scopeText}</p>
       </div>
       )
   }

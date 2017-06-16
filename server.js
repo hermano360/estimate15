@@ -45,22 +45,52 @@ app.post('/modelNos', function(req,res,next){
 })
 
 app.post('/pdfTest', function(req,res,next){
-  var options = { format: 'Letter',  "header": {
-    "height": "45mm",
-    "contents": '<div style="text-align: center;">Author: Marc Bachmann</div>'
-  }, "footer": {
-    "height": "28mm",
-    "contents": {
-      // first: '1',
-      // 2: '2', // Any page number is working. 1-based index
-      // 3: '3', 
-      // 4: '4', 
-      default: '<span style="color: #444;">Page {{page}}</span>'
-    },  "border": {
-    "top": "2in",            // default is 0, units: mm, cm, in, px
-    "right": "1in",
-    "bottom": "2in",
-    "left": "1.5in"
+  var options = { format: 'Letter',  
+
+  "header": {
+    "height": "2in",
+    "contents":`
+      <div>
+        <div style="width:40%; margin: 20 20 20 20; float: left; position:relative">
+          <div style="font-size:20px; font-weight: bold;">Pro Builders Express, Inc</div>
+          <div style="font-style: italic; font-size: 10px"">
+          1840 W Whittier Blvd, La Habra, CA 90631
+          <br/>
+          Phone: 866-360-1526 Fax 310-456-8302
+          <br/>
+          Phone: 562-921-5001
+          </div>
+        </div>
+        <div style="width:20%; margin: 20 20 20 150; float: left; position:relative">
+          <div style="float: right;">
+            <div style="">16-Jun-17</div>
+            <div style="">{{page}} of {{pages}}</div>
+          </div>
+          <div style="float: right;">
+            <div style="font-weight:bold">Date:</div>
+            <div style="font-weight:bold">Page:</div>
+          </div>
+        </div>
+        <div style="border-bottom: 1px solid black; position:relative; width:90%; left:5%">
+        <div style="color:white"> Baller </div>
+        </div>
+      </div>
+    `
+  },
+  base: 'file://' + __dirname + '/public/',
+ "footer": {
+  "height": "28mm",
+  "contents": {
+    // first: '1',
+    // 2: '2', // Any page number is working. 1-based index
+    // 3: '3', 
+    // 4: '4', 
+    default: '<span style="color: #444;">Page {{page}}</span>'
+  },  "border": {
+  "top": "2in",            // default is 0, units: mm, cm, in, px
+  "right": "1in",
+  "bottom": "2in",
+  "left": "1.5in"
   }}} ;
   pdf.create(req.body.html,options).toFile('./testFile.pdf',function(err, res){
     console.log(res);

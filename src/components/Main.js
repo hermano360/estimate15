@@ -10,9 +10,11 @@ class Main extends Component {
    constructor(){
     super()
     this.state = {
-      // page:'Intro'
+      scopeText:'',
+      page:'Intro',
+      shoppingCartFinal: []
       //page: 'EstimatePage'
-      page: 'NewEstimateRev1'
+      //page: 'NewEstimateRev1'
     }
     this.handleNewEstimate=this.handleNewEstimate.bind(this);
     this.handleGenerateEstimate=this.handleGenerateEstimate.bind(this);
@@ -20,12 +22,19 @@ class Main extends Component {
 
   handleNewEstimate(){
     this.setState({
-      page:'NewEstimate'
+      page:'NewEstimateRev1'
     })
   }
-  handleGenerateEstimate(){
+  handleGenerateEstimate(scopeText,shoppingCart,shoppingCartIndividuals){
+
+    let shoppingCartFinal= [
+        ...shoppingCart,
+        ...shoppingCartIndividuals
+        ];
     this.setState({
-      page:'EstimatePage'
+      scopeText,
+      page:'EstimatePage',
+      shoppingCartFinal
     })
   }
   render(){
@@ -48,7 +57,7 @@ class Main extends Component {
         break;
       case 'EstimatePage':
         return (
-          <EstimatePage />
+          <EstimatePage scopeText = {this.state.scopeText} shoppingCartFinal={this.state.shoppingCartFinal}/>
         )
         break;
       default:

@@ -21917,6 +21917,8 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -21932,9 +21934,11 @@
 	    var _this = _possibleConstructorReturn(this, (Main.__proto__ || Object.getPrototypeOf(Main)).call(this));
 	
 	    _this.state = {
-	      // page:'Intro'
+	      scopeText: '',
+	      page: 'Intro',
+	      shoppingCartFinal: []
 	      //page: 'EstimatePage'
-	      page: 'NewEstimateRev1'
+	      //page: 'NewEstimateRev1'
 	    };
 	    _this.handleNewEstimate = _this.handleNewEstimate.bind(_this);
 	    _this.handleGenerateEstimate = _this.handleGenerateEstimate.bind(_this);
@@ -21945,14 +21949,18 @@
 	    key: 'handleNewEstimate',
 	    value: function handleNewEstimate() {
 	      this.setState({
-	        page: 'NewEstimate'
+	        page: 'NewEstimateRev1'
 	      });
 	    }
 	  }, {
 	    key: 'handleGenerateEstimate',
-	    value: function handleGenerateEstimate() {
+	    value: function handleGenerateEstimate(scopeText, shoppingCart, shoppingCartIndividuals) {
+	
+	      var shoppingCartFinal = [].concat(_toConsumableArray(shoppingCart), _toConsumableArray(shoppingCartIndividuals));
 	      this.setState({
-	        page: 'EstimatePage'
+	        scopeText: scopeText,
+	        page: 'EstimatePage',
+	        shoppingCartFinal: shoppingCartFinal
 	      });
 	    }
 	  }, {
@@ -21971,7 +21979,7 @@
 	          return _react2.default.createElement(_NewEstimateRev2.default, { generateEstimate: this.handleGenerateEstimate });
 	          break;
 	        case 'EstimatePage':
-	          return _react2.default.createElement(_EstimatePage2.default, null);
+	          return _react2.default.createElement(_EstimatePage2.default, { scopeText: this.state.scopeText, shoppingCartFinal: this.state.shoppingCartFinal });
 	          break;
 	        default:
 	
@@ -31501,6 +31509,7 @@
 			_this.handleItemDelete = _this.handleItemDelete.bind(_this);
 			_this.handleChangeTotal = _this.handleChangeTotal.bind(_this);
 			_this.handleAddIndividualItem = _this.handleAddIndividualItem.bind(_this);
+			_this.clickEstimate = _this.clickEstimate.bind(_this);
 			return _this;
 		}
 	
@@ -31527,6 +31536,17 @@
 					// reorder templateCollection
 				}
 				return templateCollectionCopy;
+			}
+		}, {
+			key: 'clickEstimate',
+			value: function clickEstimate() {
+				var scopeText = this.refs.scopeOfWorkText.state.value;
+				var _state = this.state,
+				    shoppingCart = _state.shoppingCart,
+				    shoppingCartIndividuals = _state.shoppingCartIndividuals;
+	
+	
+				this.props.generateEstimate(scopeText, shoppingCart, shoppingCartIndividuals);
 			}
 		}, {
 			key: 'handleAddIndividualItem',
@@ -31623,9 +31643,9 @@
 	
 				if (templateValue !== "Choose a Template") {
 					var templateModelNos = _templateConfig2.default[templateValue];
-					var _state = this.state,
-					    shoppingCartTemplates = _state.shoppingCartTemplates,
-					    shoppingCart = _state.shoppingCart;
+					var _state2 = this.state,
+					    shoppingCartTemplates = _state2.shoppingCartTemplates,
+					    shoppingCart = _state2.shoppingCart;
 	
 					var filteredModelNos = this.whichItemsToAddToShoppingCart(shoppingCart, templateModelNos, templateValue);
 					var itemsToAddToShoppingCart = _testProductAccess2.default.getModelNos(filteredModelNos);
@@ -31717,12 +31737,12 @@
 		}, {
 			key: 'render',
 			value: function render() {
-				var _state2 = this.state,
-				    grandTotal = _state2.grandTotal,
-				    subtotalMaterial = _state2.subtotalMaterial,
-				    totalLabor = _state2.totalLabor,
-				    totalMaterial = _state2.totalMaterial,
-				    taxMaterial = _state2.taxMaterial;
+				var _state3 = this.state,
+				    grandTotal = _state3.grandTotal,
+				    subtotalMaterial = _state3.subtotalMaterial,
+				    totalLabor = _state3.totalLabor,
+				    totalMaterial = _state3.totalMaterial,
+				    taxMaterial = _state3.taxMaterial;
 	
 	
 				return _react2.default.createElement(
@@ -31752,7 +31772,7 @@
 							)
 						),
 						_react2.default.createElement(_reactMaterialize.Input, { s: 12, label: 'Project Description' }),
-						_react2.default.createElement(_reactMaterialize.Input, { label: 'Scope', s: 12 }),
+						_react2.default.createElement(_reactMaterialize.Input, { ref: 'scopeOfWorkText', label: 'Scope', s: 12 }),
 						_react2.default.createElement(
 							_reactMaterialize.Input,
 							{ s: 12, ref: 'templateSelection', type: 'select', label: 'Template', defaultValue: this.state.templateValue, onChange: this.handleTemplateChange },
@@ -31905,7 +31925,7 @@
 							),
 							_react2.default.createElement(
 								_reactMaterialize.Button,
-								{ onClick: this.props.generateEstimate },
+								{ onClick: this.clickEstimate },
 								'Generate Estimate'
 							)
 						)
@@ -32648,7 +32668,7 @@
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
-	          value: true
+	   value: true
 	});
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -32686,548 +32706,58 @@
 	var axios = __webpack_require__(238);
 	
 	var EstimatePage = function (_Component) {
-	          _inherits(EstimatePage, _Component);
+	   _inherits(EstimatePage, _Component);
 	
-	          function EstimatePage() {
-	                    _classCallCheck(this, EstimatePage);
+	   function EstimatePage() {
+	      _classCallCheck(this, EstimatePage);
 	
-	                    var _this = _possibleConstructorReturn(this, (EstimatePage.__proto__ || Object.getPrototypeOf(EstimatePage)).call(this));
+	      var _this = _possibleConstructorReturn(this, (EstimatePage.__proto__ || Object.getPrototypeOf(EstimatePage)).call(this));
 	
-	                    _this.state = {
-	                              cows: 5
-	                    };
-	                    _this.handleNewEstimate = _this.handleNewEstimate.bind(_this);
-	                    return _this;
-	          }
+	      _this.state = {
+	         cows: 5
+	      };
+	      _this.handleNewEstimate = _this.handleNewEstimate.bind(_this);
+	      return _this;
+	   }
 	
-	          _createClass(EstimatePage, [{
-	                    key: 'handleNewEstimate',
-	                    value: function handleNewEstimate() {
-	                              this.props.newEstimate();
-	                    }
-	          }, {
-	                    key: 'componentDidMount',
-	                    value: function componentDidMount() {
-	                              var html = $('#printThisBitch')[0].outerHTML;
+	   _createClass(EstimatePage, [{
+	      key: 'handleNewEstimate',
+	      value: function handleNewEstimate() {
+	         this.props.newEstimate();
+	      }
+	   }, {
+	      key: 'componentDidMount',
+	      value: function componentDidMount() {
+	         var html = $('#printThisBitch')[0].outerHTML;
 	
-	                              console.log(html);
-	                              var requestUrl = '/pdfTest';
-	                              axios({
-	                                        method: 'post',
-	                                        url: requestUrl,
-	                                        data: {
-	                                                  html: html
-	                                        }
-	                              }).then(function (res) {
-	                                        console.log('successful');
-	                              }).catch(function (error) {
-	                                        console.log('not successful');
-	                                        console.log(error);
-	                              });
+	         console.log(html);
+	         var requestUrl = '/pdfTest';
+	         axios({
+	            method: 'post',
+	            url: requestUrl,
+	            data: {
+	               html: html
+	            }
+	         }).then(function (res) {
+	            console.log('successful');
+	         }).catch(function (error) {
+	            console.log('not successful');
+	            console.log(error);
+	         });
+	      }
+	   }, {
+	      key: 'render',
+	      value: function render() {
+	         return _react2.default.createElement(
+	            'div',
+	            { id: 'printThisBitch' },
+	            _react2.default.createElement(_ScopeOfWork2.default, { scopeText: this.props.scopeText }),
+	            _react2.default.createElement(_Specifications2.default, { shoppingCartFinal: this.props.shoppingCartFinal })
+	         );
+	      }
+	   }]);
 	
-	                              // pdf.create($('html')[0]).toFile(['/test.pdf'],function(err, res){
-	                              //   console.log(res.filename);
-	                              // });
-	
-	                              // var pdf = new jsPDF('p', 'pt', 'letter'),
-	                              // // source can be HTML-formatted string, or a reference
-	                              // // to an actual DOM element from which the text will be scraped.
-	                              // source = $('#printThisBitch')[0],
-	
-	
-	                              // // we support special element handlers. Register them with jQuery-style 
-	                              // // ID selector for either ID or node name. ("#iAmID", "div", "span" etc.)
-	                              // // There is no support for any other type of selectors 
-	                              // // (class, of compound) at this time.
-	                              // specialElementHandlers = {
-	                              //     // element with id of "bypass" - jQuery style selector
-	                              //     // '#bypassme': function (element, renderer) {
-	                              //     //     // true = "handled elsewhere, bypass text extraction"
-	                              //     //     return true
-	                              //     // }
-	                              // };
-	                              // let margins = {
-	                              //     top: 80,
-	                              //     bottom: 60,
-	                              //     left: 40,
-	                              //     width: 522
-	                              // };
-	                              // // all coords and widths are in jsPDF instance's declared units
-	                              // // 'inches' in this case
-	                              // pdf.fromHTML(
-	                              // source, // HTML string or DOM elem ref.
-	                              // margins.left, // x coord
-	                              // margins.top, { // y coord
-	                              //     'width': margins.width, // max width of content on PDF
-	                              //     'elementHandlers': specialElementHandlers
-	                              // },
-	
-	                              // function (dispose) {
-	                              //     // dispose: object with X, Y of the last line add to the PDF 
-	                              //     //          this allow the insertion of new lines after html
-	                              //     pdf.save('Test.pdf');
-	                              // }, margins);
-	                    }
-	          }, {
-	                    key: 'render',
-	                    value: function render() {
-	                              return _react2.default.createElement(
-	                                        'div',
-	                                        { id: 'printThisBitch' },
-	                                        _react2.default.createElement('img', { src: 'file:///placeholder.png', alt: 'BQueen' }),
-	                                        _react2.default.createElement('img', { src: 'placeholder.png', alt: 'BQueen' }),
-	                                        _react2.default.createElement('img', { src: 'file:\\\\\\placeholder.png', alt: 'BQueen' }),
-	                                        _react2.default.createElement('img', { src: 'http://via.placeholder.com/350x150', alt: 'BQueen' }),
-	                                        _react2.default.createElement(
-	                                                  'div',
-	                                                  null,
-	                                                  _react2.default.createElement(
-	                                                            'span',
-	                                                            null,
-	                                                            'Pro Builders Express,Inc'
-	                                                  ),
-	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000'
-	                                        ),
-	                                        _react2.default.createElement(
-	                                                  'div',
-	                                                  { style: { color: "blue" } },
-	                                                  'Date: 30-May-17 Page: Page 1 of 2'
-	                                        ),
-	                                        'There are ',
-	                                        this.state.cows,
-	                                        _react2.default.createElement(
-	                                                  'div',
-	                                                  null,
-	                                                  'Customer: First Last Quote: Date: 5/30/2017 By: Bob Leon Desc: ...',
-	                                                  _react2.default.createElement(
-	                                                            'span',
-	                                                            null,
-	                                                            'Pro Builders Express,Inc'
-	                                                  ),
-	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-',
-	                                                  _react2.default.createElement(
-	                                                            'span',
-	                                                            null,
-	                                                            'Pro Builders Express,Inc'
-	                                                  ),
-	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
-	                                                  _react2.default.createElement(
-	                                                            'span',
-	                                                            null,
-	                                                            'Pro Builders Express,Inc'
-	                                                  ),
-	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
-	                                                  _react2.default.createElement(
-	                                                            'span',
-	                                                            null,
-	                                                            'Pro Builders Express,Inc'
-	                                                  ),
-	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
-	                                                  _react2.default.createElement(
-	                                                            'span',
-	                                                            null,
-	                                                            'Pro Builders Express,Inc'
-	                                                  ),
-	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
-	                                                  _react2.default.createElement(
-	                                                            'span',
-	                                                            null,
-	                                                            'Pro Builders Express,Inc'
-	                                                  ),
-	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
-	                                                  _react2.default.createElement(
-	                                                            'span',
-	                                                            null,
-	                                                            'Pro Builders Express,Inc'
-	                                                  ),
-	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
-	                                                  _react2.default.createElement(
-	                                                            'span',
-	                                                            null,
-	                                                            'Pro Builders Express,Inc'
-	                                                  ),
-	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
-	                                                  _react2.default.createElement(
-	                                                            'span',
-	                                                            null,
-	                                                            'Pro Builders Express,Inc'
-	                                                  ),
-	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
-	                                                  _react2.default.createElement(
-	                                                            'span',
-	                                                            null,
-	                                                            'Pro Builders Express,Inc'
-	                                                  ),
-	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
-	                                                  _react2.default.createElement(
-	                                                            'span',
-	                                                            null,
-	                                                            'Pro Builders Express,Inc'
-	                                                  ),
-	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
-	                                                  _react2.default.createElement(
-	                                                            'span',
-	                                                            null,
-	                                                            'Pro Builders Express,Inc'
-	                                                  ),
-	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
-	                                                  _react2.default.createElement(
-	                                                            'span',
-	                                                            null,
-	                                                            'Pro Builders Express,Inc'
-	                                                  ),
-	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
-	                                                  _react2.default.createElement(
-	                                                            'span',
-	                                                            null,
-	                                                            'Pro Builders Express,Inc'
-	                                                  ),
-	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
-	                                                  _react2.default.createElement(
-	                                                            'span',
-	                                                            null,
-	                                                            'Pro Builders Express,Inc'
-	                                                  ),
-	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
-	                                                  _react2.default.createElement(
-	                                                            'span',
-	                                                            null,
-	                                                            'Pro Builders Express,Inc'
-	                                                  ),
-	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
-	                                                  _react2.default.createElement(
-	                                                            'span',
-	                                                            null,
-	                                                            'Pro Builders Express,Inc'
-	                                                  ),
-	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
-	                                                  _react2.default.createElement(
-	                                                            'span',
-	                                                            null,
-	                                                            'Pro Builders Express,Inc'
-	                                                  ),
-	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-',
-	                                                  _react2.default.createElement(
-	                                                            'span',
-	                                                            null,
-	                                                            'Pro Builders Express,Inc'
-	                                                  ),
-	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
-	                                                  _react2.default.createElement(
-	                                                            'span',
-	                                                            null,
-	                                                            'Pro Builders Express,Inc'
-	                                                  ),
-	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
-	                                                  _react2.default.createElement(
-	                                                            'span',
-	                                                            null,
-	                                                            'Pro Builders Express,Inc'
-	                                                  ),
-	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
-	                                                  _react2.default.createElement(
-	                                                            'span',
-	                                                            null,
-	                                                            'Pro Builders Express,Inc'
-	                                                  ),
-	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
-	                                                  _react2.default.createElement(
-	                                                            'span',
-	                                                            null,
-	                                                            'Pro Builders Express,Inc'
-	                                                  ),
-	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
-	                                                  _react2.default.createElement(
-	                                                            'span',
-	                                                            null,
-	                                                            'Pro Builders Express,Inc'
-	                                                  ),
-	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
-	                                                  _react2.default.createElement(
-	                                                            'span',
-	                                                            null,
-	                                                            'Pro Builders Express,Inc'
-	                                                  ),
-	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
-	                                                  _react2.default.createElement(
-	                                                            'span',
-	                                                            null,
-	                                                            'Pro Builders Express,Inc'
-	                                                  ),
-	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
-	                                                  _react2.default.createElement(
-	                                                            'span',
-	                                                            null,
-	                                                            'Pro Builders Express,Inc'
-	                                                  ),
-	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
-	                                                  _react2.default.createElement(
-	                                                            'span',
-	                                                            null,
-	                                                            'Pro Builders Express,Inc'
-	                                                  ),
-	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
-	                                                  _react2.default.createElement(
-	                                                            'span',
-	                                                            null,
-	                                                            'Pro Builders Express,Inc'
-	                                                  ),
-	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
-	                                                  _react2.default.createElement(
-	                                                            'span',
-	                                                            null,
-	                                                            'Pro Builders Express,Inc'
-	                                                  ),
-	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
-	                                                  _react2.default.createElement(
-	                                                            'span',
-	                                                            null,
-	                                                            'Pro Builders Express,Inc'
-	                                                  ),
-	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
-	                                                  _react2.default.createElement(
-	                                                            'span',
-	                                                            null,
-	                                                            'Pro Builders Express,Inc'
-	                                                  ),
-	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
-	                                                  _react2.default.createElement(
-	                                                            'span',
-	                                                            null,
-	                                                            'Pro Builders Express,Inc'
-	                                                  ),
-	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
-	                                                  _react2.default.createElement(
-	                                                            'span',
-	                                                            null,
-	                                                            'Pro Builders Express,Inc'
-	                                                  ),
-	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
-	                                                  _react2.default.createElement(
-	                                                            'span',
-	                                                            null,
-	                                                            'Pro Builders Express,Inc'
-	                                                  ),
-	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-',
-	                                                  _react2.default.createElement(
-	                                                            'span',
-	                                                            null,
-	                                                            'Pro Builders Express,Inc'
-	                                                  ),
-	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
-	                                                  _react2.default.createElement(
-	                                                            'span',
-	                                                            null,
-	                                                            'Pro Builders Express,Inc'
-	                                                  ),
-	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
-	                                                  _react2.default.createElement(
-	                                                            'span',
-	                                                            null,
-	                                                            'Pro Builders Express,Inc'
-	                                                  ),
-	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
-	                                                  _react2.default.createElement(
-	                                                            'span',
-	                                                            null,
-	                                                            'Pro Builders Express,Inc'
-	                                                  ),
-	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
-	                                                  _react2.default.createElement(
-	                                                            'span',
-	                                                            null,
-	                                                            'Pro Builders Express,Inc'
-	                                                  ),
-	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
-	                                                  _react2.default.createElement(
-	                                                            'span',
-	                                                            null,
-	                                                            'Pro Builders Express,Inc'
-	                                                  ),
-	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
-	                                                  _react2.default.createElement(
-	                                                            'span',
-	                                                            null,
-	                                                            'Pro Builders Express,Inc'
-	                                                  ),
-	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
-	                                                  _react2.default.createElement(
-	                                                            'span',
-	                                                            null,
-	                                                            'Pro Builders Express,Inc'
-	                                                  ),
-	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
-	                                                  _react2.default.createElement(
-	                                                            'span',
-	                                                            null,
-	                                                            'Pro Builders Express,Inc'
-	                                                  ),
-	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
-	                                                  _react2.default.createElement(
-	                                                            'span',
-	                                                            null,
-	                                                            'Pro Builders Express,Inc'
-	                                                  ),
-	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
-	                                                  _react2.default.createElement(
-	                                                            'span',
-	                                                            null,
-	                                                            'Pro Builders Express,Inc'
-	                                                  ),
-	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
-	                                                  _react2.default.createElement(
-	                                                            'span',
-	                                                            null,
-	                                                            'Pro Builders Express,Inc'
-	                                                  ),
-	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
-	                                                  _react2.default.createElement(
-	                                                            'span',
-	                                                            null,
-	                                                            'Pro Builders Express,Inc'
-	                                                  ),
-	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
-	                                                  _react2.default.createElement(
-	                                                            'span',
-	                                                            null,
-	                                                            'Pro Builders Express,Inc'
-	                                                  ),
-	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
-	                                                  _react2.default.createElement(
-	                                                            'span',
-	                                                            null,
-	                                                            'Pro Builders Express,Inc'
-	                                                  ),
-	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
-	                                                  _react2.default.createElement(
-	                                                            'span',
-	                                                            null,
-	                                                            'Pro Builders Express,Inc'
-	                                                  ),
-	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
-	                                                  _react2.default.createElement(
-	                                                            'span',
-	                                                            null,
-	                                                            'Pro Builders Express,Inc'
-	                                                  ),
-	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-',
-	                                                  _react2.default.createElement(
-	                                                            'span',
-	                                                            null,
-	                                                            'Pro Builders Express,Inc'
-	                                                  ),
-	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
-	                                                  _react2.default.createElement(
-	                                                            'span',
-	                                                            null,
-	                                                            'Pro Builders Express,Inc'
-	                                                  ),
-	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
-	                                                  _react2.default.createElement(
-	                                                            'span',
-	                                                            null,
-	                                                            'Pro Builders Express,Inc'
-	                                                  ),
-	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
-	                                                  _react2.default.createElement(
-	                                                            'span',
-	                                                            null,
-	                                                            'Pro Builders Express,Inc'
-	                                                  ),
-	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
-	                                                  _react2.default.createElement(
-	                                                            'span',
-	                                                            null,
-	                                                            'Pro Builders Express,Inc'
-	                                                  ),
-	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
-	                                                  _react2.default.createElement(
-	                                                            'span',
-	                                                            null,
-	                                                            'Pro Builders Express,Inc'
-	                                                  ),
-	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
-	                                                  _react2.default.createElement(
-	                                                            'span',
-	                                                            null,
-	                                                            'Pro Builders Express,Inc'
-	                                                  ),
-	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
-	                                                  _react2.default.createElement(
-	                                                            'span',
-	                                                            null,
-	                                                            'Pro Builders Express,Inc'
-	                                                  ),
-	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
-	                                                  _react2.default.createElement(
-	                                                            'span',
-	                                                            null,
-	                                                            'Pro Builders Express,Inc'
-	                                                  ),
-	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
-	                                                  _react2.default.createElement(
-	                                                            'span',
-	                                                            null,
-	                                                            'Pro Builders Express,Inc'
-	                                                  ),
-	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
-	                                                  _react2.default.createElement(
-	                                                            'span',
-	                                                            null,
-	                                                            'Pro Builders Express,Inc'
-	                                                  ),
-	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
-	                                                  _react2.default.createElement(
-	                                                            'span',
-	                                                            null,
-	                                                            'Pro Builders Express,Inc'
-	                                                  ),
-	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
-	                                                  _react2.default.createElement(
-	                                                            'span',
-	                                                            null,
-	                                                            'Pro Builders Express,Inc'
-	                                                  ),
-	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
-	                                                  _react2.default.createElement(
-	                                                            'span',
-	                                                            null,
-	                                                            'Pro Builders Express,Inc'
-	                                                  ),
-	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
-	                                                  _react2.default.createElement(
-	                                                            'span',
-	                                                            null,
-	                                                            'Pro Builders Express,Inc'
-	                                                  ),
-	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
-	                                                  _react2.default.createElement(
-	                                                            'span',
-	                                                            null,
-	                                                            'Pro Builders Express,Inc'
-	                                                  ),
-	                                                  '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000',
-	                                                  _react2.default.createElement(_EstimateHeader2.default, null)
-	                                        ),
-	                                        _react2.default.createElement(
-	                                                  'div',
-	                                                  null,
-	                                                  _react2.default.createElement(
-	                                                            'div',
-	                                                            { style: { 'backgroundColor': '#13788e', color: 'white', width: '100%', 'textAlign': 'center', border: 'black 1px solid' } },
-	                                                            ' Scope Of Work '
-	                                                  ),
-	                                                  _react2.default.createElement(
-	                                                            'div',
-	                                                            { className: 'scope-of-work-text' },
-	                                                            'Scope of Work that was put in during the estimate'
-	                                                  )
-	                                        )
-	                              );
-	                    }
-	          }]);
-	
-	          return EstimatePage;
+	   return EstimatePage;
 	}(_react.Component);
 	
 	exports.default = EstimatePage;
@@ -33281,8 +32811,25 @@
 	    value: function render() {
 	      return _react2.default.createElement(
 	        'div',
-	        null,
-	        'Pro Builders Express,Inc!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
+	        { style: { top: 0 } },
+	        _react2.default.createElement('img', { src: './public/placeholder.png', alt: 'BQueen' }),
+	        _react2.default.createElement('img', { src: 'placeholder.png', alt: 'BQueen' }),
+	        _react2.default.createElement('img', { src: 'http://via.placeholder.com/350x150', alt: 'BQueen' }),
+	        _react2.default.createElement(
+	          'div',
+	          null,
+	          _react2.default.createElement(
+	            'span',
+	            null,
+	            'Pro Builders Express,Inc'
+	          ),
+	          '1840 W Whittier Blvd, La Habra, CA 90631 Phone: 866-360-1526 Fax 310-456-8302 Phone: 562-921-5000'
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { style: { color: "blue" } },
+	          'Date: 30-May-17 Page: Page 1 of 2'
+	        )
 	      );
 	    }
 	  }]);
@@ -33384,21 +32931,10 @@
 	  function ScopeOfWork() {
 	    _classCallCheck(this, ScopeOfWork);
 	
-	    var _this = _possibleConstructorReturn(this, (ScopeOfWork.__proto__ || Object.getPrototypeOf(ScopeOfWork)).call(this));
-	
-	    _this.state = {
-	      page: 'intro'
-	    };
-	    _this.handleNewEstimate = _this.handleNewEstimate.bind(_this);
-	    return _this;
+	    return _possibleConstructorReturn(this, (ScopeOfWork.__proto__ || Object.getPrototypeOf(ScopeOfWork)).call(this));
 	  }
 	
 	  _createClass(ScopeOfWork, [{
-	    key: 'handleNewEstimate',
-	    value: function handleNewEstimate() {
-	      this.props.newEstimate();
-	    }
-	  }, {
 	    key: 'render',
 	    value: function render() {
 	      return _react2.default.createElement(
@@ -33406,13 +32942,13 @@
 	        null,
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'estimate-page-heading' },
+	          { style: { 'backgroundColor': '#13788e', color: 'white', width: '100%', 'textAlign': 'center', border: 'black 1px solid' } },
 	          ' Scope Of Work '
 	        ),
 	        _react2.default.createElement(
-	          'div',
-	          { className: 'scope-of-work-text' },
-	          'Scope of Work that was put in during the estimate'
+	          'p',
+	          { style: { 'minHeight': '50px' } },
+	          this.props.scopeText
 	        )
 	      );
 	    }
@@ -33438,6 +32974,10 @@
 	var _react = __webpack_require__(1);
 	
 	var _react2 = _interopRequireDefault(_react);
+	
+	var _SpecificationEntry = __webpack_require__(325);
+	
+	var _SpecificationEntry2 = _interopRequireDefault(_SpecificationEntry);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -33470,19 +33010,56 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
+	      var shoppingCartFinal = this.props.shoppingCartFinal;
+	
+	      console.log(shoppingCartFinal);
+	      var shoppingCartTemplates = [];
+	      shoppingCartFinal.forEach(function (item) {
+	        if (shoppingCartTemplates.indexOf(item.template) === -1) {
+	          shoppingCartTemplates.push(item.template);
+	        }
+	      });
+	
+	      var renderShoppingCartItems = function renderShoppingCartItems() {
+	        return shoppingCartFinal.map(function (item, i) {
+	          return _react2.default.createElement(
+	            'div',
+	            null,
+	            _react2.default.createElement('br', null),
+	            _react2.default.createElement(
+	              'div',
+	              { style: { float: 'left', 'font-size': '10px', 'margin-left': '20px' } },
+	              i
+	            ),
+	            ' ',
+	            _react2.default.createElement(
+	              'div',
+	              { style: { float: 'left', 'margin-left': '20px', 'font-size': '10px' } },
+	              item.description
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { style: { "border-bottom": "1px solid black", position: "relative", width: '90%', left: "5%" } },
+	              _react2.default.createElement(
+	                'div',
+	                { style: { "color": "white" } },
+	                ' Baller '
+	              )
+	            ),
+	            _react2.default.createElement('br', null)
+	          );
+	        });
+	      };
+	
 	      return _react2.default.createElement(
 	        'div',
 	        null,
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'estimate-page-heading' },
+	          { style: { 'backgroundColor': '#13788e', color: 'white', width: '100%', 'textAlign': 'center', border: 'black 1px solid' } },
 	          'Specifications'
 	        ),
-	        _react2.default.createElement(
-	          'div',
-	          null,
-	          'Certain Specifications'
-	        )
+	        renderShoppingCartItems()
 	      );
 	    }
 	  }]);
@@ -37328,6 +36905,93 @@
 	};
 	
 	module.exports = keyOf;
+
+/***/ }),
+/* 325 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var SpecificationEntry = function (_Component) {
+	  _inherits(SpecificationEntry, _Component);
+	
+	  function SpecificationEntry() {
+	    _classCallCheck(this, SpecificationEntry);
+	
+	    var _this = _possibleConstructorReturn(this, (SpecificationEntry.__proto__ || Object.getPrototypeOf(SpecificationEntry)).call(this));
+	
+	    _this.state = {};
+	    _this.handleNewEstimate = _this.handleNewEstimate.bind(_this);
+	    return _this;
+	  }
+	
+	  _createClass(SpecificationEntry, [{
+	    key: 'handleNewEstimate',
+	    value: function handleNewEstimate() {
+	      this.props.newEstimate();
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _this2 = this;
+	
+	      var shoppingCartFinal = this.props.shoppingCartFinal;
+	
+	      console.log(shoppingCartFinal);
+	      var shoppingCartTemplates = [];
+	      shoppingCartFinal.forEach(function (item) {
+	        if (shoppingCartTemplates.indexOf(item.template) === -1) {
+	          shoppingCartTemplates.push(item.template);
+	        }
+	      });
+	
+	      var renderShoppingCartItems = function renderShoppingCartItems() {
+	        return shoppingCartFinal.map(function (product) {
+	          var keyValue = product.modelNo + '-' + product.template;
+	          return _react2.default.createElement(TableEntry, { key: keyValue, product: product, onClickDelete: _this2.handleDelete, quantityChange: _this2.handleQuantityChange });
+	        });
+	      };
+	
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        _react2.default.createElement(
+	          'div',
+	          { style: { 'backgroundColor': '#13788e', color: 'white', width: '100%', 'textAlign': 'center', border: 'black 1px solid' } },
+	          'Specifications'
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          null,
+	          'Certain Specifications'
+	        ),
+	        renderShoppingCartItems()
+	      );
+	    }
+	  }]);
+	
+	  return SpecificationEntry;
+	}(_react.Component);
+	
+	exports.default = SpecificationEntry;
 
 /***/ })
 /******/ ]);

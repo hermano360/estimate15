@@ -83,38 +83,45 @@ class TableElement extends Component {
 	})
 
   }
-  handleQuantityChange(qty,price,total,modelNo,labor){
-	let {itemTotals} = this.state;
-	let updatedItem = itemTotals.length;
+  handleQuantityChange(qty,price,total,modelNo,labor,template,description,uom){
+	let updateItemTotals = [...this.state.itemTotals];
+	let updatedItem = updateItemTotals.length;
 	let updatedMaterialTotal = total;
 
 	let runningMaterialTotal = 0,
 		laborCosts = 0;
 
-	itemTotals.forEach((item,i)=>{
+	updateItemTotals.forEach((item,i)=>{
+
 		if(item.modelNo === modelNo){
+
 			updatedItem = i;
+
 
 		}
 	});
 
-	itemTotals[updatedItem] = {
+	updateItemTotals[updatedItem] = {
 		modelNo,
 		total,
 		labor,
-		qty
+		qty,
+    template,
+    description,
+    uom
 	}
-	itemTotals.forEach((item)=>{
+
+	updateItemTotals.forEach((item)=>{
 		runningMaterialTotal += item.total;
 		laborCosts += item.labor
 	})
 
 	this.setState({
-		itemTotals,
+		itemTotals:updateItemTotals,
 		runningMaterialTotal,
 		laborCosts
 	})
-	this.props.onChangeTotal(runningMaterialTotal,laborCosts)
+	this.props.onChangeTotal(runningMaterialTotal,laborCosts,updateItemTotals);
   }
     componentDidMount(){
 

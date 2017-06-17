@@ -30,7 +30,7 @@ class TableEntry extends Component {
     price = product.price.replace(/\$(.*)/,'$1');
     let total = parseFloat(qty)*parseFloat(price);
     let laborCost = parseInt(product.labor)*parseFloat(qty);
-    this.props.quantityChange(qty,price,total,product.modelNo,laborCost);
+    this.props.quantityChange(qty,price,total,product.modelNo,laborCost,product.template,product.description,product.uom);
   }
   handleEmptyInput(){
   	if(isNaN(this.refs.qty.value) || this.refs.qty.value===""){
@@ -53,7 +53,7 @@ class TableEntry extends Component {
 				</td>
 				<td>{product.modelNo}</td>
 				<td>{product.price}</td>
-				<td>Each</td>
+				<td>{product.uom}</td>
 				<td>{product.description}</td>
 				<td>${parseInt(product.labor).toFixed(2)}</td>
 				<td>{product.template}</td>

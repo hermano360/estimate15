@@ -13,6 +13,7 @@ class ScopeOfWork extends Component {
   render(){
     return (
       <div>
+      <br/>
         <div style={{'backgroundColor': '#13788e', color: 'white', width:'100%', 'textAlign':'center', border:'black 1px solid'}}> Scope Of Work </div>
         <p style={{'minHeight': '50px'}}>{this.props.scopeText}</p>
       </div>

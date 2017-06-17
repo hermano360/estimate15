@@ -20,7 +20,8 @@ class NewEstimateRev1 extends Component {
 			totalLabor:0,
 			grandTotal:0,
 			tax:0.10,
-			shoppingCartIndividuals:[]
+			shoppingCartIndividuals:[],
+			itemTotals:[]
 		}
 		this.handleOnAutocomplete	=	this.handleOnAutocomplete.bind(this);
 		this.handleTemplateChange	=	this.handleTemplateChange.bind(this);
@@ -52,9 +53,9 @@ class NewEstimateRev1 extends Component {
 	}
 	clickEstimate(){
 		let scopeText = this.refs.scopeOfWorkText.state.value;
-		let {shoppingCart,shoppingCartIndividuals} = this.state;
-
-		this.props.generateEstimate(scopeText,shoppingCart,shoppingCartIndividuals)
+		let description = this.refs.description.state.value;
+		let {shoppingCart,shoppingCartIndividuals,itemTotals} = this.state;
+		this.props.generateEstimate(scopeText,shoppingCart,shoppingCartIndividuals,itemTotals,description)
 	}
 
 	handleAddIndividualItem(productName){
@@ -75,18 +76,20 @@ class NewEstimateRev1 extends Component {
 					})}
 	}
 
-	handleChangeTotal(subtotalMaterial,totalLabor){
+	handleChangeTotal(subtotalMaterial,totalLabor,itemTotals){
 		let {tax} = this.state;
 		let taxMaterial = tax * subtotalMaterial,
 		totalMaterial = taxMaterial + subtotalMaterial,
 		grandTotal = totalLabor + totalMaterial;
+		
 
 		this.setState({
 			subtotalMaterial,
 			taxMaterial,
 			totalLabor,
 			totalMaterial,
-			grandTotal
+			grandTotal,
+			itemTotals
 		})
 	}	
 
@@ -132,11 +135,8 @@ class NewEstimateRev1 extends Component {
 	}
 
 	handleSalesmanChange(){
-		console.log(event.target.innerHTML);
-		this.refs.templateSelection.state.value = 'Choose a Template';
-		this.setState({
-			salesmanValue:event.target.innerHTML
-		})
+		let salesman = event.target.innerHTML;
+		this.props.onChangeSalesman(salesman)
 	}
 
 	handleTemplateChange(){
@@ -241,7 +241,7 @@ render() {
 				<option value='2'>Steve Smith</option>
 				<option value='3'>Antonio Vargas</option>
 			</Input>
-			<Input s={12} label="Project Description"/>
+			<Input s={12} ref="description" label="Project Description"/>
 			<Input ref="scopeOfWorkText" label="Scope" s={12} />
 			<Input s={12} ref="templateSelection" type='select' label="Template" defaultValue={this.state.templateValue} onChange={this.handleTemplateChange}>
 				<option value='Choose a Template'>Choose a Template</option>

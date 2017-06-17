@@ -1,9 +1,10 @@
 import React, {Component} from 'react'
-import {Row,Col} from 'react-materialize'
+import {Row,Col,Button} from 'react-materialize'
 import EstimateHeader from './EstimateHeader'
 import CustomerInfo from './CustomerInfo'
 import ScopeOfWork from './ScopeOfWork'
 import Specifications from './Specifications'
+import QuoteSummary from './QuoteSummary'
 var axios = require('axios');
 
 
@@ -41,10 +42,17 @@ class EstimatePage extends Component {
 
   render(){
     return (
-	<div id="printThisBitch" >
-    <ScopeOfWork scopeText={this.props.scopeText}/>  
-    <Specifications shoppingCartFinal= {this.props.shoppingCartFinal}/>
-	</div>
+      <div>
+        <div style={{}}>
+          <div id="printThisBitch">
+            <CustomerInfo scopeText={this.props.scopeText} salesman={this.props.salesman} description={this.props.description}/>
+            <Specifications shoppingCartFinal= {this.props.shoppingCartFinal} itemTotals = {this.props.itemTotals}/>
+            <QuoteSummary/>
+          </div>
+        </div>
+        <div>Estimate sent to hermano360@gmail.com, robertLeon@probuilders.com</div>
+        <Button>Start Over?</Button>
+      </div>
       )
   }
 }

@@ -21936,12 +21936,16 @@
 	    _this.state = {
 	      scopeText: '',
 	      page: 'Intro',
-	      shoppingCartFinal: []
+	      shoppingCartFinal: [],
+	      itemTotals: [],
+	      salesman: "",
+	      description: ""
 	      //page: 'EstimatePage'
 	      //page: 'NewEstimateRev1'
 	    };
 	    _this.handleNewEstimate = _this.handleNewEstimate.bind(_this);
 	    _this.handleGenerateEstimate = _this.handleGenerateEstimate.bind(_this);
+	    _this.handleChangeSalesman = _this.handleChangeSalesman.bind(_this);
 	    return _this;
 	  }
 	
@@ -21954,13 +21958,21 @@
 	    }
 	  }, {
 	    key: 'handleGenerateEstimate',
-	    value: function handleGenerateEstimate(scopeText, shoppingCart, shoppingCartIndividuals) {
+	    value: function handleGenerateEstimate(scopeText, shoppingCart, shoppingCartIndividuals, itemTotals, description) {
 	
 	      var shoppingCartFinal = [].concat(_toConsumableArray(shoppingCart), _toConsumableArray(shoppingCartIndividuals));
 	      this.setState({
 	        scopeText: scopeText,
 	        page: 'EstimatePage',
-	        shoppingCartFinal: shoppingCartFinal
+	        shoppingCartFinal: shoppingCartFinal,
+	        itemTotals: itemTotals, description: description
+	      });
+	    }
+	  }, {
+	    key: 'handleChangeSalesman',
+	    value: function handleChangeSalesman(salesman) {
+	      this.setState({
+	        salesman: salesman
 	      });
 	    }
 	  }, {
@@ -21976,10 +21988,10 @@
 	          return _react2.default.createElement(_NewEstimate2.default, null);
 	          break;
 	        case 'NewEstimateRev1':
-	          return _react2.default.createElement(_NewEstimateRev2.default, { generateEstimate: this.handleGenerateEstimate });
+	          return _react2.default.createElement(_NewEstimateRev2.default, { generateEstimate: this.handleGenerateEstimate, onChangeSalesman: this.handleChangeSalesman });
 	          break;
 	        case 'EstimatePage':
-	          return _react2.default.createElement(_EstimatePage2.default, { scopeText: this.state.scopeText, shoppingCartFinal: this.state.shoppingCartFinal });
+	          return _react2.default.createElement(_EstimatePage2.default, { description: this.state.description, salesman: this.state.salesman, scopeText: this.state.scopeText, shoppingCartFinal: this.state.shoppingCartFinal, itemQuantityChange: this.handleItemQuantityChange, itemTotals: this.state.itemTotals });
 	          break;
 	        default:
 	
@@ -31501,7 +31513,8 @@
 				totalLabor: 0,
 				grandTotal: 0,
 				tax: 0.10,
-				shoppingCartIndividuals: []
+				shoppingCartIndividuals: [],
+				itemTotals: []
 			};
 			_this.handleOnAutocomplete = _this.handleOnAutocomplete.bind(_this);
 			_this.handleTemplateChange = _this.handleTemplateChange.bind(_this);
@@ -31541,12 +31554,13 @@
 			key: 'clickEstimate',
 			value: function clickEstimate() {
 				var scopeText = this.refs.scopeOfWorkText.state.value;
+				var description = this.refs.description.state.value;
 				var _state = this.state,
 				    shoppingCart = _state.shoppingCart,
-				    shoppingCartIndividuals = _state.shoppingCartIndividuals;
+				    shoppingCartIndividuals = _state.shoppingCartIndividuals,
+				    itemTotals = _state.itemTotals;
 	
-	
-				this.props.generateEstimate(scopeText, shoppingCart, shoppingCartIndividuals);
+				this.props.generateEstimate(scopeText, shoppingCart, shoppingCartIndividuals, itemTotals, description);
 			}
 		}, {
 			key: 'handleAddIndividualItem',
@@ -31568,7 +31582,7 @@
 			}
 		}, {
 			key: 'handleChangeTotal',
-			value: function handleChangeTotal(subtotalMaterial, totalLabor) {
+			value: function handleChangeTotal(subtotalMaterial, totalLabor, itemTotals) {
 				var tax = this.state.tax;
 	
 				var taxMaterial = tax * subtotalMaterial,
@@ -31580,7 +31594,8 @@
 					taxMaterial: taxMaterial,
 					totalLabor: totalLabor,
 					totalMaterial: totalMaterial,
-					grandTotal: grandTotal
+					grandTotal: grandTotal,
+					itemTotals: itemTotals
 				});
 			}
 		}, {
@@ -31630,11 +31645,8 @@
 		}, {
 			key: 'handleSalesmanChange',
 			value: function handleSalesmanChange() {
-				console.log(event.target.innerHTML);
-				this.refs.templateSelection.state.value = 'Choose a Template';
-				this.setState({
-					salesmanValue: event.target.innerHTML
-				});
+				var salesman = event.target.innerHTML;
+				this.props.onChangeSalesman(salesman);
 			}
 		}, {
 			key: 'handleTemplateChange',
@@ -31771,7 +31783,7 @@
 								'Antonio Vargas'
 							)
 						),
-						_react2.default.createElement(_reactMaterialize.Input, { s: 12, label: 'Project Description' }),
+						_react2.default.createElement(_reactMaterialize.Input, { s: 12, ref: 'description', label: 'Project Description' }),
 						_react2.default.createElement(_reactMaterialize.Input, { ref: 'scopeOfWorkText', label: 'Scope', s: 12 }),
 						_react2.default.createElement(
 							_reactMaterialize.Input,
@@ -31967,6 +31979,8 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -32070,38 +32084,43 @@
 	    }
 	  }, {
 	    key: 'handleQuantityChange',
-	    value: function handleQuantityChange(qty, price, total, modelNo, labor) {
-	      var itemTotals = this.state.itemTotals;
-	
-	      var updatedItem = itemTotals.length;
+	    value: function handleQuantityChange(qty, price, total, modelNo, labor, template, description, uom) {
+	      var updateItemTotals = [].concat(_toConsumableArray(this.state.itemTotals));
+	      var updatedItem = updateItemTotals.length;
 	      var updatedMaterialTotal = total;
 	
 	      var runningMaterialTotal = 0,
 	          laborCosts = 0;
 	
-	      itemTotals.forEach(function (item, i) {
+	      updateItemTotals.forEach(function (item, i) {
+	
 	        if (item.modelNo === modelNo) {
+	
 	          updatedItem = i;
 	        }
 	      });
 	
-	      itemTotals[updatedItem] = {
+	      updateItemTotals[updatedItem] = {
 	        modelNo: modelNo,
 	        total: total,
 	        labor: labor,
-	        qty: qty
+	        qty: qty,
+	        template: template,
+	        description: description,
+	        uom: uom
 	      };
-	      itemTotals.forEach(function (item) {
+	
+	      updateItemTotals.forEach(function (item) {
 	        runningMaterialTotal += item.total;
 	        laborCosts += item.labor;
 	      });
 	
 	      this.setState({
-	        itemTotals: itemTotals,
+	        itemTotals: updateItemTotals,
 	        runningMaterialTotal: runningMaterialTotal,
 	        laborCosts: laborCosts
 	      });
-	      this.props.onChangeTotal(runningMaterialTotal, laborCosts);
+	      this.props.onChangeTotal(runningMaterialTotal, laborCosts, updateItemTotals);
 	    }
 	  }, {
 	    key: 'componentDidMount',
@@ -32281,7 +32300,7 @@
 	      price = product.price.replace(/\$(.*)/, '$1');
 	      var total = parseFloat(qty) * parseFloat(price);
 	      var laborCost = parseInt(product.labor) * parseFloat(qty);
-	      this.props.quantityChange(qty, price, total, product.modelNo, laborCost);
+	      this.props.quantityChange(qty, price, total, product.modelNo, laborCost, product.template, product.description, product.uom);
 	    }
 	  }, {
 	    key: 'handleEmptyInput',
@@ -32329,7 +32348,7 @@
 	        _react2.default.createElement(
 	          'td',
 	          null,
-	          'Each'
+	          product.uom
 	        ),
 	        _react2.default.createElement(
 	          'td',
@@ -32532,7 +32551,8 @@
 	    "description": "MOEN - Eva 4 in. Centerset 2-Handle High-Arc Bathroom Faucet in Brushed Nickel",
 	    "category": "faucet",
 	    "name": "faucet1",
-	    "labor": "10"
+	    "labor": "10",
+	    "uom": 'each'
 	  }, {
 	    "photo": "http:\/\/www.homedepot.com\/catalog\/productImages\/400_compressed\/34\/34e81148-a081-4f36-8614-9e6a607f0b3c_400_compressed.jpg",
 	    "price": "$106.00",
@@ -32541,7 +32561,8 @@
 	    "description": "Elkay - Neptune All-in-One Drop-In Stainless Steel 15 in. 2-Hole Bar Sink",
 	    "category": "kitchen-sink",
 	    "name": "kitchensink1",
-	    "labor": "10"
+	    "labor": "10",
+	    "uom": 'each'
 	  }, {
 	    "photo": "http:\/\/www.homedepot.com\/catalog\/productImages\/400_compressed\/49\/49a62d7c-bd35-434f-a3e1-098eb8cff53b_400_compressed.jpg",
 	    "price": "$599.99",
@@ -32550,7 +32571,8 @@
 	    "description": "TroposAir - Titan 72 in. Indoor\/Outdoor Brushed Nickel Ceiling Fan and Light",
 	    "category": "ceiling-fans-lights",
 	    "name": "ceilinglights1",
-	    "labor": "11"
+	    "labor": "11",
+	    "uom": 'each'
 	  }, {
 	    "photo": "http:\/\/www.homedepot.com\/catalog\/productImages\/400_compressed\/a9\/a9a00860-7082-4e0b-b311-b3c4c771b3c3_400_compressed.jpg",
 	    "price": "$59.00",
@@ -32559,7 +32581,8 @@
 	    "description": "Delta - Zella 4 in. Centerset 2-Handle Bathroom Faucet in Chrome",
 	    "category": "faucet",
 	    "name": "faucet2",
-	    "labor": "12"
+	    "labor": "12",
+	    "uom": 'each'
 	  }, {
 	    "photo": "http:\/\/www.homedepot.com\/catalog\/productImages\/400_compressed\/ed\/ed858f0f-99b5-46ae-83ec-f1e7b193845f_400_compressed.jpg",
 	    "price": "$99.00",
@@ -32568,7 +32591,8 @@
 	    "description": "Glacier Bay - Drop-In Stainless Steel 33 in. 4-Hole Double Basin Kitchen Sink",
 	    "category": "kitchen-sink",
 	    "name": "kitchensink2",
-	    "labor": "14"
+	    "labor": "14",
+	    "uom": 'each'
 	  }, {
 	    "photo": "http:\/\/www.homedepot.com\/catalog\/productImages\/400_compressed\/15\/15147c7f-2113-458b-b508-7a1754d2702b_400_compressed.jpg",
 	    "price": "$299.00",
@@ -32577,7 +32601,8 @@
 	    "description": "Home Decorators Collection - Kensgrove 72 in. LED Indoor\/Outdoor Espresso Bronze Ceiling Fan",
 	    "category": "ceiling-fans-lights",
 	    "name": "ceilinglights1",
-	    "labor": "15"
+	    "labor": "15",
+	    "uom": 'each'
 	  }, {
 	    "photo": "http:\/\/www.homedepot.com\/catalog\/productImages\/400_compressed\/da\/da949f86-2b39-40a8-8c7d-d55747ecabb4_400_compressed.jpg",
 	    "price": "$59.00",
@@ -32586,7 +32611,8 @@
 	    "description": "Pfister - Courant 4 in. Centerset 2-Handle Bathroom Faucet in Brushed Nickel",
 	    "category": "faucet",
 	    "name": "faucet3",
-	    "labor": "16"
+	    "labor": "16",
+	    "uom": 'each'
 	  }, {
 	    "photo": "http:\/\/www.homedepot.com\/catalog\/productImages\/400_compressed\/9e\/9e83a2df-3206-4448-87c5-e129cd2b3afe_400_compressed.jpg",
 	    "price": "$868.45",
@@ -32595,7 +32621,8 @@
 	    "description": "SINKOLOGY - Pfister All-In-One Copper Kitchen Sink 33 in. 4-Hole Design Kit with Ashfield Pull Down Faucet in Rustic Bronze",
 	    "category": "kitchen-sink",
 	    "name": "kitchensink3",
-	    "labor": "17"
+	    "labor": "17",
+	    "uom": 'each'
 	  }, {
 	    "photo": "http:\/\/www.homedepot.com\/catalog\/productImages\/400_compressed\/7a\/7aff2237-d55a-4749-8835-56834f5d53ef_400_compressed.jpg",
 	    "price": "$96.75",
@@ -32604,7 +32631,8 @@
 	    "description": "Hunter - Heathrow 52 in. Indoor Brushed Nickel Ceiling Fan with Light Kit",
 	    "category": "ceiling-fans-lights",
 	    "name": "ceilinglights2",
-	    "labor": "18"
+	    "labor": "18",
+	    "uom": 'each'
 	  }, {
 	    "photo": "http:\/\/www.homedepot.com\/catalog\/productImages\/400_compressed\/4c\/4ce94b27-608c-4384-b19c-d755b40edc4f_400_compressed.jpg",
 	    "price": "$110.00",
@@ -32613,7 +32641,8 @@
 	    "description": "MOEN - Brantford 4 in. Centerset 2-Handle Low-Arc Bathroom Faucet in Brushed Nickel with Metal Drain Assembly",
 	    "category": "faucet",
 	    "name": "faucet4",
-	    "labor": "19"
+	    "labor": "19",
+	    "uom": 'each'
 	  }, {
 	    "photo": "http:\/\/www.homedepot.com\/catalog\/productImages\/400_compressed\/25\/25d619a2-935f-41fe-a3ee-44d3c311bdd0_400_compressed.jpg",
 	    "price": "$200.82",
@@ -32622,7 +32651,8 @@
 	    "description": "Thermocast - Manhattan Drop-In Acrylic 33 in. 4-Hole Single Basin Kitchen Sink in White",
 	    "category": "kitchen-sink",
 	    "name": "kitchensink4",
-	    "labor": "20"
+	    "labor": "20",
+	    "uom": 'each'
 	  }, {
 	    "photo": "http:\/\/www.homedepot.com\/catalog\/productImages\/400_compressed\/d3\/d3eae112-2f1e-49cf-91fc-c80c126b6287_400_compressed.jpg",
 	    "price": "$99.00",
@@ -32631,7 +32661,8 @@
 	    "description": "Hunter - Oakhurst 52 in. LED Indoor Low Profile Brushed Nickel Ceiling Fan with Light Kit",
 	    "category": "ceiling-fans-lights",
 	    "name": "ceilinglights3",
-	    "labor": "21"
+	    "labor": "21",
+	    "uom": 'each'
 	  }, {
 	    "photo": "http:\/\/www.homedepot.com\/catalog\/productImages\/400_compressed\/5c\/5c7956c1-5ddf-4714-9708-b461bbce4309_400_compressed.jpg",
 	    "price": "$124.76",
@@ -32640,7 +32671,8 @@
 	    "description": "Delta - Lahara 4 in. Centerset 2-Handle Bathroom Faucet with Metal Drain Assembly in Champagne Bronze",
 	    "category": "faucet",
 	    "name": "faucet5",
-	    "labor": "22"
+	    "labor": "22",
+	    "uom": 'each'
 	  }, {
 	    "photo": "http:\/\/www.homedepot.com\/catalog\/productImages\/400_compressed\/ac\/ac08a37f-3b98-48f1-ade9-713ec33b8028_400_compressed.jpg",
 	    "price": "$799.76",
@@ -32649,7 +32681,8 @@
 	    "description": "SINKOLOGY - Pfister All-In-One Angelico Copper Sink 33 in. Drop-In 3-Hole Kitchen Sink with Ashfield Pull Down Faucet Rustic Bronze",
 	    "category": "kitchen-sink",
 	    "name": "kitchensink5",
-	    "labor": "23"
+	    "labor": "23",
+	    "uom": 'Each'
 	  }, {
 	    "photo": "http:\/\/www.homedepot.com\/catalog\/productImages\/400_compressed\/eb\/eb08ae36-f0d1-4ae2-8eae-08a3ab9a80f4_400_compressed.jpg",
 	    "price": "$99.99",
@@ -32658,7 +32691,8 @@
 	    "description": "Hunter - Oakhurst 52 in. LED Indoor Low Profile New Bronze Ceiling Fan with Light Kit",
 	    "category": "ceiling-fans-lights",
 	    "name": "ceilinglights4",
-	    "labor": "67"
+	    "labor": "67",
+	    "uom": 'Each'
 	  }] };
 
 /***/ }),
@@ -32668,7 +32702,7 @@
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
-	   value: true
+	  value: true
 	});
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -32695,6 +32729,10 @@
 	
 	var _Specifications2 = _interopRequireDefault(_Specifications);
 	
+	var _QuoteSummary = __webpack_require__(326);
+	
+	var _QuoteSummary2 = _interopRequireDefault(_QuoteSummary);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -32706,58 +32744,77 @@
 	var axios = __webpack_require__(238);
 	
 	var EstimatePage = function (_Component) {
-	   _inherits(EstimatePage, _Component);
+	  _inherits(EstimatePage, _Component);
 	
-	   function EstimatePage() {
-	      _classCallCheck(this, EstimatePage);
+	  function EstimatePage() {
+	    _classCallCheck(this, EstimatePage);
 	
-	      var _this = _possibleConstructorReturn(this, (EstimatePage.__proto__ || Object.getPrototypeOf(EstimatePage)).call(this));
+	    var _this = _possibleConstructorReturn(this, (EstimatePage.__proto__ || Object.getPrototypeOf(EstimatePage)).call(this));
 	
-	      _this.state = {
-	         cows: 5
-	      };
-	      _this.handleNewEstimate = _this.handleNewEstimate.bind(_this);
-	      return _this;
-	   }
+	    _this.state = {
+	      cows: 5
+	    };
+	    _this.handleNewEstimate = _this.handleNewEstimate.bind(_this);
+	    return _this;
+	  }
 	
-	   _createClass(EstimatePage, [{
-	      key: 'handleNewEstimate',
-	      value: function handleNewEstimate() {
-	         this.props.newEstimate();
-	      }
-	   }, {
-	      key: 'componentDidMount',
-	      value: function componentDidMount() {
-	         var html = $('#printThisBitch')[0].outerHTML;
+	  _createClass(EstimatePage, [{
+	    key: 'handleNewEstimate',
+	    value: function handleNewEstimate() {
+	      this.props.newEstimate();
+	    }
+	  }, {
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      var html = $('#printThisBitch')[0].outerHTML;
 	
-	         console.log(html);
-	         var requestUrl = '/pdfTest';
-	         axios({
-	            method: 'post',
-	            url: requestUrl,
-	            data: {
-	               html: html
-	            }
-	         }).then(function (res) {
-	            console.log('successful');
-	         }).catch(function (error) {
-	            console.log('not successful');
-	            console.log(error);
-	         });
-	      }
-	   }, {
-	      key: 'render',
-	      value: function render() {
-	         return _react2.default.createElement(
+	      console.log(html);
+	      var requestUrl = '/pdfTest';
+	      axios({
+	        method: 'post',
+	        url: requestUrl,
+	        data: {
+	          html: html
+	        }
+	      }).then(function (res) {
+	        console.log('successful');
+	      }).catch(function (error) {
+	        console.log('not successful');
+	        console.log(error);
+	      });
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        _react2.default.createElement(
+	          'div',
+	          { style: {} },
+	          _react2.default.createElement(
 	            'div',
 	            { id: 'printThisBitch' },
-	            _react2.default.createElement(_ScopeOfWork2.default, { scopeText: this.props.scopeText }),
-	            _react2.default.createElement(_Specifications2.default, { shoppingCartFinal: this.props.shoppingCartFinal })
-	         );
-	      }
-	   }]);
+	            _react2.default.createElement(_CustomerInfo2.default, { scopeText: this.props.scopeText, salesman: this.props.salesman, description: this.props.description }),
+	            _react2.default.createElement(_Specifications2.default, { shoppingCartFinal: this.props.shoppingCartFinal, itemTotals: this.props.itemTotals }),
+	            _react2.default.createElement(_QuoteSummary2.default, null)
+	          )
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          null,
+	          'Estimate sent to hermano360@gmail.com, robertLeon@probuilders.com'
+	        ),
+	        _react2.default.createElement(
+	          _reactMaterialize.Button,
+	          null,
+	          'Start Over?'
+	        )
+	      );
+	    }
+	  }]);
 	
-	   return EstimatePage;
+	  return EstimatePage;
 	}(_react.Component);
 	
 	exports.default = EstimatePage;
@@ -32886,10 +32943,61 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
+	      var today = new Date();
+	      var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+	      var dateString = today.getDate() + '-' + monthNames[today.getMonth()] + '-' + today.getFullYear();
 	      return _react2.default.createElement(
 	        'div',
 	        null,
-	        'Customer: First Last Quote: Date: 5/30/2017 By: Bob Leon Desc: ...'
+	        _react2.default.createElement('img', { src: 'http://cdn.homeadvisor.com/files/eid/8700000/8707399/2395760.jpg?modifyDateTime=1391029484000', style: { width: '100px', height: '100px', 'marginLeft': '5%', 'marginRight': '20px', 'float': 'left' } }),
+	        _react2.default.createElement(
+	          'div',
+	          { style: { fontWeight: 'bold', fontSize: '10px', float: "left", height: '100px', width: '50px', 'marginRight': '15px' } },
+	          'Customer:'
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { style: { fontSize: '10px', float: "left", height: '100px', width: '12%', 'marginRight': '3%' } },
+	          'Carlos Vela',
+	          _react2.default.createElement('br', null),
+	          '1629 Second Street',
+	          _react2.default.createElement('br', null),
+	          'Duarte, CA'
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { style: { fontWeight: 'bold', fontSize: '10px', float: "left", height: '100px', width: '30px', 'marginRight': '15px' } },
+	          'Quote:',
+	          _react2.default.createElement('br', null),
+	          'Date:',
+	          _react2.default.createElement('br', null),
+	          'By:',
+	          _react2.default.createElement('br', null),
+	          'Desc:'
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { style: { fontSize: '10px', float: "left", height: '100px', width: '180px', 'marginRight': '50px', 'wordWrap': 'break-word' } },
+	          'Melissa - Full Downstairs addition',
+	          _react2.default.createElement('br', null),
+	          dateString,
+	          _react2.default.createElement('br', null),
+	          this.props.salesman,
+	          _react2.default.createElement('br', null),
+	          this.props.description
+	        ),
+	        _react2.default.createElement('br', null),
+	        _react2.default.createElement('p', { style: { 'minHeight': '1px', width: '100%', float: 'left' } }),
+	        _react2.default.createElement(
+	          'div',
+	          { style: { float: 'left', 'backgroundColor': '#13788e', color: 'white', marginLeft: '5%', width: '90%', 'textAlign': 'center', border: 'black 1px solid', height: '20px' } },
+	          'Scope of Work'
+	        ),
+	        _react2.default.createElement(
+	          'p',
+	          { style: { 'minHeight': '50px', marginLeft: '5%', width: '90%', float: 'left', marginTop: '20px' } },
+	          this.props.scopeText
+	        )
 	      );
 	    }
 	  }]);
@@ -32940,6 +33048,7 @@
 	      return _react2.default.createElement(
 	        'div',
 	        null,
+	        _react2.default.createElement('br', null),
 	        _react2.default.createElement(
 	          'div',
 	          { style: { 'backgroundColor': '#13788e', color: 'white', width: '100%', 'textAlign': 'center', border: 'black 1px solid' } },
@@ -32981,6 +33090,8 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -33008,56 +33119,133 @@
 	      this.props.newEstimate();
 	    }
 	  }, {
-	    key: 'render',
-	    value: function render() {
-	      var shoppingCartFinal = this.props.shoppingCartFinal;
-	
-	      console.log(shoppingCartFinal);
-	      var shoppingCartTemplates = [];
-	      shoppingCartFinal.forEach(function (item) {
-	        if (shoppingCartTemplates.indexOf(item.template) === -1) {
-	          shoppingCartTemplates.push(item.template);
+	    key: 'putEmptyTemplatesAtEnd',
+	    value: function putEmptyTemplatesAtEnd(array) {
+	      var updatedArray = [].concat(_toConsumableArray(array.filter(function (item) {
+	        if (item.template !== "") {
+	          return item;
+	        }
+	      })), _toConsumableArray(array.filter(function (item) {
+	        if (item.template === "") {
+	          return item;
+	        }
+	      })));
+	      return updatedArray;
+	    }
+	  }, {
+	    key: 'removeZeroQuantityItems',
+	    value: function removeZeroQuantityItems(array) {
+	      return array.filter(function (item) {
+	        if (parseFloat(item.qty) !== 0) {
+	          return item;
 	        }
 	      });
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _props = this.props,
+	          shoppingCartFinal = _props.shoppingCartFinal,
+	          itemTotals = _props.itemTotals;
+	
+	      var itemTotalsWithTemplates = [];
+	      var itemTotalsWithoutZeros = this.removeZeroQuantityItems(itemTotals);
+	
+	      var itemTotalsNumbered = itemTotalsWithoutZeros.map(function (item, i) {
+	        var newItem = item;
+	        newItem["number"] = i + 1;
+	        return newItem;
+	      });
+	
+	      itemTotalsNumbered.forEach(function (item) {
+	        if (itemTotalsWithTemplates.indexOf(item.template) === -1 && item.template !== "") {
+	          itemTotalsWithTemplates.push(item.template);
+	        }
+	        itemTotalsWithTemplates.push(item);
+	      });
+	
+	      var latestItemTotals = this.putEmptyTemplatesAtEnd(itemTotalsWithTemplates);
 	
 	      var renderShoppingCartItems = function renderShoppingCartItems() {
-	        return shoppingCartFinal.map(function (item, i) {
+	        if (latestItemTotals.length > 0) {
+	          return latestItemTotals.map(function (item) {
+	            if (typeof item === 'string') {
+	              return _react2.default.createElement(
+	                'div',
+	                { key: item },
+	                _react2.default.createElement(
+	                  'div',
+	                  { style: { color: 'white', 'width': '100%', 'minHeight': '10px', 'border': '1px white solid' } },
+	                  'TestTest'
+	                ),
+	                _react2.default.createElement(
+	                  'div',
+	                  { style: { textAlign: 'center', width: '100%', 'fontSize': '15px', 'fontWeight': 'bold', 'margin': '0 0 20px 0' } },
+	                  item
+	                )
+	              );
+	            } else {
+	              return _react2.default.createElement(
+	                'div',
+	                { key: item.modelNo + '-' + item.template },
+	                _react2.default.createElement(
+	                  'div',
+	                  { style: { float: 'left', 'fontSize': '10px', 'marginLeft': '5%', 'textAlign': 'center', 'width': '5%', 'minHeight': '40px' } },
+	                  item.number
+	                ),
+	                _react2.default.createElement(
+	                  'div',
+	                  { style: { float: 'left', 'marginLeft': '10px', 'fontSize': '10px', 'textAlign': 'center', 'width': '75%' } },
+	                  item.description
+	                ),
+	                _react2.default.createElement(
+	                  'div',
+	                  { style: { float: 'left', 'marginLeft': '10px', 'fontSize': '10px', 'textAlign': 'center', 'width': '5%' } },
+	                  item.qty,
+	                  ' ',
+	                  item.uom
+	                ),
+	                _react2.default.createElement(
+	                  'div',
+	                  { style: { "borderBottom": "1px solid black", position: "relative", width: '90%', left: "5%" } },
+	                  _react2.default.createElement(
+	                    'div',
+	                    { style: { "color": "white", 'marginTop': '5px' } },
+	                    '.'
+	                  )
+	                ),
+	                _react2.default.createElement('br', null)
+	              );
+	            }
+	          });
+	        } else {
+	          debugger;
 	          return _react2.default.createElement(
 	            'div',
-	            null,
-	            _react2.default.createElement('br', null),
-	            _react2.default.createElement(
-	              'div',
-	              { style: { float: 'left', 'font-size': '10px', 'margin-left': '20px' } },
-	              i
-	            ),
-	            ' ',
-	            _react2.default.createElement(
-	              'div',
-	              { style: { float: 'left', 'margin-left': '20px', 'font-size': '10px' } },
-	              item.description
-	            ),
-	            _react2.default.createElement(
-	              'div',
-	              { style: { "border-bottom": "1px solid black", position: "relative", width: '90%', left: "5%" } },
-	              _react2.default.createElement(
-	                'div',
-	                { style: { "color": "white" } },
-	                ' Baller '
-	              )
-	            ),
-	            _react2.default.createElement('br', null)
+	            { style: { color: 'white', 'width': '100%', 'minHeight': '100px' } },
+	            '.'
 	          );
-	        });
+	        }
 	      };
 	
 	      return _react2.default.createElement(
 	        'div',
 	        null,
+	        _react2.default.createElement('br', null),
 	        _react2.default.createElement(
 	          'div',
-	          { style: { 'backgroundColor': '#13788e', color: 'white', width: '100%', 'textAlign': 'center', border: 'black 1px solid' } },
+	          { style: { float: 'left', 'marginLeft': '5%', 'backgroundColor': '#13788e', color: 'white', width: '7%', 'textAlign': 'center', borderBottom: 'black 1px solid', borderTop: 'black 1px solid', height: '15px' } },
+	          '#'
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { style: { float: 'left', 'backgroundColor': '#13788e', color: 'white', width: '75%', 'textAlign': 'center', borderBottom: 'black 1px solid', borderTop: 'black 1px solid', height: '15px' } },
 	          'Specifications'
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { style: { float: 'left', 'backgroundColor': '#13788e', color: 'white', width: '7%', 'textAlign': 'center', borderBottom: 'black 1px solid', borderTop: 'black 1px solid', height: '15px' } },
+	          'Qty'
 	        ),
 	        renderShoppingCartItems()
 	      );
@@ -36992,6 +37180,68 @@
 	}(_react.Component);
 	
 	exports.default = SpecificationEntry;
+
+/***/ }),
+/* 326 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var QuoteSummary = function (_Component) {
+	  _inherits(QuoteSummary, _Component);
+	
+	  function QuoteSummary() {
+	    _classCallCheck(this, QuoteSummary);
+	
+	    var _this = _possibleConstructorReturn(this, (QuoteSummary.__proto__ || Object.getPrototypeOf(QuoteSummary)).call(this));
+	
+	    _this.state = {};
+	    _this.handleNewEstimate = _this.handleNewEstimate.bind(_this);
+	    return _this;
+	  }
+	
+	  _createClass(QuoteSummary, [{
+	    key: 'handleNewEstimate',
+	    value: function handleNewEstimate() {
+	      this.props.newEstimate();
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        _react2.default.createElement(
+	          'div',
+	          { style: { float: 'left', 'backgroundColor': '#13788e', color: 'white', width: '75%', 'textAlign': 'center', borderBottom: 'black 1px solid', borderTop: 'black 1px solid' } },
+	          'Summary'
+	        )
+	      );
+	    }
+	  }]);
+	
+	  return QuoteSummary;
+	}(_react.Component);
+	
+	exports.default = QuoteSummary;
 
 /***/ })
 /******/ ]);

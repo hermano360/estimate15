@@ -45,10 +45,14 @@ app.post('/modelNos', function(req,res,next){
 })
 
 app.post('/pdfTest', function(req,res,next){
+  let today = new Date();
+  let monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  let dateString = `${today.getDate()}-${monthNames[today.getMonth()]}-${today.getFullYear()}`;
+
   var options = { format: 'Letter',  
 
   "header": {
-    "height": "2in",
+    "height": "1.5in",
     "contents":`
       <div>
         <div style="width:40%; margin: 20 20 20 20; float: left; position:relative">
@@ -61,9 +65,9 @@ app.post('/pdfTest', function(req,res,next){
           Phone: 562-921-5001
           </div>
         </div>
-        <div style="width:20%; margin: 20 20 20 150; float: left; position:relative">
-          <div style="float: right;">
-            <div style="">16-Jun-17</div>
+        <div style="width:30%; margin: 20 10 20 100; float: left; position:relative;">
+          <div style="float: right; margin-left:20px">
+            <div style="">${dateString}</div>
             <div style="">{{page}} of {{pages}}</div>
           </div>
           <div style="float: right;">
@@ -79,13 +83,16 @@ app.post('/pdfTest', function(req,res,next){
   },
   base: 'file://' + __dirname + '/public/',
  "footer": {
-  "height": "28mm",
+  "height": "1.5in",
   "contents": {
     // first: '1',
     // 2: '2', // Any page number is working. 1-based index
     // 3: '3', 
     // 4: '4', 
-    default: '<span style="color: #444;">Page {{page}}</span>'
+    default: `<div>
+                <div style="border-top: 1px solid black; width:20%;margin-left: 5%;float:left; margin-top:50px;">Customers Initials</div>
+                <div style="border-top: 1px solid black; width:20%; margin-left: 30%; float:left; margin-top:50px">Date</div>
+              </div>`
   },  "border": {
   "top": "2in",            // default is 0, units: mm, cm, in, px
   "right": "1in",

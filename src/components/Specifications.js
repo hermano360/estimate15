@@ -69,7 +69,7 @@ class Specifications extends Component {
                                 <div style={{textAlign: 'center',width:'100%','fontSize':'15px', 'fontWeight': 'bold','margin':'0 0 20px 0'}}>{item}</div>
                               </div>
                       )
-      
+
               } else {
                       return (
                         <div key={`${item.modelNo}-${item.template}`}>
@@ -96,9 +96,9 @@ class Specifications extends Component {
     	<div>
         <br/>
           <div style={{float: 'left','marginLeft':'5%','backgroundColor': '#13788e', color: 'white', width:'7%', 'textAlign':'center', borderBottom:'black 1px solid',borderTop:'black 1px solid',height:'15px'}}>#</div>
-      		<div style={{float: 'left','backgroundColor': '#13788e', color: 'white', width:'75%', 'textAlign':'center', borderBottom:'black 1px solid',borderTop:'black 1px solid',height:'15px'}}>Specifications</div>
+      		<div style={{float: 'left','backgroundColor': '#13788e', color: 'white', width:'76%', 'textAlign':'center', borderBottom:'black 1px solid',borderTop:'black 1px solid',height:'15px'}}>Specifications</div>
           <div style={{float: 'left','backgroundColor': '#13788e', color: 'white', width:'7%', 'textAlign':'center', borderBottom:'black 1px solid',borderTop:'black 1px solid',height:'15px'}}>Qty</div>
-          
+
           {renderShoppingCartItems()}
       </div>
       )

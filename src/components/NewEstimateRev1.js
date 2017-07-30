@@ -54,8 +54,8 @@ class NewEstimateRev1 extends Component {
 	clickEstimate(){
 		let scopeText = this.refs.scopeOfWorkText.state.value;
 		let description = this.refs.description.state.value;
-		let {shoppingCart,shoppingCartIndividuals,itemTotals} = this.state;
-		this.props.generateEstimate(scopeText,shoppingCart,shoppingCartIndividuals,itemTotals,description)
+		let {shoppingCart,shoppingCartIndividuals,itemTotals, grandTotal, salesmanValue, taxMaterial, totalLabor, subtotalMaterial, totalMaterial} = this.state;
+		this.props.generateEstimate(scopeText,shoppingCart,shoppingCartIndividuals,itemTotals,description, grandTotal, salesmanValue, taxMaterial, totalLabor, subtotalMaterial, totalMaterial)
 	}
 
 	handleAddIndividualItem(productName){
@@ -81,7 +81,7 @@ class NewEstimateRev1 extends Component {
 		let taxMaterial = tax * subtotalMaterial,
 		totalMaterial = taxMaterial + subtotalMaterial,
 		grandTotal = totalLabor + totalMaterial;
-		
+
 
 		this.setState({
 			subtotalMaterial,
@@ -91,7 +91,7 @@ class NewEstimateRev1 extends Component {
 			grandTotal,
 			itemTotals
 		})
-	}	
+	}
 
 	handleGenerateEstimate(){
 		console.log("generate new estimate")
@@ -284,13 +284,13 @@ render() {
 							<td>${totalMaterial.toFixed(2)}</td>
 							<td>${totalLabor.toFixed(2)}</td>
 							<td></td>
-						</tr>	
+						</tr>
 						<tr>
 							<td>Grand Total</td>
 							<td>${grandTotal.toFixed(2)}</td>
 							<td></td>
 							<td></td>
-						</tr>				
+						</tr>
 					</tbody>
 				</Table>
 				<Button onClick={this.clickEstimate}>Generate Estimate</Button>

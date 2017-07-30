@@ -13,7 +13,6 @@ class EstimatePage extends Component {
    constructor(){
     super()
     this.state = {
-    	cows:5
     }
     this.handleNewEstimate=this.handleNewEstimate.bind(this)
   }
@@ -24,8 +23,8 @@ class EstimatePage extends Component {
   	let html = $('#printThisBitch')[0].outerHTML;
 
   	console.log(html)
-  	var requestUrl = `/pdfTest`
-	axios({
+  	var requestUrl = `/pdfTest`;
+	  axios({
 	    method: 'post',
 	    url: requestUrl,
 	      data: {

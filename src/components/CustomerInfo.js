@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
 
 
-
 class CustomerInfo extends Component {
 
    constructor(){
@@ -53,8 +52,7 @@ class CustomerInfo extends Component {
         </div>
         <br/>
         <p style={{'minHeight': '1px', width:'100%',float:'left'}}></p>
-        <div style={{float: 'left','backgroundColor': '#13788e', color: 'white', marginLeft:'5%', width:'90%', 'textAlign':'center', border:'black 1px solid',height:'20px'}}>Scope of Work</div>
-
+        <div style={{float: 'left','marginLeft':'5%','backgroundColor': '#13788e', color: 'white', width:'90%', 'textAlign':'center', borderBottom:'black 1px solid',borderTop:'black 1px solid',height:'15px'}}>Scope of Work</div>
           <p style={{'minHeight': '50px',marginLeft:'5%', width:'90%',float:'left',marginTop:'20px'}}>{this.props.scopeText}</p>
       </div>
       )

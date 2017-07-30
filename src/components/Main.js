@@ -16,8 +16,6 @@ class Main extends Component {
       itemTotals: [],
       salesman:"",
       description:""
-      //page: 'EstimatePage'
-      //page: 'NewEstimateRev1'
     }
     this.handleNewEstimate=this.handleNewEstimate.bind(this);
     this.handleGenerateEstimate=this.handleGenerateEstimate.bind(this);
@@ -29,7 +27,7 @@ class Main extends Component {
       page:'NewEstimateRev1'
     })
   }
-  handleGenerateEstimate(scopeText,shoppingCart,shoppingCartIndividuals,itemTotals,description){
+  handleGenerateEstimate(scopeText,shoppingCart,shoppingCartIndividuals,itemTotals,description, grandTotal, salesmanValue, taxMaterial, totalLabor, subtotalMaterial, totalMaterial){
 
     let shoppingCartFinal= [
         ...shoppingCart,
@@ -39,7 +37,14 @@ class Main extends Component {
       scopeText,
       page:'EstimatePage',
       shoppingCartFinal,
-      itemTotals,description
+      itemTotals,
+      description,
+      grandTotal,
+      salesmanValue,
+      taxMaterial,
+      totalLabor,
+      subtotalMaterial,
+      totalMaterial
     })
   }
   handleChangeSalesman(salesman){
@@ -58,7 +63,7 @@ class Main extends Component {
       case 'NewEstimate':
         return (
           <NewEstimate/>
-        )      
+        )
         break;
       case 'NewEstimateRev1':
       return (
@@ -67,7 +72,7 @@ class Main extends Component {
         break;
       case 'EstimatePage':
         return (
-          <EstimatePage description={this.state.description} salesman= {this.state.salesman} scopeText = {this.state.scopeText} shoppingCartFinal={this.state.shoppingCartFinal} itemQuantityChange={this.handleItemQuantityChange} itemTotals = {this.state.itemTotals}/>
+          <EstimatePage {...this.state} description={this.state.description} salesman= {this.state.salesman} scopeText = {this.state.scopeText} shoppingCartFinal={this.state.shoppingCartFinal} itemQuantityChange={this.handleItemQuantityChange} itemTotals = {this.state.itemTotals}/>
         )
         break;
       default:
